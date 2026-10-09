@@ -34,6 +34,7 @@ import com.vitalcare.serenia.core.designsystem.theme.dotCoral
 import com.vitalcare.serenia.features.home.presentation.home.components.GreetingCard
 import com.vitalcare.serenia.features.home.presentation.home.components.HelpButton
 import com.vitalcare.serenia.features.home.presentation.home.components.MoodOption
+import com.vitalcare.serenia.features.checkin.domain.Mood
 
 @Composable
 fun HomeScreen(

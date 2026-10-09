@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.home.presentation.home
+package com.vitalcare.serenia.features.checkin.domain
 
 enum class Mood(val label: String) {
     GOOD("Muy bien"),

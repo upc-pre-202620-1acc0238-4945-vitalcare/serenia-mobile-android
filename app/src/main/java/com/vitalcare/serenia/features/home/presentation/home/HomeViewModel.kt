@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import com.vitalcare.serenia.features.checkin.domain.Mood
 import java.util.Calendar
 import javax.inject.Inject
 
