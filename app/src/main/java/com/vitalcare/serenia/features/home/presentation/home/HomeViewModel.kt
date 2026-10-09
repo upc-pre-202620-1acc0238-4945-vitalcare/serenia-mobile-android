@@ -1,22 +1,17 @@
 package com.vitalcare.serenia.features.home.presentation.home
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import com.vitalcare.serenia.features.checkin.domain.Mood
 import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle
-) : ViewModel() {
+class HomeViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
@@ -69,21 +64,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun observeResumeCheckIn() {
-        // Set by the check-in flow when the user decides to answer after taking a pause
-        viewModelScope.launch {
-            savedStateHandle.getStateFlow(RESUME_CHECK_IN_KEY, false).collect { shouldResume ->
-                if (shouldResume) {
-                    resumeCheckIn()
-                    savedStateHandle[RESUME_CHECK_IN_KEY] = false
-                }
-            }
-        }
-    }
-
     init {
         loadGreeting()
-        observeResumeCheckIn()
     }
 
     companion object {
