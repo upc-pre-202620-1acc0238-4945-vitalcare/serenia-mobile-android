@@ -41,6 +41,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     onMoodSelected: (Mood) -> Unit,
+    onSkip: () -> Unit,
     onHelpClick: () -> Unit
 ) {
 
@@ -53,7 +54,10 @@ fun HomeScreen(
             viewModel.selectMood(mood)
             onMoodSelected(mood)
         },
-        onSkipClick = viewModel::skipToday,
+        onSkipClick = {
+            viewModel.skipToday()
+            onSkip()
+        },
         onHelpClick = onHelpClick
     )
 }
