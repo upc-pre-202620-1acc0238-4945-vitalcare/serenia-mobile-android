@@ -10,6 +10,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.vitalcare.serenia.features.checkin.presentation.navigation.checkInNavGraph
 import com.vitalcare.serenia.features.home.presentation.navigation.HomeNavGraphRoute
 import com.vitalcare.serenia.features.home.presentation.navigation.HomeRoute
 import com.vitalcare.serenia.features.home.presentation.navigation.homeNavGraph
@@ -45,6 +46,7 @@ fun AppNavHost(navController: NavHostController) {
             modifier = Modifier.padding(paddingValues)
         ) {
             homeNavGraph(navController)
+            checkInNavGraph(navController)
         }
     }
 }

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import com.vitalcare.serenia.features.checkin.domain.Mood
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -57,7 +58,17 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun resumeCheckIn() {
+        _uiState.update { currentState ->
+            currentState.copy(hasSkippedToday = false)
+        }
+    }
+
     init {
         loadGreeting()
+    }
+
+    companion object {
+        const val RESUME_CHECK_IN_KEY = "resume_check_in"
     }
 }
