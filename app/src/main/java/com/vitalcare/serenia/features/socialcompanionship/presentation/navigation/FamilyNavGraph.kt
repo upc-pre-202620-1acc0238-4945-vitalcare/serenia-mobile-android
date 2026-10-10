@@ -8,6 +8,7 @@ import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import com.vitalcare.serenia.features.home.presentation.navigation.HomeRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.audiosent.AudioSentScreen
+import com.vitalcare.serenia.features.socialcompanionship.presentation.circle.CircleScreen
 import com.vitalcare.serenia.features.socialcompanionship.presentation.family.FamilyScreen
 import com.vitalcare.serenia.features.socialcompanionship.presentation.photodetail.PhotoDetailScreen
 import com.vitalcare.serenia.features.socialcompanionship.presentation.tellday.TellDayScreen
@@ -27,6 +28,9 @@ data object TellDayRoute
 @Serializable
 data object AudioSentRoute
 
+@Serializable
+data object CircleRoute
+
 fun NavGraphBuilder.familyNavGraph(navController: NavController) {
 
     navigation<FamilyNavGraphRoute>(startDestination = FamilyRoute) {
@@ -42,8 +46,11 @@ fun NavGraphBuilder.familyNavGraph(navController: NavController) {
                         launchSingleTop = true
                     }
                 },
-                // The circle screen belongs to another feature and is linked once it exists
-                onCircleClick = {}
+                onCircleClick = {
+                    navController.navigate(CircleRoute) {
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
@@ -80,6 +87,14 @@ fun NavGraphBuilder.familyNavGraph(navController: NavController) {
             AudioSentScreen(
                 onBackToHome = {
                     navController.popBackStack<HomeRoute>(inclusive = false)
+                }
+            )
+        }
+
+        composable<CircleRoute> {
+            CircleScreen(
+                onBack = {
+                    navController.popBackStack<FamilyRoute>(inclusive = false)
                 }
             )
         }
