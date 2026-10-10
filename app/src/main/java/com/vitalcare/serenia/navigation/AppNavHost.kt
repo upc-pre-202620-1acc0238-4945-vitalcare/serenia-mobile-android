@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -15,26 +16,46 @@ import com.vitalcare.serenia.features.checkin.presentation.navigation.checkInNav
 import com.vitalcare.serenia.features.home.presentation.navigation.HomeNavGraphRoute
 import com.vitalcare.serenia.features.home.presentation.navigation.HomeRoute
 import com.vitalcare.serenia.features.home.presentation.navigation.homeNavGraph
+import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.RemindersRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.SocialCompanionshipNavGraphRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.socialCompanionshipNavGraph
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
 
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val isHomeVisible = backStackEntry?.destination?.hasRoute<HomeRoute>() ?: true
+    val destination = backStackEntry?.destination
+
+    // The bar is only shown on the main screen of each tab
+    val selectedItem = when {
+        destination == null || destination.hasRoute<HomeRoute>() -> BottomNavItem.HOME
+        destination.hasRoute<RemindersRoute>() -> BottomNavItem.REMINDERS
+        else -> null
+    }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
-            if (isHomeVisible) {
+            if (selectedItem != null) {
                 BottomNavigationBar(
-                    selectedItem = BottomNavItem.HOME,
+                    selectedItem = selectedItem,
                     onItemClick = { item ->
-                        when (item) {
-                            BottomNavItem.HOME -> navController.navigate(HomeNavGraphRoute) {
-                                launchSingleTop = true
-                            }
+                        val route: Any? = when (item) {
+                            BottomNavItem.HOME -> HomeNavGraphRoute
+                            BottomNavItem.REMINDERS -> SocialCompanionshipNavGraphRoute
                             // The remaining tabs will navigate once their screens exist
-                            else -> Unit
+                            else -> null
+                        }
+
+                        if (route != null) {
+                            navController.navigate(route) {
+                                // Keeps a single copy of each tab and its state when switching
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         }
                     }
                 )
@@ -49,6 +70,7 @@ fun AppNavHost(navController: NavHostController) {
             homeNavGraph(navController)
             checkInNavGraph(navController)
             alertsAndSafetyNavGraph(navController)
+            socialCompanionshipNavGraph(navController)
         }
     }
 }

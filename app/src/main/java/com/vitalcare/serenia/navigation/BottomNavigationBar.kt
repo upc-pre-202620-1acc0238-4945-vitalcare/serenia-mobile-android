@@ -35,7 +35,7 @@ import com.vitalcare.serenia.core.designsystem.theme.forestDark
 
 enum class BottomNavItem(val label: String, val icon: ImageVector) {
     HOME("Inicio", home),
-    CHECK_IN("Check-in", eventAvailable),
+    REMINDERS("Recordar", eventAvailable),
     FAMILY("Familia", family),
     PROFILE("Perfil", accountCircle)
 }
