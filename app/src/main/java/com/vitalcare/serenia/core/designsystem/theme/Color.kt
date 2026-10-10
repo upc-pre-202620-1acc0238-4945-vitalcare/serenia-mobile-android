@@ -1,0 +1,36 @@
+package com.vitalcare.serenia.core.designsystem.theme
+
+import androidx.compose.ui.graphics.Color
+
+val primaryLight = Color(0xFF1F6E62)
+val onPrimaryLight = Color(0xFFFFFFFF)
+val primaryContainerLight = Color(0xFF7BBF8E)
+val onPrimaryContainerLight = Color(0xFF12332D)
+val secondaryLight = Color(0xFF8A6A3D)
+val onSecondaryLight = Color(0xFFFFFFFF)
+val secondaryContainerLight = Color(0xFFEED5B0)
+val onSecondaryContainerLight = Color(0xFF4A3216)
+val tertiaryLight = Color(0xFFE9967A)
+val onTertiaryLight = Color(0xFFFFFFFF)
+val tertiaryContainerLight = Color(0xFFF7D9AE)
+val onTertiaryContainerLight = Color(0xFF4A3216)
+val errorLight = Color(0xFFB5452F)
+val onErrorLight = Color(0xFFFFFFFF)
+val errorContainerLight = Color(0xFFFFDAD3)
+val onErrorContainerLight = Color(0xFF7A2615)
+val backgroundLight = Color(0xFFFBF4E9)
+val onBackgroundLight = Color(0xFF1B2E2A)
+val surfaceLight = Color(0xFFFBF4E9)
+val onSurfaceLight = Color(0xFF1B2E2A)
+val surfaceVariantLight = Color(0xFFEFE6D6)
+val onSurfaceVariantLight = Color(0xFF4F5B57)
+val outlineLight = Color(0xFF7A8581)
+val outlineVariantLight = Color(0xFFE3D8C5)
+
+// Serenia brand colors
+val sunriseLight = Color(0xFFFDEED6)
+val sunriseDeep = Color(0xFFF6D29F)
+val sunriseGlow = Color(0xFFFFF7EA)
+val forestDark = Color(0xFF173A33)
+val leafLight = Color(0xFF8CC49A)
+val dotCoral = Color(0xFFF2A68C)
