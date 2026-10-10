@@ -89,3 +89,10 @@ val add: ImageVector by lazy {
         pathData = "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
     )
 }
+
+val chevronLeft: ImageVector by lazy {
+    materialIcon(
+        name = "chevronLeft",
+        pathData = "M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+    )
+}
