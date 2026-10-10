@@ -45,6 +45,12 @@ fun AppNavHost(navController: NavHostController) {
                 BottomNavigationBar(
                     selectedItem = selectedItem,
                     onItemClick = { item ->
+                        // Tapping the active tab from a deeper screen goes back to its main screen
+                        if (item == BottomNavItem.FAMILY && destination?.hasRoute<CircleRoute>() == true) {
+                            navController.popBackStack<FamilyRoute>(inclusive = false)
+                            return@BottomNavigationBar
+                        }
+
                         val route: Any? = when (item) {
                             BottomNavItem.HOME -> HomeNavGraphRoute
                             BottomNavItem.REMINDERS -> SocialCompanionshipNavGraphRoute
