@@ -16,6 +16,7 @@ import com.vitalcare.serenia.features.checkin.presentation.navigation.checkInNav
 import com.vitalcare.serenia.features.home.presentation.navigation.HomeNavGraphRoute
 import com.vitalcare.serenia.features.home.presentation.navigation.HomeRoute
 import com.vitalcare.serenia.features.home.presentation.navigation.homeNavGraph
+import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.CircleRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.FamilyNavGraphRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.FamilyRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.RemindersRoute
@@ -33,7 +34,7 @@ fun AppNavHost(navController: NavHostController) {
     val selectedItem = when {
         destination == null || destination.hasRoute<HomeRoute>() -> BottomNavItem.HOME
         destination.hasRoute<RemindersRoute>() -> BottomNavItem.REMINDERS
-        destination.hasRoute<FamilyRoute>() -> BottomNavItem.FAMILY
+        destination.hasRoute<FamilyRoute>() || destination.hasRoute<CircleRoute>() -> BottomNavItem.FAMILY
         else -> null
     }
 
