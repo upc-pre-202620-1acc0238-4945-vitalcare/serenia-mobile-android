@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,14 +29,23 @@ fun SereniaPrimaryButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    icon: ImageVector? = null
+    icon: ImageVector? = null,
+    enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
         modifier = modifier.heightIn(min = 64.dp),
+        enabled = enabled,
         shape = RoundedCornerShape(24.dp),
         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            // Opaque on purpose so the background decoration never shows through the button
+            disabledContainerColor = MaterialTheme.colorScheme.primary
+                .copy(alpha = 0.45f)
+                .compositeOver(MaterialTheme.colorScheme.background),
+            disabledContentColor = MaterialTheme.colorScheme.onPrimary
+        )
     ) {
         if (icon != null) {
             Icon(
