@@ -57,7 +57,8 @@ fun SereniaPrimaryButton(
 fun SereniaSecondaryButton(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    icon: ImageVector? = null
 ) {
     OutlinedButton(
         onClick = onClick,
@@ -70,6 +71,14 @@ fun SereniaSecondaryButton(
             contentColor = MaterialTheme.colorScheme.primary
         )
     ) {
+        if (icon != null) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier.size(28.dp)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+        }
         Text(text = text, style = MaterialTheme.typography.titleMedium)
     }
 }
