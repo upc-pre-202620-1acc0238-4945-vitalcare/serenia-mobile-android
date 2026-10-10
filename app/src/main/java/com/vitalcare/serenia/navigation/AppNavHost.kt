@@ -16,8 +16,11 @@ import com.vitalcare.serenia.features.checkin.presentation.navigation.checkInNav
 import com.vitalcare.serenia.features.home.presentation.navigation.HomeNavGraphRoute
 import com.vitalcare.serenia.features.home.presentation.navigation.HomeRoute
 import com.vitalcare.serenia.features.home.presentation.navigation.homeNavGraph
+import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.FamilyNavGraphRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.FamilyRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.RemindersRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.SocialCompanionshipNavGraphRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.familyNavGraph
 import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.socialCompanionshipNavGraph
 
 @Composable
@@ -30,6 +33,7 @@ fun AppNavHost(navController: NavHostController) {
     val selectedItem = when {
         destination == null || destination.hasRoute<HomeRoute>() -> BottomNavItem.HOME
         destination.hasRoute<RemindersRoute>() -> BottomNavItem.REMINDERS
+        destination.hasRoute<FamilyRoute>() -> BottomNavItem.FAMILY
         else -> null
     }
 
@@ -43,6 +47,7 @@ fun AppNavHost(navController: NavHostController) {
                         val route: Any? = when (item) {
                             BottomNavItem.HOME -> HomeNavGraphRoute
                             BottomNavItem.REMINDERS -> SocialCompanionshipNavGraphRoute
+                            BottomNavItem.FAMILY -> FamilyNavGraphRoute
                             // The remaining tabs will navigate once their screens exist
                             else -> null
                         }
@@ -71,6 +76,7 @@ fun AppNavHost(navController: NavHostController) {
             checkInNavGraph(navController)
             alertsAndSafetyNavGraph(navController)
             socialCompanionshipNavGraph(navController)
+            familyNavGraph(navController)
         }
     }
 }
