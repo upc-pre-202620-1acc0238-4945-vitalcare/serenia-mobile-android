@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -16,6 +15,8 @@ import com.vitalcare.serenia.features.checkin.presentation.navigation.checkInNav
 import com.vitalcare.serenia.features.home.presentation.navigation.HomeNavGraphRoute
 import com.vitalcare.serenia.features.home.presentation.navigation.HomeRoute
 import com.vitalcare.serenia.features.home.presentation.navigation.homeNavGraph
+import com.vitalcare.serenia.features.iam.presentation.navigation.IamNavGraphRoute
+import com.vitalcare.serenia.features.iam.presentation.navigation.iamNavGraph
 import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.CircleRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.FamilyNavGraphRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.FamilyRoute
@@ -32,9 +33,9 @@ fun AppNavHost(navController: NavHostController) {
 
     // The bar is only shown on the main screen of each tab
     val selectedItem = when {
-        destination == null || destination.hasRoute<HomeRoute>() -> BottomNavItem.HOME
-        destination.hasRoute<RemindersRoute>() -> BottomNavItem.REMINDERS
-        destination.hasRoute<FamilyRoute>() || destination.hasRoute<CircleRoute>() -> BottomNavItem.FAMILY
+        destination?.hasRoute<HomeRoute>() == true -> BottomNavItem.HOME
+        destination?.hasRoute<RemindersRoute>() == true -> BottomNavItem.REMINDERS
+        destination?.hasRoute<FamilyRoute>() == true || destination?.hasRoute<CircleRoute>() == true -> BottomNavItem.FAMILY
         else -> null
     }
 
@@ -62,7 +63,8 @@ fun AppNavHost(navController: NavHostController) {
                         if (route != null) {
                             navController.navigate(route) {
                                 // Keeps a single copy of each tab and its state when switching
-                                popUpTo(navController.graph.findStartDestination().id) {
+                                // The access flow (Iam) is gone after sign in, so Home graph is the root
+                                popUpTo<HomeNavGraphRoute> {
                                     saveState = true
                                 }
                                 launchSingleTop = true
@@ -76,9 +78,10 @@ fun AppNavHost(navController: NavHostController) {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = HomeNavGraphRoute,
+            startDestination = IamNavGraphRoute,
             modifier = Modifier.padding(paddingValues)
         ) {
+            iamNavGraph(navController)
             homeNavGraph(navController)
             checkInNavGraph(navController)
             alertsAndSafetyNavGraph(navController)

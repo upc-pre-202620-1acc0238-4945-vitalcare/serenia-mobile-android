@@ -30,7 +30,8 @@ fun SereniaPrimaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    fontFamily: FontFamily = FontFamily.Serif
 ) {
     Button(
         onClick = onClick,
@@ -58,7 +59,7 @@ fun SereniaPrimaryButton(
         Text(
             text = text,
             style = MaterialTheme.typography.titleLarge,
-            fontFamily = FontFamily.Serif
+            fontFamily = fontFamily
         )
     }
 }
