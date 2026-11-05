@@ -13,13 +13,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.vitalcare.serenia.features.alertsandsafety.presentation.alertsAndSafetyNavGraph
+import com.vitalcare.serenia.features.carecircle.presentation.CircleRoute
+import com.vitalcare.serenia.features.carecircle.presentation.careCircleNavGraph
 import com.vitalcare.serenia.features.dailycheckin.presentation.checkInNavGraph
 import com.vitalcare.serenia.features.home.presentation.HomeNavGraphRoute
 import com.vitalcare.serenia.features.home.presentation.HomeRoute
 import com.vitalcare.serenia.features.home.presentation.homeNavGraph
 import com.vitalcare.serenia.features.iam.presentation.IamNavGraphRoute
 import com.vitalcare.serenia.features.iam.presentation.iamNavGraph
-import com.vitalcare.serenia.features.socialcompanionship.presentation.CircleRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.FamilyNavGraphRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.FamilyRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.RemindersRoute
@@ -80,6 +81,7 @@ fun MainScreen() {
             alertsAndSafetyNavGraph(navController)
             socialCompanionshipNavGraph(navController)
             familyNavGraph(navController)
+            careCircleNavGraph(navController)
             composable<ProfileRoute> {
                 Text(text = "Profile Screen")
             }

@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
+import com.vitalcare.serenia.features.carecircle.presentation.CircleRoute
 import com.vitalcare.serenia.features.home.presentation.HomeRoute
 
 @Serializable
@@ -22,9 +23,6 @@ data object TellDayRoute
 
 @Serializable
 data object AudioSentRoute
-
-@Serializable
-data object CircleRoute
 
 fun NavGraphBuilder.familyNavGraph(navController: NavController) {
 
@@ -82,14 +80,6 @@ fun NavGraphBuilder.familyNavGraph(navController: NavController) {
             AudioSentScreen(
                 onBackToHome = {
                     navController.popBackStack<HomeRoute>(inclusive = false)
-                }
-            )
-        }
-
-        composable<CircleRoute> {
-            CircleScreen(
-                onBack = {
-                    navController.popBackStack<FamilyRoute>(inclusive = false)
                 }
             )
         }

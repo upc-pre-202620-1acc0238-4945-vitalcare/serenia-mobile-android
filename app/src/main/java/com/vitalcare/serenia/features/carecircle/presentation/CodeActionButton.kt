@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.socialcompanionship.presentation
+package com.vitalcare.serenia.features.carecircle.presentation
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
