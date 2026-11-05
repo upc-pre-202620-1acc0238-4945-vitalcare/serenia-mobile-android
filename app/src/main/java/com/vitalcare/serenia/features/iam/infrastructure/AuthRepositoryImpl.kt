@@ -8,6 +8,7 @@ import com.vitalcare.serenia.features.iam.domain.AuthRepository
 import com.vitalcare.serenia.features.iam.domain.User
 import com.vitalcare.serenia.features.iam.domain.UserRole
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.util.TimeZone
 import javax.inject.Inject
@@ -63,6 +64,24 @@ class AuthRepositoryImpl @Inject constructor(
                 timeZone = TimeZone.getDefault().id
             )
             val response = api.register(request)
+
+            if (response.isSuccessful) {
+                response.body()?.let { userDto ->
+                    return Result.success(userDto.toDomain())
+                }
+            }
+            return Result.failure(response.toApiException())
+
+        } catch (exception: Exception) {
+            return Result.failure(exception)
+        }
+    }
+
+    override suspend fun getCurrentUser(): Result<User> {
+        try {
+            val userId = sessionStorage.session.first()?.userId
+                ?: return Result.failure(IllegalStateException("There is no active session"))
+            val response = api.getUser(userId)
 
             if (response.isSuccessful) {
                 response.body()?.let { userDto ->
