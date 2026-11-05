@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.home.presentation.home
+package com.vitalcare.serenia.features.home.presentation
 
 import com.vitalcare.serenia.features.checkin.domain.Mood
 

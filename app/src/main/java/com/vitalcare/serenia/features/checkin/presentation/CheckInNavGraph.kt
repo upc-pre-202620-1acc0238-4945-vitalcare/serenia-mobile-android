@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.checkin.presentation.navigation
+package com.vitalcare.serenia.features.checkin.presentation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -6,10 +6,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import com.vitalcare.serenia.features.checkin.domain.Mood
-import com.vitalcare.serenia.features.checkin.presentation.skipped.CheckInSkippedScreen
-import com.vitalcare.serenia.features.checkin.presentation.thanks.CheckInThanksScreen
-import com.vitalcare.serenia.features.home.presentation.home.HomeViewModel
-import com.vitalcare.serenia.features.home.presentation.navigation.HomeRoute
+import com.vitalcare.serenia.features.home.presentation.HomeViewModel
+import com.vitalcare.serenia.features.home.presentation.HomeRoute
 
 @Serializable
 data class CheckInThanksRoute(val mood: String)

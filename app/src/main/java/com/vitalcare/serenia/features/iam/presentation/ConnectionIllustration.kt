@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.iam.presentation.welcome.components
+package com.vitalcare.serenia.features.iam.presentation
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -23,10 +23,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
-import com.vitalcare.serenia.core.designsystem.theme.forestDark
-import com.vitalcare.serenia.core.designsystem.theme.sunriseDeep
-import com.vitalcare.serenia.features.iam.presentation.components.HeartBadge
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.theme.forestDark
+import com.vitalcare.serenia.core.designsystems.theme.sunriseDeep
 
 private val MintBubble = Color(0xFFBFE3D2)
 

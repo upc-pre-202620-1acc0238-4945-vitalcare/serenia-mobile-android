@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.home.presentation.home.components
+package com.vitalcare.serenia.features.home.presentation
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -13,8 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vitalcare.serenia.core.designsystem.icon.notificationsActive
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.notificationsActive
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 
 @Composable
 fun HelpButton(

@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.socialcompanionship.presentation.circle
+package com.vitalcare.serenia.features.socialcompanionship.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,16 +30,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
-import com.vitalcare.serenia.core.designsystem.components.SereniaBackground
-import com.vitalcare.serenia.core.designsystem.components.SereniaSnackbar
-import com.vitalcare.serenia.core.designsystem.icon.chevronLeft
-import com.vitalcare.serenia.core.designsystem.icon.contentCopy
-import com.vitalcare.serenia.core.designsystem.icon.refresh
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.components.SereniaBackground
+import com.vitalcare.serenia.core.designsystems.components.SereniaSnackbar
+import com.vitalcare.serenia.core.designsystems.chevronLeft
+import com.vitalcare.serenia.core.designsystems.contentCopy
+import com.vitalcare.serenia.core.designsystems.refresh
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 import com.vitalcare.serenia.features.socialcompanionship.domain.CircleMember
-import com.vitalcare.serenia.features.socialcompanionship.presentation.circle.components.CircleMemberCard
-import com.vitalcare.serenia.features.socialcompanionship.presentation.circle.components.CodeActionButton
-import com.vitalcare.serenia.features.socialcompanionship.presentation.circle.components.InvitationCodeCard
 
 @Composable
 fun CircleScreen(

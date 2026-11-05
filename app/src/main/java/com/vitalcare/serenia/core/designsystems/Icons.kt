@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.core.designsystem.icon
+package com.vitalcare.serenia.core.designsystems
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor

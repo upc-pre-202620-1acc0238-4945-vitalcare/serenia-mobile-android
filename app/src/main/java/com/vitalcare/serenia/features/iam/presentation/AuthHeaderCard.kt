@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.iam.presentation.components
+package com.vitalcare.serenia.features.iam.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,11 +26,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.vitalcare.serenia.core.designsystem.components.SereniaLogo
-import com.vitalcare.serenia.core.designsystem.icon.person
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
-import com.vitalcare.serenia.core.designsystem.theme.forestDark
-import com.vitalcare.serenia.core.designsystem.theme.leafLight
+import com.vitalcare.serenia.core.designsystems.components.SereniaLogo
+import com.vitalcare.serenia.core.designsystems.person
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.theme.forestDark
+import com.vitalcare.serenia.core.designsystems.theme.leafLight
 
 private val PeachTitle = Color(0xFF5A2E1A)
 

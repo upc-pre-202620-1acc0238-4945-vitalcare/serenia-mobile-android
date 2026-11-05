@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.core.designsystem.theme
+package com.vitalcare.serenia.core.designsystems.theme
 
 import androidx.compose.ui.graphics.Color
 

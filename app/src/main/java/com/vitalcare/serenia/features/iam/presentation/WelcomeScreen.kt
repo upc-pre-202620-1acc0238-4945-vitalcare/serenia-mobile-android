@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.iam.presentation.welcome
+package com.vitalcare.serenia.features.iam.presentation
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -36,16 +36,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.vitalcare.serenia.core.designsystem.components.SereniaBackground
-import com.vitalcare.serenia.core.designsystem.components.SereniaLogo
-import com.vitalcare.serenia.core.designsystem.components.SereniaPrimaryButton
-import com.vitalcare.serenia.core.designsystem.components.SereniaTextLink
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
-import com.vitalcare.serenia.core.designsystem.theme.dotCoral
-import com.vitalcare.serenia.core.designsystem.theme.forestDark
-import com.vitalcare.serenia.features.iam.presentation.welcome.components.AllGoodChip
-import com.vitalcare.serenia.features.iam.presentation.welcome.components.ConnectionIllustration
-import com.vitalcare.serenia.features.iam.presentation.welcome.components.RespondedChip
+import com.vitalcare.serenia.core.designsystems.components.SereniaBackground
+import com.vitalcare.serenia.core.designsystems.components.SereniaLogo
+import com.vitalcare.serenia.core.designsystems.components.SereniaPrimaryButton
+import com.vitalcare.serenia.core.designsystems.components.SereniaTextLink
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.theme.dotCoral
+import com.vitalcare.serenia.core.designsystems.theme.forestDark
 
 @Composable
 fun WelcomeScreen(

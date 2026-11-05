@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.socialcompanionship.presentation.reminders
+package com.vitalcare.serenia.features.socialcompanionship.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,14 +28,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
-import com.vitalcare.serenia.core.designsystem.components.SereniaBackground
-import com.vitalcare.serenia.core.designsystem.components.SereniaPrimaryButton
-import com.vitalcare.serenia.core.designsystem.components.SereniaSnackbar
-import com.vitalcare.serenia.core.designsystem.icon.add
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.components.SereniaBackground
+import com.vitalcare.serenia.core.designsystems.components.SereniaPrimaryButton
+import com.vitalcare.serenia.core.designsystems.components.SereniaSnackbar
+import com.vitalcare.serenia.core.designsystems.add
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 import com.vitalcare.serenia.features.socialcompanionship.domain.Reminder
 import com.vitalcare.serenia.features.socialcompanionship.domain.ReminderStatus
-import com.vitalcare.serenia.features.socialcompanionship.presentation.reminders.components.ReminderCard
 
 @Composable
 fun RemindersScreen(

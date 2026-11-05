@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.checkin.presentation.thanks
+package com.vitalcare.serenia.features.checkin.presentation
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

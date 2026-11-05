@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.alertsandsafety.presentation.alertsent
+package com.vitalcare.serenia.features.alertsandsafety.presentation
 
 data class AlertSentUiState(
     val contactNames: List<String> = emptyList(),

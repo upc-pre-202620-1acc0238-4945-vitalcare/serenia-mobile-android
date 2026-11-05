@@ -6,8 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
-import com.vitalcare.serenia.navigation.AppNavHost
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
+import com.vitalcare.serenia.main.AppNavHost
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

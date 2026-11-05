@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.iam.presentation.components
+package com.vitalcare.serenia.features.iam.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 
 /** Message that tells the user, in plain words, what to fix in the form. */
 @Composable

@@ -12,11 +12,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.vitalcare.serenia.core.designsystem.components.SereniaBackground
-import com.vitalcare.serenia.core.designsystem.components.SereniaPrimaryButton
-import com.vitalcare.serenia.core.designsystem.components.SereniaSecondaryButton
-import com.vitalcare.serenia.core.designsystem.icon.contentCopy
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.components.SereniaBackground
+import com.vitalcare.serenia.core.designsystems.components.SereniaPrimaryButton
+import com.vitalcare.serenia.core.designsystems.components.SereniaSecondaryButton
+import com.vitalcare.serenia.core.designsystems.contentCopy
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 
 @Composable
 fun InvitationCodeScreen(

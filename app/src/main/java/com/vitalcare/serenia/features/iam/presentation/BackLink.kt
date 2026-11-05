@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.iam.presentation.components
+package com.vitalcare.serenia.features.iam.presentation
 
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
@@ -12,8 +12,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vitalcare.serenia.core.designsystem.icon.chevronLeft
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.chevronLeft
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 
 @Composable
 fun BackLink(

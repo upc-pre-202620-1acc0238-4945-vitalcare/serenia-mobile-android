@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.socialcompanionship.presentation.tellday.components
+package com.vitalcare.serenia.features.socialcompanionship.presentation
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -21,7 +21,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 
 @Composable
 fun TalkButton(

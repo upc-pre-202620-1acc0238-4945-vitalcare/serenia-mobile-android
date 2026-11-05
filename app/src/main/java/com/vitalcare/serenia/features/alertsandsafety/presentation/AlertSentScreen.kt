@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.alertsandsafety.presentation.alertsent
+package com.vitalcare.serenia.features.alertsandsafety.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -13,10 +13,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.vitalcare.serenia.core.designsystem.components.ConfirmationLayout
-import com.vitalcare.serenia.core.designsystem.components.SereniaSecondaryButton
-import com.vitalcare.serenia.core.designsystem.icon.check
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.components.ConfirmationLayout
+import com.vitalcare.serenia.core.designsystems.components.SereniaSecondaryButton
+import com.vitalcare.serenia.core.designsystems.check
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 
 @Composable
 fun AlertSentScreen(

@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.core.designsystem.components
+package com.vitalcare.serenia.core.designsystems.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -14,8 +14,8 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.unit.dp
-import com.vitalcare.serenia.core.designsystem.theme.dotCoral
-import com.vitalcare.serenia.core.designsystem.theme.sunriseGlow
+import com.vitalcare.serenia.core.designsystems.theme.dotCoral
+import com.vitalcare.serenia.core.designsystems.theme.sunriseGlow
 
 @Composable
 fun SereniaBackground(

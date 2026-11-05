@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.alertsandsafety.presentation.alertsent
+package com.vitalcare.serenia.features.alertsandsafety.presentation
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

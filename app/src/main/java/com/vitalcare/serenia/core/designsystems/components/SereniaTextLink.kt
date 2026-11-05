@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.core.designsystem.components
+package com.vitalcare.serenia.core.designsystems.components
 
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.MaterialTheme
@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 
 /** Underlined text action used for secondary navigation such as "Ya tengo cuenta". */
 @Composable

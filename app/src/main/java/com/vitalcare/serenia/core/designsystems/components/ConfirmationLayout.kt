@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.core.designsystem.components
+package com.vitalcare.serenia.core.designsystems.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 
 /**
  * Centered message used after the user completes an action: an illustration,

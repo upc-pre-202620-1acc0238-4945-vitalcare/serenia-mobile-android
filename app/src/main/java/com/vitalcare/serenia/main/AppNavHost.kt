@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.navigation
+package com.vitalcare.serenia.main
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -10,20 +10,20 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.vitalcare.serenia.features.alertsandsafety.presentation.navigation.alertsAndSafetyNavGraph
-import com.vitalcare.serenia.features.checkin.presentation.navigation.checkInNavGraph
-import com.vitalcare.serenia.features.home.presentation.navigation.HomeNavGraphRoute
-import com.vitalcare.serenia.features.home.presentation.navigation.HomeRoute
-import com.vitalcare.serenia.features.home.presentation.navigation.homeNavGraph
-import com.vitalcare.serenia.features.iam.presentation.navigation.IamNavGraphRoute
-import com.vitalcare.serenia.features.iam.presentation.navigation.iamNavGraph
-import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.CircleRoute
-import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.FamilyNavGraphRoute
-import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.FamilyRoute
-import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.RemindersRoute
-import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.SocialCompanionshipNavGraphRoute
-import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.familyNavGraph
-import com.vitalcare.serenia.features.socialcompanionship.presentation.navigation.socialCompanionshipNavGraph
+import com.vitalcare.serenia.features.alertsandsafety.presentation.alertsAndSafetyNavGraph
+import com.vitalcare.serenia.features.checkin.presentation.checkInNavGraph
+import com.vitalcare.serenia.features.home.presentation.HomeNavGraphRoute
+import com.vitalcare.serenia.features.home.presentation.HomeRoute
+import com.vitalcare.serenia.features.home.presentation.homeNavGraph
+import com.vitalcare.serenia.features.iam.presentation.IamNavGraphRoute
+import com.vitalcare.serenia.features.iam.presentation.iamNavGraph
+import com.vitalcare.serenia.features.socialcompanionship.presentation.CircleRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.FamilyNavGraphRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.FamilyRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.RemindersRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.SocialCompanionshipNavGraphRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.familyNavGraph
+import com.vitalcare.serenia.features.socialcompanionship.presentation.socialCompanionshipNavGraph
 
 @Composable
 fun AppNavHost(navController: NavHostController) {

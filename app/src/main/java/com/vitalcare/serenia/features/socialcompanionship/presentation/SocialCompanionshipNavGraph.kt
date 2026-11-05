@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.socialcompanionship.presentation.navigation
+package com.vitalcare.serenia.features.socialcompanionship.presentation
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -9,9 +9,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import kotlinx.serialization.Serializable
-import com.vitalcare.serenia.features.socialcompanionship.presentation.newreminder.NewReminderScreen
-import com.vitalcare.serenia.features.socialcompanionship.presentation.reminders.RemindersScreen
-import com.vitalcare.serenia.features.socialcompanionship.presentation.reminders.RemindersViewModel
 
 @Serializable
 data object SocialCompanionshipNavGraphRoute

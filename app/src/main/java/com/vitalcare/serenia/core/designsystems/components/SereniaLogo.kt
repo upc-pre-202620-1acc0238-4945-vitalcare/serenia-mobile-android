@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.core.designsystem.components
+package com.vitalcare.serenia.core.designsystems.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
@@ -9,9 +9,9 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.vitalcare.serenia.core.designsystem.theme.leafLight
-import com.vitalcare.serenia.core.designsystem.theme.primaryLight
-import com.vitalcare.serenia.core.designsystem.theme.secondaryContainerLight
+import com.vitalcare.serenia.core.designsystems.theme.leafLight
+import com.vitalcare.serenia.core.designsystems.theme.primaryLight
+import com.vitalcare.serenia.core.designsystems.theme.secondaryContainerLight
 
 @Composable
 fun SereniaLogo(

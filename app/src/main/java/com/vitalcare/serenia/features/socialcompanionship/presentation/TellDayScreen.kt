@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.socialcompanionship.presentation.tellday
+package com.vitalcare.serenia.features.socialcompanionship.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -29,13 +29,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.vitalcare.serenia.core.designsystem.components.SereniaBackground
-import com.vitalcare.serenia.core.designsystem.components.SereniaPrimaryButton
-import com.vitalcare.serenia.core.designsystem.components.SereniaSecondaryButton
-import com.vitalcare.serenia.core.designsystem.icon.chevronLeft
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.components.SereniaBackground
+import com.vitalcare.serenia.core.designsystems.components.SereniaPrimaryButton
+import com.vitalcare.serenia.core.designsystems.components.SereniaSecondaryButton
+import com.vitalcare.serenia.core.designsystems.chevronLeft
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 import com.vitalcare.serenia.features.socialcompanionship.domain.RecordingState
-import com.vitalcare.serenia.features.socialcompanionship.presentation.tellday.components.TalkButton
 
 @Composable
 fun TellDayScreen(

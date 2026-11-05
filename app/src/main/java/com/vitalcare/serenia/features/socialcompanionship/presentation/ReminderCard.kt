@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.socialcompanionship.presentation.reminders.components
+package com.vitalcare.serenia.features.socialcompanionship.presentation
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -31,8 +31,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.vitalcare.serenia.core.designsystem.icon.close
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.close
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 import com.vitalcare.serenia.features.socialcompanionship.domain.Reminder
 import com.vitalcare.serenia.features.socialcompanionship.domain.ReminderStatus
 

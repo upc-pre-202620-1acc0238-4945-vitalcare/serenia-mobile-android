@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.iam.presentation.signin
+package com.vitalcare.serenia.features.iam.presentation
 
 data class SignInUiState(
     val identifier: String = "",

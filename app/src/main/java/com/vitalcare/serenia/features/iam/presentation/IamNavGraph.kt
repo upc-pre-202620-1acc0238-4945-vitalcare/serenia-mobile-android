@@ -1,15 +1,11 @@
-package com.vitalcare.serenia.features.iam.presentation.navigation
+package com.vitalcare.serenia.features.iam.presentation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import kotlinx.serialization.Serializable
-import com.vitalcare.serenia.features.home.presentation.navigation.HomeNavGraphRoute
-import com.vitalcare.serenia.features.iam.presentation.roleselection.RoleSelectionScreen
-import com.vitalcare.serenia.features.iam.presentation.signin.SignInScreen
-import com.vitalcare.serenia.features.iam.presentation.signup.SignUpScreen
-import com.vitalcare.serenia.features.iam.presentation.welcome.WelcomeScreen
+import com.vitalcare.serenia.features.home.presentation.HomeNavGraphRoute
 
 @Serializable
 data object IamNavGraphRoute

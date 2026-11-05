@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.home.presentation.home.components
+package com.vitalcare.serenia.features.home.presentation
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -22,12 +22,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
-import com.vitalcare.serenia.core.designsystem.theme.forestDark
-import com.vitalcare.serenia.core.designsystem.theme.onSecondaryContainerLight
-import com.vitalcare.serenia.core.designsystem.theme.primaryContainerLight
-import com.vitalcare.serenia.core.designsystem.theme.primaryLight
-import com.vitalcare.serenia.core.designsystem.theme.secondaryContainerLight
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.theme.forestDark
+import com.vitalcare.serenia.core.designsystems.theme.onSecondaryContainerLight
+import com.vitalcare.serenia.core.designsystems.theme.primaryContainerLight
+import com.vitalcare.serenia.core.designsystems.theme.primaryLight
+import com.vitalcare.serenia.core.designsystems.theme.secondaryContainerLight
 import com.vitalcare.serenia.features.checkin.domain.Mood
 
 private data class MoodColors(

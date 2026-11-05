@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.socialcompanionship.presentation.circle
+package com.vitalcare.serenia.features.socialcompanionship.presentation
 
 import com.vitalcare.serenia.features.socialcompanionship.domain.CircleMember
 

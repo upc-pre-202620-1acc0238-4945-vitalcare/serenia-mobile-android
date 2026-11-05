@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.iam.presentation.signup
+package com.vitalcare.serenia.features.iam.presentation
 
 data class SignUpUiState(
     val name: String = "",

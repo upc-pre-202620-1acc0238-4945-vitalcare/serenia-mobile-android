@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.checkin.presentation.skipped
+package com.vitalcare.serenia.features.checkin.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,11 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vitalcare.serenia.core.designsystem.components.ConfirmationLayout
-import com.vitalcare.serenia.core.designsystem.components.SereniaPrimaryButton
-import com.vitalcare.serenia.core.designsystem.components.SereniaSecondaryButton
-import com.vitalcare.serenia.core.designsystem.icon.bedtime
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.components.ConfirmationLayout
+import com.vitalcare.serenia.core.designsystems.components.SereniaPrimaryButton
+import com.vitalcare.serenia.core.designsystems.components.SereniaSecondaryButton
+import com.vitalcare.serenia.core.designsystems.bedtime
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 
 @Composable
 fun CheckInSkippedScreen(

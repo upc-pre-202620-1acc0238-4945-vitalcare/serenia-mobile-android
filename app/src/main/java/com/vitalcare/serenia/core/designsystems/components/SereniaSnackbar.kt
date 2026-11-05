@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.core.designsystem.components
+package com.vitalcare.serenia.core.designsystems.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -18,8 +18,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vitalcare.serenia.core.designsystem.icon.checkCircle
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.checkCircle
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 
 /**
  * Short confirmation shown at the bottom of the screen after the user completes an action.

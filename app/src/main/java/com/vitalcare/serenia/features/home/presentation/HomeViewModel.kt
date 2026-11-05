@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.home.presentation.home
+package com.vitalcare.serenia.features.home.presentation
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.socialcompanionship.presentation.newreminder
+package com.vitalcare.serenia.features.socialcompanionship.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

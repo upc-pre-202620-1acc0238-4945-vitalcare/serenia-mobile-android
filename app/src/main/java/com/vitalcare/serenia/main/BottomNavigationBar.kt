@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.navigation
+package com.vitalcare.serenia.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,12 +26,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vitalcare.serenia.core.designsystem.icon.accountCircle
-import com.vitalcare.serenia.core.designsystem.icon.eventAvailable
-import com.vitalcare.serenia.core.designsystem.icon.family
-import com.vitalcare.serenia.core.designsystem.icon.home
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
-import com.vitalcare.serenia.core.designsystem.theme.forestDark
+import com.vitalcare.serenia.core.designsystems.accountCircle
+import com.vitalcare.serenia.core.designsystems.eventAvailable
+import com.vitalcare.serenia.core.designsystems.family
+import com.vitalcare.serenia.core.designsystems.home
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.theme.forestDark
 
 enum class BottomNavItem(val label: String, val icon: ImageVector) {
     HOME("Inicio", home),

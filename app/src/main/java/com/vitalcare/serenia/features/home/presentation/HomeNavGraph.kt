@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.home.presentation.navigation
+package com.vitalcare.serenia.features.home.presentation
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -9,11 +9,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import kotlinx.serialization.Serializable
-import com.vitalcare.serenia.features.alertsandsafety.presentation.navigation.AlertSentRoute
-import com.vitalcare.serenia.features.checkin.presentation.navigation.CheckInSkippedRoute
-import com.vitalcare.serenia.features.checkin.presentation.navigation.CheckInThanksRoute
-import com.vitalcare.serenia.features.home.presentation.home.HomeScreen
-import com.vitalcare.serenia.features.home.presentation.home.HomeViewModel
+import com.vitalcare.serenia.features.alertsandsafety.presentation.AlertSentRoute
+import com.vitalcare.serenia.features.checkin.presentation.CheckInSkippedRoute
+import com.vitalcare.serenia.features.checkin.presentation.CheckInThanksRoute
 
 @Serializable
 data object HomeNavGraphRoute

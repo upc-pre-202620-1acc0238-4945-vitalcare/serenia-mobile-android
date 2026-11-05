@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.core.designsystem.components
+package com.vitalcare.serenia.core.designsystems.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -43,11 +43,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.vitalcare.serenia.core.designsystem.icon.lock
-import com.vitalcare.serenia.core.designsystem.icon.mail
-import com.vitalcare.serenia.core.designsystem.icon.visibility
-import com.vitalcare.serenia.core.designsystem.icon.visibilityOff
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.lock
+import com.vitalcare.serenia.core.designsystems.mail
+import com.vitalcare.serenia.core.designsystems.visibility
+import com.vitalcare.serenia.core.designsystems.visibilityOff
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 
 /**
  * Text field with its label on top, a leading icon and a 2dp rounded border.

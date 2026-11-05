@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.checkin.presentation.thanks
+package com.vitalcare.serenia.features.checkin.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -7,10 +7,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.vitalcare.serenia.core.designsystem.components.ConfirmationLayout
-import com.vitalcare.serenia.core.designsystem.components.SereniaLogo
-import com.vitalcare.serenia.core.designsystem.components.SereniaSecondaryButton
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.components.ConfirmationLayout
+import com.vitalcare.serenia.core.designsystems.components.SereniaLogo
+import com.vitalcare.serenia.core.designsystems.components.SereniaSecondaryButton
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 import com.vitalcare.serenia.features.checkin.domain.Mood
 
 @Composable

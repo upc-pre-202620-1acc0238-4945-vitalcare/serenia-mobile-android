@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.socialcompanionship.presentation.navigation
+package com.vitalcare.serenia.features.socialcompanionship.presentation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -6,12 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
-import com.vitalcare.serenia.features.home.presentation.navigation.HomeRoute
-import com.vitalcare.serenia.features.socialcompanionship.presentation.audiosent.AudioSentScreen
-import com.vitalcare.serenia.features.socialcompanionship.presentation.circle.CircleScreen
-import com.vitalcare.serenia.features.socialcompanionship.presentation.family.FamilyScreen
-import com.vitalcare.serenia.features.socialcompanionship.presentation.photodetail.PhotoDetailScreen
-import com.vitalcare.serenia.features.socialcompanionship.presentation.tellday.TellDayScreen
+import com.vitalcare.serenia.features.home.presentation.HomeRoute
 
 @Serializable
 data object FamilyNavGraphRoute

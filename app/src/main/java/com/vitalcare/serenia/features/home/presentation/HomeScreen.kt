@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.home.presentation.home
+package com.vitalcare.serenia.features.home.presentation
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
@@ -28,12 +28,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.vitalcare.serenia.core.designsystem.icon.bedtime
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
-import com.vitalcare.serenia.core.designsystem.theme.dotCoral
-import com.vitalcare.serenia.features.home.presentation.home.components.GreetingCard
-import com.vitalcare.serenia.features.home.presentation.home.components.HelpButton
-import com.vitalcare.serenia.features.home.presentation.home.components.MoodOption
+import com.vitalcare.serenia.core.designsystems.bedtime
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.theme.dotCoral
 import com.vitalcare.serenia.features.checkin.domain.Mood
 
 @Composable

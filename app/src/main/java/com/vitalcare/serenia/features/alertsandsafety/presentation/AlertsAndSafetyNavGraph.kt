@@ -1,11 +1,10 @@
-package com.vitalcare.serenia.features.alertsandsafety.presentation.navigation
+package com.vitalcare.serenia.features.alertsandsafety.presentation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
-import com.vitalcare.serenia.features.alertsandsafety.presentation.alertsent.AlertSentScreen
-import com.vitalcare.serenia.features.home.presentation.navigation.HomeRoute
+import com.vitalcare.serenia.features.home.presentation.HomeRoute
 
 @Serializable
 data object AlertSentRoute

@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.iam.presentation.signin
+package com.vitalcare.serenia.features.iam.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,16 +21,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.vitalcare.serenia.core.designsystem.components.SereniaBackground
-import com.vitalcare.serenia.core.designsystem.components.SereniaPrimaryButton
-import com.vitalcare.serenia.core.designsystem.components.SereniaTextField
-import com.vitalcare.serenia.core.designsystem.components.SereniaTextLink
-import com.vitalcare.serenia.core.designsystem.icon.lock
-import com.vitalcare.serenia.core.designsystem.icon.mail
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
-import com.vitalcare.serenia.features.iam.presentation.components.BackLink
-import com.vitalcare.serenia.features.iam.presentation.components.FormErrorBanner
-import com.vitalcare.serenia.features.iam.presentation.components.SignInHeaderCard
+import com.vitalcare.serenia.core.designsystems.components.SereniaBackground
+import com.vitalcare.serenia.core.designsystems.components.SereniaPrimaryButton
+import com.vitalcare.serenia.core.designsystems.components.SereniaTextField
+import com.vitalcare.serenia.core.designsystems.components.SereniaTextLink
+import com.vitalcare.serenia.core.designsystems.lock
+import com.vitalcare.serenia.core.designsystems.mail
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 
 private const val ERROR_MESSAGE =
     "Revisa los campos marcados: escribe tu correo o celular y tu contraseña."
