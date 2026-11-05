@@ -155,7 +155,7 @@ fun MyCircleScreen(
 }
 
 @Composable
-fun CircleMemberCard(
+private fun CircleMemberCard(
     name: String,
     relation: String,
     initials: String,

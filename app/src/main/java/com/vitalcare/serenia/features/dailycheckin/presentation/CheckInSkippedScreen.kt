@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.checkin.presentation
+package com.vitalcare.serenia.features.dailycheckin.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -31,7 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vitalcare.serenia.core.designsystems.bedtime
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 import com.vitalcare.serenia.core.designsystems.theme.dotCoral
-import com.vitalcare.serenia.features.checkin.domain.Mood
+import com.vitalcare.serenia.features.dailycheckin.domain.Mood
 
 @Composable
 fun HomeScreen(

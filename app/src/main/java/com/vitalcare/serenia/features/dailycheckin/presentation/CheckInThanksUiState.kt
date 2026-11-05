@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.checkin.presentation
+package com.vitalcare.serenia.features.dailycheckin.presentation
 
 data class CheckInThanksUiState(
     val title: String = "",

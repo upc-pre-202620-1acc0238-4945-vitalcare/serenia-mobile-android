@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.checkin.presentation
+package com.vitalcare.serenia.features.dailycheckin.presentation
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import com.vitalcare.serenia.features.checkin.domain.Mood
+import com.vitalcare.serenia.features.dailycheckin.domain.Mood
 import javax.inject.Inject
 
 @HiltViewModel

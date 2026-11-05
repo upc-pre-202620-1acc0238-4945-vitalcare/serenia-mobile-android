@@ -1,6 +1,6 @@
 package com.vitalcare.serenia.features.home.presentation
 
-import com.vitalcare.serenia.features.checkin.domain.Mood
+import com.vitalcare.serenia.features.dailycheckin.domain.Mood
 
 data class HomeUiState(
     val userName: String = "",

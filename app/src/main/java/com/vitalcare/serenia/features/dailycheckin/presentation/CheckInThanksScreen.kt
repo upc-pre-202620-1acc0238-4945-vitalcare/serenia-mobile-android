@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.checkin.presentation
+package com.vitalcare.serenia.features.dailycheckin.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,7 +11,7 @@ import com.vitalcare.serenia.core.designsystems.components.ConfirmationLayout
 import com.vitalcare.serenia.core.designsystems.components.SereniaLogo
 import com.vitalcare.serenia.core.designsystems.components.SereniaSecondaryButton
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
-import com.vitalcare.serenia.features.checkin.domain.Mood
+import com.vitalcare.serenia.features.dailycheckin.domain.Mood
 
 @Composable
 fun CheckInThanksScreen(

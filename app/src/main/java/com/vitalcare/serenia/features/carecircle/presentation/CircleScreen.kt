@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.socialcompanionship.presentation
+package com.vitalcare.serenia.features.carecircle.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,7 +36,7 @@ import com.vitalcare.serenia.core.designsystems.chevronLeft
 import com.vitalcare.serenia.core.designsystems.contentCopy
 import com.vitalcare.serenia.core.designsystems.refresh
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
-import com.vitalcare.serenia.features.socialcompanionship.domain.CircleMember
+import com.vitalcare.serenia.features.carecircle.domain.CircleMember
 
 @Composable
 fun CircleScreen(
