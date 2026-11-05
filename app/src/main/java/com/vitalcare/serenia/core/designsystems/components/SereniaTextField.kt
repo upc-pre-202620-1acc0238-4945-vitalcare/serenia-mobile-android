@@ -204,6 +204,7 @@ fun SereniaTextField(
     modifier: Modifier = Modifier,
     placeholder: String? = null,
     error: String? = null,
+    isError: Boolean = error != null,
     helper: String? = null,
     isPassword: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -211,7 +212,7 @@ fun SereniaTextField(
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
     val shape = RoundedCornerShape(SereniaRadius.sm)
-    val border = if (error != null) {
+    val border = if (isError) {
         BorderStroke(3.dp, SereniaPalette.Error)
     } else {
         BorderStroke(2.dp, SereniaPalette.Neutro500)
