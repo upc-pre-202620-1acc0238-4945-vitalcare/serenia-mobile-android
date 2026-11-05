@@ -7,6 +7,7 @@ import com.vitalcare.serenia.features.dailycheckin.application.ActivateDailyPaus
 import com.vitalcare.serenia.features.dailycheckin.application.AnswerCheckInUseCase
 import com.vitalcare.serenia.features.dailycheckin.application.GetCheckInPreferencesUseCase
 import com.vitalcare.serenia.features.dailycheckin.application.GetTodayCheckInUseCase
+import com.vitalcare.serenia.features.dailycheckin.application.ObserveCheckInPreferencesUseCase
 import com.vitalcare.serenia.features.dailycheckin.application.ResumeDailyCheckInUseCase
 import com.vitalcare.serenia.features.dailycheckin.domain.CheckIn
 import com.vitalcare.serenia.features.dailycheckin.domain.CheckInStatus
@@ -25,7 +26,8 @@ class CheckInViewModel @Inject constructor(
     private val answerCheckIn: AnswerCheckInUseCase,
     private val getCheckInPreferences: GetCheckInPreferencesUseCase,
     private val activateDailyPause: ActivateDailyPauseUseCase,
-    private val resumeDailyCheckIn: ResumeDailyCheckInUseCase
+    private val resumeDailyCheckIn: ResumeDailyCheckInUseCase,
+    private val observeCheckInPreferences: ObserveCheckInPreferencesUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CheckInUiState())
@@ -86,7 +88,10 @@ class CheckInViewModel @Inject constructor(
     private suspend fun refreshCheckIn() {
         getTodayCheckIn().fold(
             onSuccess = { checkIn ->
-                _state.update { it.copy(content = checkIn?.toContent() ?: CheckInContent.Unavailable) }
+                val nextReminderTime = observeCheckInPreferences().value?.reminderTime
+                _state.update {
+                    it.copy(content = checkIn?.toContent() ?: CheckInContent.Unavailable(nextReminderTime))
+                }
             },
             onFailure = { exception ->
                 _state.update { it.copy(content = CheckInContent.Failed(exception.toUserMessage())) }

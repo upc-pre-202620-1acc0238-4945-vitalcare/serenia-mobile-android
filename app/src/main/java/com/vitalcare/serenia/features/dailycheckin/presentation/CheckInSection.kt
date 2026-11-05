@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vitalcare.serenia.core.designsystems.components.AlertBanner
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
+import com.vitalcare.serenia.core.format.formatTime
 
 @Composable
 fun CheckInSection(
@@ -94,9 +95,11 @@ fun CheckInSectionContent(
                 body = "Mañana te volvemos a preguntar cómo amaneciste."
             )
 
-            CheckInContent.Unavailable -> CheckInMessageCard(
-                title = "Tu pregunta de hoy aún no está lista",
-                body = "Vuelve en un rato para contarnos cómo estás.",
+            is CheckInContent.Unavailable -> CheckInMessageCard(
+                title = "Hoy no tienes una pregunta pendiente",
+                body = content.nextReminderTime?.let { time ->
+                    "Tu próxima pregunta llegará a las ${formatTime(time.hour, time.minute)}"
+                } ?: "Vuelve en un rato para contarnos cómo estás.",
                 actionLabel = "Volver a revisar",
                 onAction = onRetry
             )
