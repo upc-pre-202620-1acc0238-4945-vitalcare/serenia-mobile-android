@@ -90,7 +90,7 @@ fun RoleSelectionScreen(
             border = SereniaPalette.Verde200,
             iconBackground = SereniaPalette.Verde200,
             iconTint = SereniaPalette.Verde900,
-            onClick = { onRoleSelected(UserRole.DISTANT_RELATIVE) }
+            onClick = {}
         )
     }
 }
