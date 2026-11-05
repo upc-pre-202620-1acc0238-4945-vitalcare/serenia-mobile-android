@@ -117,7 +117,7 @@ fun SignUpContent(
         )
 
         SereniaTextField(
-            label = "Correo o celular",
+            label = "Correo",
             value = state.email,
             onValueChange = onEmailChange,
             placeholder = "Ej. rosa@correo.com",
