@@ -1,13 +1,13 @@
 package com.vitalcare.serenia.features.iam.presentation
 
 data class SignUpUiState(
-    val name: String = "",
-    val identifier: String = "",
+    val fullName: String = "",
+    val email: String = "",
     val password: String = "",
-    val nameError: Boolean = false,
-    val identifierError: Boolean = false,
-    val passwordError: Boolean = false
-) {
-    val hasErrors: Boolean
-        get() = nameError || identifierError || passwordError
-}
+    val fullNameError: String? = null,
+    val emailError: String? = null,
+    val passwordError: String? = null,
+    val formError: String? = null,
+    val isLoading: Boolean = false,
+    val isSignedUp: Boolean = false
+)

@@ -1,35 +1,39 @@
 package com.vitalcare.serenia.features.iam.presentation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.vitalcare.serenia.core.designsystems.components.SereniaBackground
-import com.vitalcare.serenia.core.designsystems.components.SereniaPrimaryButton
+import com.vitalcare.serenia.core.designsystems.components.AlertBanner
+import com.vitalcare.serenia.core.designsystems.components.BackLink
+import com.vitalcare.serenia.core.designsystems.components.PrimaryButton
 import com.vitalcare.serenia.core.designsystems.components.SereniaTextField
-import com.vitalcare.serenia.core.designsystems.lock
-import com.vitalcare.serenia.core.designsystems.mail
-import com.vitalcare.serenia.core.designsystems.personOutline
+import com.vitalcare.serenia.core.designsystems.components.StepIndicator
+import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
+import com.vitalcare.serenia.core.designsystems.theme.SereniaSpacing
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
-
-private const val ERROR_MESSAGE =
-    "Revisa los campos marcados: escribe tu nombre, un correo válido y una contraseña de al menos 8 caracteres."
 
 @Composable
 fun SignUpScreen(
@@ -38,127 +42,123 @@ fun SignUpScreen(
     onBack: () -> Unit,
     onSignedUp: () -> Unit
 ) {
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state.isSignedUp) {
+        if (state.isSignedUp) onSignedUp()
+    }
 
     SignUpContent(
-        uiState = uiState,
+        state = state,
         modifier = modifier,
-        onNameChange = viewModel::onNameChange,
-        onIdentifierChange = viewModel::onIdentifierChange,
+        onFullNameChange = viewModel::onFullNameChange,
+        onEmailChange = viewModel::onEmailChange,
         onPasswordChange = viewModel::onPasswordChange,
-        onSubmit = {
-            if (viewModel.submit()) onSignedUp()
-        },
+        onSubmit = viewModel::submit,
         onBack = onBack
     )
 }
 
 @Composable
 fun SignUpContent(
-    uiState: SignUpUiState,
-    onNameChange: (String) -> Unit,
-    onIdentifierChange: (String) -> Unit,
+    state: SignUpUiState,
+    onFullNameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onSubmit: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    SereniaBackground(modifier = modifier) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .navigationBarsPadding()
-                .imePadding()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 16.dp)
-        ) {
-            SignUpHeaderCard(
-                title = "Crea tu cuenta",
-                subtitle = "Solo necesitamos tus datos básicos para vincularte."
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            SereniaTextField(
-                value = uiState.name,
-                onValueChange = onNameChange,
-                label = "Tu nombre",
-                placeholder = "Ej. Lucía Mendoza",
-                leadingIcon = personOutline,
-                isError = uiState.nameError
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            SereniaTextField(
-                value = uiState.identifier,
-                onValueChange = onIdentifierChange,
-                label = "Correo o celular",
-                placeholder = "tucorreo@ejemplo.com",
-                leadingIcon = mail,
-                isError = uiState.identifierError,
-                keyboardType = KeyboardType.Email
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            SereniaTextField(
-                value = uiState.password,
-                onValueChange = onPasswordChange,
-                label = "Contraseña",
-                placeholder = "Mínimo 8 caracteres",
-                leadingIcon = lock,
-                isError = uiState.passwordError,
-                isPassword = true,
-                imeAction = ImeAction.Done,
-                onImeAction = onSubmit
-            )
-
-            if (uiState.hasErrors) {
-                Spacer(modifier = Modifier.height(12.dp))
-                FormErrorBanner(message = ERROR_MESSAGE)
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            SereniaPrimaryButton(
-                text = "Crear cuenta",
-                onClick = onSubmit,
-                fontFamily = FontFamily.Default,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            BackLink(onClick = onBack)
-        }
+    val focusManager = LocalFocusManager.current
+    val submit = {
+        focusManager.clearFocus()
+        onSubmit()
     }
-}
 
-@Preview(showBackground = true, backgroundColor = 0xFFFBF4E9, heightDp = 780)
-@Composable
-fun SignUpScreenPreview() {
-    SereniaTheme {
-        SignUpContent(
-            uiState = SignUpUiState(),
-            onNameChange = {},
-            onIdentifierChange = {},
-            onPasswordChange = {},
-            onSubmit = {},
-            onBack = {}
+    Column(
+        verticalArrangement = Arrangement.spacedBy(18.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .background(SereniaPalette.Neutro100)
+            .imePadding()
+            .verticalScroll(rememberScrollState())
+            .padding(start = SereniaSpacing.authScreen, top = 12.dp, end = SereniaSpacing.authScreen, bottom = 24.dp)
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            BackLink(onClick = onBack)
+            StepIndicator(current = 1)
+            Text(
+                text = "Crea tu cuenta",
+                style = MaterialTheme.typography.headlineLarge,
+                color = SereniaPalette.Teal700,
+                modifier = Modifier.semantics { heading() }
+            )
+            Text(
+                text = "Solo necesitamos tus datos básicos.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = SereniaPalette.Neutro700
+            )
+        }
+
+        state.formError?.let { message ->
+            AlertBanner(message = message)
+        }
+
+        SereniaTextField(
+            label = "¿Cómo te llamas?",
+            value = state.fullName,
+            onValueChange = onFullNameChange,
+            placeholder = "Ej. Rosa Mendoza",
+            error = state.fullNameError,
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Words,
+                imeAction = ImeAction.Next
+            )
+        )
+
+        SereniaTextField(
+            label = "Correo o celular",
+            value = state.email,
+            onValueChange = onEmailChange,
+            placeholder = "Ej. rosa@correo.com",
+            error = state.emailError,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
+        )
+
+        SereniaTextField(
+            label = "Contraseña",
+            value = state.password,
+            onValueChange = onPasswordChange,
+            placeholder = "Mínimo 8 letras o números",
+            error = state.passwordError,
+            helper = "Mínimo 8 letras o números.",
+            isPassword = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { submit() })
+        )
+
+        PrimaryButton(
+            text = "Crear mi cuenta",
+            onClick = submit,
+            isLoading = state.isLoading
         )
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFFBF4E9, heightDp = 780)
+@Preview(showBackground = true, backgroundColor = 0xFFF5F1EA)
 @Composable
-fun SignUpScreenErrorPreview() {
+fun SignUpContentPreview() {
     SereniaTheme {
         SignUpContent(
-            uiState = SignUpUiState(nameError = true, identifierError = true, passwordError = true),
-            onNameChange = {},
-            onIdentifierChange = {},
+            state = SignUpUiState(
+                email = "rosa@correo",
+                password = "rosa1",
+                fullNameError = "Escribe tu nombre.",
+                emailError = "Revisa el correo: parece incompleto.",
+                passwordError = "Debe tener al menos 8 letras o números."
+            ),
+            onFullNameChange = {},
+            onEmailChange = {},
             onPasswordChange = {},
             onSubmit = {},
             onBack = {}
