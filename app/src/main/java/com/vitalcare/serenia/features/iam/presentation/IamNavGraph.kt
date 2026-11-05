@@ -47,6 +47,7 @@ fun NavGraphBuilder.iamNavGraph(navController: NavController) {
 
         composable<RoleSelectionRoute> {
             RoleSelectionScreen(
+                onBack = { navController.popBackStack() },
                 onRoleSelected = { role ->
                     navController.navigate(SignUpRoute(role = role.name)) { launchSingleTop = true }
                 }

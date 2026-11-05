@@ -1,43 +1,75 @@
 package com.vitalcare.serenia.features.iam.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.vitalcare.serenia.core.network.ApiException
+import com.vitalcare.serenia.features.iam.application.SignInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import com.vitalcare.serenia.features.iam.domain.CredentialsValidator
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor() : ViewModel() {
+class SignInViewModel @Inject constructor(private val signIn: SignInUseCase) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(SignInUiState())
-    val uiState: StateFlow<SignInUiState> = _uiState.asStateFlow()
+    private val _state = MutableStateFlow(SignInUiState())
+    val state: StateFlow<SignInUiState> = _state.asStateFlow()
 
-    fun onIdentifierChange(identifier: String) {
-        _uiState.update { it.copy(identifier = identifier, identifierError = false) }
+    fun onEmailChange(email: String) {
+        _state.update { currentState ->
+            currentState.copy(email = email, emailError = null, credentialsRejected = false)
+        }
     }
 
     fun onPasswordChange(password: String) {
-        _uiState.update { it.copy(password = password, passwordError = false) }
+        _state.update { currentState ->
+            currentState.copy(password = password, passwordError = null, credentialsRejected = false)
+        }
     }
 
-    /**
-     * Validates the form and marks the fields that need attention.
-     * Returns true when the user can be signed in.
-     */
-    fun submit(): Boolean {
-        val current = _uiState.value
+    fun submit() {
+        val currentState = _state.value
+        if (currentState.isLoading) return
 
-        val updated = current.copy(
-            identifierError = !CredentialsValidator.isValidIdentifier(current.identifier),
-            // On sign in only an empty password is rejected; the server checks the rest
-            passwordError = current.password.isBlank()
-        )
-        _uiState.value = updated
+        val emailError = if (currentState.email.isBlank()) "Escribe tu correo." else null
+        val passwordError = if (currentState.password.isBlank()) "Escribe tu contraseña." else null
 
-        // The session will be created through the IAM API once it is connected
-        return !updated.hasErrors
+        if (emailError != null || passwordError != null) {
+            _state.update { it.copy(emailError = emailError, passwordError = passwordError, formError = null) }
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.update { it.copy(isLoading = true, formError = null, credentialsRejected = false) }
+
+            signIn(currentState.email, currentState.password).fold(
+                onSuccess = {
+                    _state.update { it.copy(isLoading = false, isSignedIn = true) }
+                },
+                onFailure = { exception ->
+                    if (exception is ApiException && exception.status == UNAUTHORIZED) {
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                password = "",
+                                credentialsRejected = true,
+                                formError = WRONG_CREDENTIALS
+                            )
+                        }
+                    } else {
+                        _state.update { it.copy(isLoading = false, formError = exception.toAuthMessage()) }
+                    }
+                }
+            )
+        }
+    }
+
+    private companion object {
+        const val UNAUTHORIZED = 401
+        const val WRONG_CREDENTIALS = "El correo o la contraseña no son correctos. Revisa e intenta de nuevo."
     }
 }

@@ -1,47 +1,99 @@
 package com.vitalcare.serenia.features.iam.presentation
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.vitalcare.serenia.core.network.ApiException
+import com.vitalcare.serenia.features.iam.application.SignUpUseCase
+import com.vitalcare.serenia.features.iam.domain.CredentialsValidator
+import com.vitalcare.serenia.features.iam.domain.UserRole
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import com.vitalcare.serenia.features.iam.domain.CredentialsValidator
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor() : ViewModel() {
+class SignUpViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val signUp: SignUpUseCase
+) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(SignUpUiState())
-    val uiState: StateFlow<SignUpUiState> = _uiState.asStateFlow()
+    private val role = UserRole.valueOf(savedStateHandle.toRoute<SignUpRoute>().role)
 
-    fun onNameChange(name: String) {
-        _uiState.update { it.copy(name = name, nameError = false) }
+    private val _state = MutableStateFlow(SignUpUiState())
+    val state: StateFlow<SignUpUiState> = _state.asStateFlow()
+
+    fun onFullNameChange(fullName: String) {
+        _state.update { it.copy(fullName = fullName, fullNameError = null) }
     }
 
-    fun onIdentifierChange(identifier: String) {
-        _uiState.update { it.copy(identifier = identifier, identifierError = false) }
+    fun onEmailChange(email: String) {
+        _state.update { it.copy(email = email, emailError = null) }
     }
 
     fun onPasswordChange(password: String) {
-        _uiState.update { it.copy(password = password, passwordError = false) }
+        _state.update { it.copy(password = password, passwordError = null) }
     }
 
-    /**
-     * Validates the form and marks the fields that need attention.
-     * Returns true when the account can be created.
-     */
-    fun submit(): Boolean {
-        val current = _uiState.value
+    fun submit() {
+        val currentState = _state.value
+        if (currentState.isLoading) return
 
-        val updated = current.copy(
-            nameError = !CredentialsValidator.isValidName(current.name),
-            identifierError = !CredentialsValidator.isValidIdentifier(current.identifier),
-            passwordError = !CredentialsValidator.isValidPassword(current.password)
-        )
-        _uiState.value = updated
+        val fullNameError = when {
+            currentState.fullName.isBlank() -> "Escribe tu nombre."
+            !CredentialsValidator.isValidName(currentState.fullName) -> "Tu nombre es muy largo. Usa uno más corto."
+            else -> null
+        }
+        val emailError = when {
+            currentState.email.isBlank() -> "Escribe tu correo."
+            !CredentialsValidator.isValidEmail(currentState.email) -> "Revisa el correo: parece incompleto."
+            else -> null
+        }
+        val passwordError = when {
+            currentState.password.length < CredentialsValidator.MIN_PASSWORD_LENGTH ->
+                "Debe tener al menos 8 letras o números."
+            !CredentialsValidator.isValidPassword(currentState.password) ->
+                "Debe tener como máximo 72 letras o números."
+            else -> null
+        }
 
-        // The account will be created through the IAM API once it is connected
-        return !updated.hasErrors
+        if (fullNameError != null || emailError != null || passwordError != null) {
+            _state.update {
+                it.copy(
+                    fullNameError = fullNameError,
+                    emailError = emailError,
+                    passwordError = passwordError,
+                    formError = null
+                )
+            }
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.update { it.copy(isLoading = true, formError = null) }
+
+            signUp(currentState.fullName, currentState.email, currentState.password, role).fold(
+                onSuccess = {
+                    _state.update { it.copy(isLoading = false, isSignedUp = true) }
+                },
+                onFailure = { exception ->
+                    if (exception is ApiException && exception.status == CONFLICT) {
+                        _state.update { it.copy(isLoading = false, emailError = EMAIL_TAKEN) }
+                    } else {
+                        _state.update { it.copy(isLoading = false, formError = exception.toAuthMessage()) }
+                    }
+                }
+            )
+        }
+    }
+
+    private companion object {
+        const val CONFLICT = 409
+        const val EMAIL_TAKEN = "Este correo ya tiene una cuenta. Inicia sesión o usa otro correo."
     }
 }
