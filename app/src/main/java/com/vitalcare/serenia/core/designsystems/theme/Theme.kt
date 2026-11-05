@@ -37,7 +37,7 @@ fun SereniaTheme(
 ) {
     MaterialTheme(
         colorScheme = lightScheme,
-        typography = AppTypography,
+        typography = SereniaTypography,
         content = content
     )
 }
