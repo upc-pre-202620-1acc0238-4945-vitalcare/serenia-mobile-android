@@ -18,12 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.vitalcare.serenia.core.designsystem.components.SereniaBackground
-import com.vitalcare.serenia.core.designsystem.components.SereniaSecondaryButton
-import com.vitalcare.serenia.core.designsystem.icon.chevronLeft
-import com.vitalcare.serenia.core.designsystem.icon.contentCopy
-import com.vitalcare.serenia.core.designsystem.icon.refresh
-import com.vitalcare.serenia.core.designsystem.theme.SereniaTheme
+import com.vitalcare.serenia.core.designsystems.components.SereniaBackground
+import com.vitalcare.serenia.core.designsystems.components.SereniaSecondaryButton
+import com.vitalcare.serenia.core.designsystems.chevronLeft
+import com.vitalcare.serenia.core.designsystems.contentCopy
+import com.vitalcare.serenia.core.designsystems.refresh
+import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
