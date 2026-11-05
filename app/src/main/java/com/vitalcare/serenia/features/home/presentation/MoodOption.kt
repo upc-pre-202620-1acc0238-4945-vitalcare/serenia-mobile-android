@@ -28,7 +28,7 @@ import com.vitalcare.serenia.core.designsystems.theme.onSecondaryContainerLight
 import com.vitalcare.serenia.core.designsystems.theme.primaryContainerLight
 import com.vitalcare.serenia.core.designsystems.theme.primaryLight
 import com.vitalcare.serenia.core.designsystems.theme.secondaryContainerLight
-import com.vitalcare.serenia.features.checkin.domain.Mood
+import com.vitalcare.serenia.features.dailycheckin.domain.Mood
 
 private data class MoodColors(
     val outer: Color,

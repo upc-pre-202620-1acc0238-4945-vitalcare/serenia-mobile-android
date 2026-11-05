@@ -1,11 +1,11 @@
-package com.vitalcare.serenia.features.checkin.presentation
+package com.vitalcare.serenia.features.dailycheckin.presentation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
-import com.vitalcare.serenia.features.checkin.domain.Mood
+import com.vitalcare.serenia.features.dailycheckin.domain.Mood
 import com.vitalcare.serenia.features.home.presentation.HomeViewModel
 import com.vitalcare.serenia.features.home.presentation.HomeRoute
 

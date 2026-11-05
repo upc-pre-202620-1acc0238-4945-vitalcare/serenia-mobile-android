@@ -10,8 +10,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import kotlinx.serialization.Serializable
 import com.vitalcare.serenia.features.alertsandsafety.presentation.AlertSentRoute
-import com.vitalcare.serenia.features.checkin.presentation.CheckInSkippedRoute
-import com.vitalcare.serenia.features.checkin.presentation.CheckInThanksRoute
+import com.vitalcare.serenia.features.dailycheckin.presentation.CheckInSkippedRoute
+import com.vitalcare.serenia.features.dailycheckin.presentation.CheckInThanksRoute
 
 @Serializable
 data object HomeNavGraphRoute

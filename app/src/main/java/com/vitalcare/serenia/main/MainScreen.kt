@@ -13,7 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.vitalcare.serenia.features.alertsandsafety.presentation.alertsAndSafetyNavGraph
-import com.vitalcare.serenia.features.checkin.presentation.checkInNavGraph
+import com.vitalcare.serenia.features.dailycheckin.presentation.checkInNavGraph
 import com.vitalcare.serenia.features.home.presentation.HomeNavGraphRoute
 import com.vitalcare.serenia.features.home.presentation.HomeRoute
 import com.vitalcare.serenia.features.home.presentation.homeNavGraph
