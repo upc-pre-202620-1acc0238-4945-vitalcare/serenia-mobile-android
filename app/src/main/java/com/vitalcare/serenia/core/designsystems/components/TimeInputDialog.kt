@@ -13,17 +13,24 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.rememberTimePickerState
+import android.content.res.Configuration
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaRadius
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,11 +47,23 @@ fun TimeInputDialog(
         is24Hour = false
     )
 
-    Dialog(onDismissRequest = onDismiss) {
+    val context = LocalContext.current
+    val spanishConfiguration = remember(context) {
+        Configuration(context.resources.configuration).apply { setLocale(SPANISH) }
+    }
+    val spanishContext = remember(context) { context.createConfigurationContext(spanishConfiguration) }
+
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
         Surface(
             shape = RoundedCornerShape(SereniaRadius.xl),
             color = SereniaPalette.Neutro50,
-            shadowElevation = 16.dp
+            shadowElevation = 16.dp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(20.dp),
@@ -60,8 +79,12 @@ fun TimeInputDialog(
                         .semantics { heading() }
                 )
 
-                TimeInput(
-                    state = state,
+                CompositionLocalProvider(
+                    LocalContext provides spanishContext,
+                    LocalConfiguration provides spanishConfiguration
+                ) {
+                    TimeInput(
+                        state = state,
                     colors = TimePickerDefaults.colors(
                         containerColor = SereniaPalette.Neutro50,
                         periodSelectorBorderColor = SereniaPalette.Neutro300,
@@ -73,8 +96,9 @@ fun TimeInputDialog(
                         timeSelectorUnselectedContainerColor = SereniaPalette.Neutro100,
                         timeSelectorSelectedContentColor = SereniaPalette.Teal800,
                         timeSelectorUnselectedContentColor = SereniaPalette.Neutro800
+                        )
                     )
-                )
+                }
 
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -97,6 +121,8 @@ fun TimeInputDialog(
         }
     }
 }
+
+private val SPANISH = Locale("es", "PE")
 
 @Preview
 @Composable
