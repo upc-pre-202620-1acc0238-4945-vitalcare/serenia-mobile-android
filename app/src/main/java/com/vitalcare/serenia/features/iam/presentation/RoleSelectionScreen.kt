@@ -91,7 +91,7 @@ fun RoleSelectionScreen(
                 description = "Quiero saber cómo está mi mamá, papá o abuelo.",
                 icon = groups,
                 iconBackground = FamilyCircle,
-                onClick = { onRoleSelected(UserRole.FAMILY) }
+                onClick = { onRoleSelected(UserRole.DISTANT_RELATIVE) }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
