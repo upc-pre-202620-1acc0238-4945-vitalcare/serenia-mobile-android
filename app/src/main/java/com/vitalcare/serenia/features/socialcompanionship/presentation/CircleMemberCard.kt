@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
-import com.vitalcare.serenia.features.socialcompanionship.domain.CircleMember
+import com.vitalcare.serenia.features.carecircle.domain.CircleMember
 
 @Composable
 fun CircleMemberCard(

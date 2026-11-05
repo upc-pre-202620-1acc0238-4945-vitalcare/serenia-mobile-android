@@ -1,4 +1,4 @@
-package com.vitalcare.serenia.features.socialcompanionship.domain
+package com.vitalcare.serenia.features.carecircle.domain
 
 data class CircleMember(
     val id: Int,

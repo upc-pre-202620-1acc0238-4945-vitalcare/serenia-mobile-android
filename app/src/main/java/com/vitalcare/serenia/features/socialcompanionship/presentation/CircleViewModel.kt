@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import com.vitalcare.serenia.features.socialcompanionship.domain.CircleMember
+import com.vitalcare.serenia.features.carecircle.domain.CircleMember
 import javax.inject.Inject
 
 @HiltViewModel

@@ -1,6 +1,6 @@
 package com.vitalcare.serenia.features.socialcompanionship.presentation
 
-import com.vitalcare.serenia.features.socialcompanionship.domain.CircleMember
+import com.vitalcare.serenia.features.carecircle.domain.CircleMember
 
 data class CircleUiState(
     val invitationCode: String = "",
