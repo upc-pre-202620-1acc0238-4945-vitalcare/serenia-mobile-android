@@ -4,10 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
-import com.vitalcare.serenia.main.AppNavHost
+import com.vitalcare.serenia.main.MainScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -15,9 +14,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val navController = rememberNavController()
             SereniaTheme {
-                AppNavHost(navController)
+                MainScreen()
             }
         }
     }

@@ -22,28 +22,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vitalcare.serenia.core.designsystems.accountCircle
-import com.vitalcare.serenia.core.designsystems.eventAvailable
-import com.vitalcare.serenia.core.designsystems.family
-import com.vitalcare.serenia.core.designsystems.home
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 import com.vitalcare.serenia.core.designsystems.theme.forestDark
 
-enum class BottomNavItem(val label: String, val icon: ImageVector) {
-    HOME("Inicio", home),
-    REMINDERS("Recordar", eventAvailable),
-    FAMILY("Familia", family),
-    PROFILE("Perfil", accountCircle)
-}
-
 @Composable
-fun BottomNavigationBar(
-    selectedItem: BottomNavItem,
-    onItemClick: (BottomNavItem) -> Unit,
+fun MainNavigationBar(
+    selectedItem: NavigationItem,
+    onItemClick: (NavigationItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -58,8 +47,9 @@ fun BottomNavigationBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        BottomNavItem.entries.forEach { item ->
+        NavigationItem.entries.forEach { item ->
             val isSelected = item == selectedItem
+            val title = stringResource(item.title)
 
             Box(
                 modifier = Modifier
@@ -73,14 +63,14 @@ fun BottomNavigationBar(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         imageVector = item.icon,
-                        contentDescription = item.label,
+                        contentDescription = title,
                         tint = if (isSelected) MaterialTheme.colorScheme.primary else Color.White,
                         modifier = Modifier.size(28.dp)
                     )
                     if (isSelected) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = item.label,
+                            text = title,
                             style = MaterialTheme.typography.labelLarge,
                             color = forestDark
                         )
@@ -93,8 +83,8 @@ fun BottomNavigationBar(
 
 @Preview
 @Composable
-fun BottomNavigationBarPreview() {
+fun MainNavigationBarPreview() {
     SereniaTheme {
-        BottomNavigationBar(selectedItem = BottomNavItem.HOME, onItemClick = {})
+        MainNavigationBar(selectedItem = NavigationItem.HOME, onItemClick = {})
     }
 }
