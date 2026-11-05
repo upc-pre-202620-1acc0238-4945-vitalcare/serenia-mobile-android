@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import kotlinx.serialization.Serializable
+import com.vitalcare.serenia.features.dailycheckin.presentation.CheckInTimeRoute
 import com.vitalcare.serenia.features.home.presentation.HomeNavGraphRoute
 
 @Serializable
@@ -57,7 +58,12 @@ fun NavGraphBuilder.iamNavGraph(navController: NavController) {
         composable<SignUpRoute> {
             SignUpScreen(
                 onBack = { navController.popBackStack() },
-                onSignedUp = goToHome
+                onSignedUp = {
+                    navController.navigate(CheckInTimeRoute) {
+                        popUpTo<IamNavGraphRoute> { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
