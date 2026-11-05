@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Release builds only talk to the backend over HTTPS -->
 <network-security-config>
     <base-config cleartextTrafficPermitted="false" />
 </network-security-config>

@@ -22,7 +22,6 @@ object NetworkModule {
             .build()
     }
 
-    // Shared by every feature: each one only creates its own Api from this instance
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {

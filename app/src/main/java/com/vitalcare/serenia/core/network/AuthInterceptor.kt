@@ -10,11 +10,9 @@ import javax.inject.Inject
 class AuthInterceptor @Inject constructor(private val sessionStorage: SessionStorage) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        // OkHttp runs interceptors on its own background threads, so blocking here is safe
         val token = runBlocking { sessionStorage.session.first()?.token }
 
         val request = chain.request().newBuilder()
-            // The backend returns its error messages in this language
             .header("Accept-Language", LANGUAGE)
             .apply {
                 if (token != null) {

@@ -9,7 +9,6 @@ class ApiException(
     override val message: String
 ) : Exception(message)
 
-// Turns an unsuccessful response into an exception carrying the backend message
 fun Response<*>.toApiException(): ApiException {
     val error = errorBody()?.string()?.let { body ->
         runCatching { Gson().fromJson(body, ErrorDto::class.java) }.getOrNull()
