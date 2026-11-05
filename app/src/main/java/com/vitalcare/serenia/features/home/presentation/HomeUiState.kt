@@ -1,11 +1,11 @@
 package com.vitalcare.serenia.features.home.presentation
 
-import com.vitalcare.serenia.features.dailycheckin.domain.Mood
-
 data class HomeUiState(
-    val userName: String = "",
+    val date: String = "",
     val greeting: String = "",
-    val formattedDate: String = "",
-    val selectedMood: Mood? = null,
-    val hasSkippedToday: Boolean = false
-)
+    val firstName: String? = null,
+    val simplifiedMode: Boolean = false
+) {
+    val title: String
+        get() = if (firstName.isNullOrBlank()) greeting else "$greeting, $firstName"
+}
