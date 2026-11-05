@@ -1,48 +1,44 @@
 package com.vitalcare.serenia.features.iam.presentation
 
-import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.vitalcare.serenia.core.designsystems.components.SereniaBackground
-import com.vitalcare.serenia.core.designsystems.components.SereniaLogo
-import com.vitalcare.serenia.core.designsystems.components.SereniaPrimaryButton
-import com.vitalcare.serenia.core.designsystems.components.SereniaTextLink
+import com.vitalcare.serenia.R
+import com.vitalcare.serenia.core.designsystems.components.PrimaryButton
+import com.vitalcare.serenia.core.designsystems.theme.Nunito
+import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
+import com.vitalcare.serenia.core.designsystems.theme.SereniaSpacing
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
-import com.vitalcare.serenia.core.designsystems.theme.dotCoral
-import com.vitalcare.serenia.core.designsystems.theme.forestDark
 
 @Composable
 fun WelcomeScreen(
@@ -50,136 +46,135 @@ fun WelcomeScreen(
     onStartClick: () -> Unit,
     onHaveAccountClick: () -> Unit
 ) {
-    SereniaBackground(modifier = modifier) {
-        Column(
+    BoxWithConstraints(
+        modifier = modifier
+            .fillMaxSize()
+            .background(SereniaPalette.Teal700)
+    ) {
+        val screenHeight = maxHeight
+
+        Box(
             modifier = Modifier
-                .fillMaxSize()
+                .offset(x = (-150).dp, y = 120.dp)
+                .size(360.dp)
+                .background(SereniaPalette.Teal600, CircleShape)
+        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .offset(x = 140.dp, y = (-150).dp)
+                .size(300.dp)
+                .background(SereniaPalette.Teal800, CircleShape)
+        )
+
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .heightIn(min = screenHeight)
                 .statusBarsPadding()
                 .navigationBarsPadding()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(start = SereniaSpacing.authScreen, top = 20.dp, end = SereniaSpacing.authScreen, bottom = 28.dp)
         ) {
-            WelcomeHero()
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                WelcomeHeader()
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Box {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .offset(x = (-16).dp, y = 32.dp)
+                            .size(18.dp)
+                            .alpha(0.8f)
+                            .background(SereniaPalette.Durazno300, CircleShape)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .offset(x = 12.dp, y = 8.dp)
+                            .size(12.dp)
+                            .alpha(0.8f)
+                            .background(SereniaPalette.Verde300, CircleShape)
+                    )
+                    WelcomeIllustration()
+                }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 4.dp)
-            ) {
-                Text(
-                    text = "Te damos la bienvenida",
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontFamily = FontFamily.Default,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = forestDark
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = "Un check-in diario de un toque: ellos saben que estás bien y tú sabes que les importas.",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontFamily = FontFamily.Default,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 18.sp,
-                    lineHeight = 26.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(top = 8.dp)
+                ) {
+                    Text(
+                        text = "Tu familia, más cerca",
+                        style = MaterialTheme.typography.headlineLarge,
+                        letterSpacing = (-0.005).em,
+                        color = SereniaPalette.Neutro50,
+                        modifier = Modifier.semantics { heading() }
+                    )
+                    Text(
+                        text = "Respondes con un toque y tu familia sabe cómo estás, sin tener que llamar.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = SereniaPalette.Teal100
+                    )
+                }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            SereniaPrimaryButton(
-                text = "Empezar",
-                onClick = onStartClick,
-                fontFamily = FontFamily.Default,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            SereniaTextLink(text = "Ya tengo cuenta", onClick = onHaveAccountClick)
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.padding(top = SereniaSpacing.lg)
+            ) {
+                PrimaryButton(
+                    text = "Crear mi cuenta",
+                    onClick = onStartClick,
+                    containerColor = SereniaPalette.Durazno300,
+                    contentColor = SereniaPalette.Teal900
+                )
+                PrimaryButton(
+                    text = "Ya tengo cuenta",
+                    onClick = onHaveAccountClick,
+                    containerColor = SereniaPalette.Neutro50,
+                    contentColor = SereniaPalette.Teal800,
+                    elevated = false
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun WelcomeHero(modifier: Modifier = Modifier) {
-    val shape = RoundedCornerShape(36.dp)
-
-    Box(
-        modifier = modifier
+private fun WelcomeHeader() {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
             .fillMaxWidth()
-            .clip(shape)
-            .background(
-                Brush.linearGradient(
-                    colors = listOf(forestDark, MaterialTheme.colorScheme.primary)
-                )
-            )
+            .padding(top = 8.dp)
     ) {
-        // Soft rings behind the illustration
-        Canvas(modifier = Modifier.matchParentSize()) {
-            val center = Offset(size.width * 0.5f, size.height * 0.55f)
-            drawCircle(Color.White.copy(alpha = 0.06f), radius = size.width * 0.34f, center = center, style = Stroke(width = 1.5.dp.toPx()))
-            drawCircle(Color.White.copy(alpha = 0.05f), radius = size.width * 0.5f, center = center, style = Stroke(width = 1.5.dp.toPx()))
-        }
-
-        Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 20.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = Modifier
-                        .size(52.dp)
-                        .background(Color.White, RoundedCornerShape(16.dp)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    SereniaLogo(size = 34.dp)
-                }
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
-                    text = "Serenia",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontFamily = FontFamily.Default,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 24.sp,
-                    color = Color.White
-                )
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(SpanStyle(color = Color.White)) { append("Bienestar hoy,\n") }
-                    withStyle(SpanStyle(color = dotCoral)) { append("siempre contigo.") }
-                },
-                style = MaterialTheme.typography.headlineLarge,
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.ExtraBold,
-                fontSize = 40.sp,
-                lineHeight = 44.sp
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(44.dp)
+                .background(SereniaPalette.Neutro50, CircleShape)
+        ) {
+            Image(
+                painter = painterResource(R.drawable.serenia_isotipo),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(34.dp)
+                    .clip(CircleShape)
             )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            ConnectionIllustration()
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                RespondedChip()
-                AllGoodChip(modifier = Modifier.align(Alignment.End))
-            }
         }
+        Text(
+            text = "Serenia",
+            fontFamily = Nunito,
+            fontSize = 28.sp,
+            lineHeight = 34.sp,
+            fontWeight = FontWeight.ExtraBold,
+            letterSpacing = (-0.01).em,
+            color = SereniaPalette.Neutro50
+        )
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFFBF4E9, heightDp = 780)
+@Preview(showSystemUi = true)
 @Composable
 fun WelcomeScreenPreview() {
     SereniaTheme {
