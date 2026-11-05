@@ -1,5 +1,6 @@
 package com.vitalcare.serenia.main
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -20,6 +21,7 @@ import com.vitalcare.serenia.features.home.presentation.HomeNavGraphRoute
 import com.vitalcare.serenia.features.home.presentation.HomeRoute
 import com.vitalcare.serenia.features.home.presentation.homeNavGraph
 import com.vitalcare.serenia.features.iam.presentation.IamNavGraphRoute
+import com.vitalcare.serenia.features.iam.presentation.WelcomeRoute
 import com.vitalcare.serenia.features.iam.presentation.iamNavGraph
 import com.vitalcare.serenia.features.socialcompanionship.presentation.FamilyNavGraphRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.FamilyRoute
@@ -42,6 +44,7 @@ fun MainScreen() {
         destination?.hasRoute<ProfileRoute>() == true -> NavigationItem.PROFILE
         else -> null
     }
+    val isFullScreen = destination?.hasRoute<WelcomeRoute>() == true
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -73,7 +76,7 @@ fun MainScreen() {
         NavHost(
             navController = navController,
             startDestination = IamNavGraphRoute,
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(if (isFullScreen) PaddingValues() else paddingValues)
         ) {
             iamNavGraph(navController)
             homeNavGraph(navController)
