@@ -3,6 +3,7 @@ package com.vitalcare.serenia.features.iam.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vitalcare.serenia.core.network.ApiException
+import com.vitalcare.serenia.core.network.toUserMessage
 import com.vitalcare.serenia.features.iam.application.SignInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +62,7 @@ class SignInViewModel @Inject constructor(private val signIn: SignInUseCase) : V
                             )
                         }
                     } else {
-                        _state.update { it.copy(isLoading = false, formError = exception.toAuthMessage()) }
+                        _state.update { it.copy(isLoading = false, formError = exception.toUserMessage()) }
                     }
                 }
             )
