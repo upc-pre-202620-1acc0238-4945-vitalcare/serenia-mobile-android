@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import kotlinx.serialization.Serializable
+import com.vitalcare.serenia.features.alertsandsafety.presentation.HelpSentRoute
 
 @Serializable
 data object HomeNavGraphRoute
@@ -16,7 +17,11 @@ fun NavGraphBuilder.homeNavGraph(navController: NavController) {
 
     navigation<HomeNavGraphRoute>(startDestination = HomeRoute) {
         composable<HomeRoute> {
-            HomeScreen()
+            HomeScreen(
+                onHelpSent = { outcome ->
+                    navController.navigate(HelpSentRoute(outcome = outcome.name)) { launchSingleTop = true }
+                }
+            )
         }
     }
 }
