@@ -40,6 +40,7 @@ import com.vitalcare.serenia.features.iam.presentation.WelcomeRoute
 import com.vitalcare.serenia.features.iam.presentation.iamNavGraph
 import com.vitalcare.serenia.features.socialcompanionship.presentation.FamilyNavGraphRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.FamilyRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.NewReminderRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.RemindersRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.familyNavGraph
 import com.vitalcare.serenia.features.socialcompanionship.presentation.socialCompanionshipNavGraph
@@ -76,7 +77,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
     // The bar is only shown on the main screen of each tab
     val selectedItem = when {
         destination?.hasRoute<HomeRoute>() == true || destination?.hasRoute<HelpSentRoute>() == true -> NavigationItem.HOME
-        destination?.hasRoute<RemindersRoute>() == true -> NavigationItem.REMINDERS
+        destination?.hasRoute<RemindersRoute>() == true || destination?.hasRoute<NewReminderRoute>() == true -> NavigationItem.REMINDERS
         destination?.hasRoute<FamilyRoute>() == true || destination?.hasRoute<CircleRoute>() == true -> NavigationItem.FAMILY
         destination?.hasRoute<AccountRoute>() == true || destination.isAccountSubscreen() -> NavigationItem.PROFILE
         else -> null
@@ -94,6 +95,10 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
                         // Tapping the active tab from a deeper screen goes back to its main screen
                         if (item == NavigationItem.FAMILY && destination?.hasRoute<CircleRoute>() == true) {
                             navController.popBackStack<FamilyRoute>(inclusive = false)
+                            return@MainNavigationBar
+                        }
+                        if (item == NavigationItem.REMINDERS && destination?.hasRoute<NewReminderRoute>() == true) {
+                            navController.popBackStack<RemindersRoute>(inclusive = false)
                             return@MainNavigationBar
                         }
                         if (item == NavigationItem.HOME && destination?.hasRoute<HelpSentRoute>() == true) {
