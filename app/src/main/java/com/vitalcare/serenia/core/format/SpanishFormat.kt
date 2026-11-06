@@ -4,6 +4,8 @@ import java.util.Calendar
 
 private val WEEKDAYS = listOf("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado")
 
+private const val MILLIS_PER_DAY = 24 * 60 * 60 * 1000L
+
 private val MONTHS = listOf(
     "enero", "febrero", "marzo", "abril", "mayo", "junio",
     "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
@@ -28,6 +30,24 @@ fun formatDate(year: Int, month: Int, day: Int): String {
 
 fun formatDayAndMonth(month: Int, day: Int): String {
     return "$day de ${MONTHS[month - 1]}"
+}
+
+fun formatRelativeDay(year: Int, month: Int, day: Int, today: Calendar = Calendar.getInstance()): String {
+    val date = Calendar.getInstance().apply {
+        clear()
+        set(year, month - 1, day)
+    }
+    val startOfToday = Calendar.getInstance().apply {
+        clear()
+        set(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH))
+    }
+    val daysAway = Math.round((date.timeInMillis - startOfToday.timeInMillis) / MILLIS_PER_DAY.toDouble())
+    return when (daysAway) {
+        0L -> "Hoy"
+        1L -> "Mañana"
+        in 2L..6L -> WEEKDAYS[date.get(Calendar.DAY_OF_WEEK) - 1]
+        else -> formatLongDate(date)
+    }
 }
 
 fun greetingFor(calendar: Calendar): String {
