@@ -1,8 +1,6 @@
 package com.vitalcare.serenia.features.socialcompanionship.presentation
 
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -19,43 +17,34 @@ data object RemindersRoute
 @Serializable
 data object NewReminderRoute
 
-private const val REMINDER_SAVED_KEY = "reminder_saved"
+private const val MESSAGE_KEY = "message"
 
 fun NavGraphBuilder.socialCompanionshipNavGraph(navController: NavController) {
 
     navigation<SocialCompanionshipNavGraphRoute>(startDestination = RemindersRoute) {
         composable<RemindersRoute> { backStackEntry ->
-            val viewModel: RemindersViewModel = hiltViewModel()
-
-            // Result sent by the new reminder screen after saving
-            val savedStateHandle = backStackEntry.savedStateHandle
-            val isReminderSaved by savedStateHandle
-                .getStateFlow(REMINDER_SAVED_KEY, false)
+            val message by backStackEntry.savedStateHandle
+                .getStateFlow<String?>(MESSAGE_KEY, null)
                 .collectAsStateWithLifecycle()
 
-            LaunchedEffect(isReminderSaved) {
-                if (isReminderSaved) {
-                    viewModel.onReminderSaved()
-                    savedStateHandle[REMINDER_SAVED_KEY] = false
+            RemindersScreen(
+                message = message,
+                onMessageShown = { backStackEntry.savedStateHandle[MESSAGE_KEY] = null },
+                onNewReminder = {
+                    navController.navigate(NewReminderRoute) { launchSingleTop = true }
                 }
-            }
-
-            RemindersScreen(viewModel = viewModel) {
-                navController.navigate(NewReminderRoute) {
-                    launchSingleTop = true
-                }
-            }
+            )
         }
 
         composable<NewReminderRoute> {
             NewReminderScreen(
-                onBack = {
-                    navController.popBackStack<RemindersRoute>(inclusive = false)
-                },
-                onReminderSaved = {
-                    navController.getBackStackEntry<RemindersRoute>()
-                        .savedStateHandle[REMINDER_SAVED_KEY] = true
-                    navController.popBackStack<RemindersRoute>(inclusive = false)
+                onBack = { navController.popBackStack() },
+                onSaved = {
+                    navController.previousBackStackEntry?.savedStateHandle?.set(
+                        MESSAGE_KEY,
+                        "Listo, guardamos tu recordatorio."
+                    )
+                    navController.popBackStack()
                 }
             )
         }
