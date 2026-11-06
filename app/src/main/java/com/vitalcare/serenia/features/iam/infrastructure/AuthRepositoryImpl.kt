@@ -85,6 +85,15 @@ class AuthRepositoryImpl @Inject constructor(
         try {
             val userId = sessionStorage.session.first()?.userId
                 ?: return Result.failure(IllegalStateException("There is no active session"))
+            return getUser(userId)
+
+        } catch (exception: Exception) {
+            return Result.failure(exception)
+        }
+    }
+
+    override suspend fun getUser(userId: String): Result<User> {
+        try {
             val response = api.getUser(userId)
 
             if (response.isSuccessful) {
