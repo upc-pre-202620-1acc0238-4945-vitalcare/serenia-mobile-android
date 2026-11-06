@@ -55,6 +55,7 @@ fun SereniaTextField(
     error: String? = null,
     isError: Boolean = error != null,
     helper: String? = null,
+    prefix: String? = null,
     isPassword: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default
@@ -115,6 +116,15 @@ fun SereniaTextField(
                         .border(border, shape)
                         .padding(start = 18.dp, end = if (isPassword) 8.dp else 18.dp)
                 ) {
+                    if (prefix != null) {
+                        Text(
+                            text = prefix,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = SereniaPalette.Neutro700,
+                            modifier = Modifier.padding(end = 10.dp)
+                        )
+                    }
                     Box(modifier = Modifier.weight(1f)) {
                         if (value.isEmpty() && placeholder != null) {
                             Text(
