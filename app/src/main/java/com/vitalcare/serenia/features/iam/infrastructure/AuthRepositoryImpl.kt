@@ -95,11 +95,29 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun signOut(): Result<Unit> {
+        try {
+            val sessionId = sessionStorage.session.first()?.sessionId
+                ?: return Result.success(Unit)
+            val response = api.signOut(sessionId)
+
+            if (response.isSuccessful || response.code() in SESSION_ALREADY_CLOSED) {
+                sessionStorage.clear()
+                return Result.success(Unit)
+            }
+            return Result.failure(response.toApiException())
+
+        } catch (exception: Exception) {
+            return Result.failure(exception)
+        }
+    }
+
     override fun isSignedIn(): Flow<Boolean> {
         return sessionStorage.session.map { session -> session != null }
     }
 
     private companion object {
         const val LOCALE = "es-PE"
+        val SESSION_ALREADY_CLOSED = setOf(401, 404)
     }
 }

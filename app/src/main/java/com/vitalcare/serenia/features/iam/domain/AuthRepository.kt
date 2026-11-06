@@ -10,5 +10,7 @@ interface AuthRepository {
 
     suspend fun getCurrentUser(): Result<User>
 
+    suspend fun signOut(): Result<Unit>
+
     fun isSignedIn(): Flow<Boolean>
 }
