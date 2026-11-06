@@ -6,6 +6,7 @@ data class User(
     val role: UserRole,
     val fullName: String,
     val phoneNumber: String?,
+    val birthDate: BirthDate?,
     val photoUrl: String?,
     val locale: String,
     val timeZone: String
