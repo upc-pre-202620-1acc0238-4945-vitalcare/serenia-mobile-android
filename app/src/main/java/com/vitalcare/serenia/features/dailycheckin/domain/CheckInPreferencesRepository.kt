@@ -13,4 +13,8 @@ interface CheckInPreferencesRepository {
     suspend fun activateDailyPause(): Result<CheckInPreferences>
 
     suspend fun resumeDailyCheckIn(): Result<CheckInPreferences>
+
+    suspend fun updateSimplifiedMode(enabled: Boolean): Result<CheckInPreferences>
+
+    fun clear()
 }

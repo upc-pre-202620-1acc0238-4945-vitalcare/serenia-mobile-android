@@ -5,6 +5,8 @@ import com.vitalcare.serenia.core.network.toApiException
 import com.vitalcare.serenia.core.session.Session
 import com.vitalcare.serenia.core.session.SessionStorage
 import com.vitalcare.serenia.features.iam.domain.AuthRepository
+import com.vitalcare.serenia.features.iam.domain.BirthDate
+import com.vitalcare.serenia.features.iam.domain.IncorrectPasswordException
 import com.vitalcare.serenia.features.iam.domain.User
 import com.vitalcare.serenia.features.iam.domain.UserRole
 import kotlinx.coroutines.flow.Flow
@@ -50,7 +52,9 @@ class AuthRepositoryImpl @Inject constructor(
         fullName: String,
         email: String,
         password: String,
-        role: UserRole
+        role: UserRole,
+        phoneNumber: String?,
+        birthDate: BirthDate?
     ): Result<User> {
         try {
             val request = RegisterUserRequestDto(
@@ -58,8 +62,8 @@ class AuthRepositoryImpl @Inject constructor(
                 password = password,
                 role = role.name,
                 fullName = fullName,
-                phoneNumber = null,
-                birthDate = null,
+                phoneNumber = phoneNumber,
+                birthDate = birthDate?.toRequestValue(),
                 locale = LOCALE,
                 timeZone = TimeZone.getDefault().id
             )
@@ -95,11 +99,78 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateProfile(
+        fullName: String,
+        phoneNumber: String?,
+        birthDate: BirthDate?
+    ): Result<User> {
+        try {
+            val userId = sessionStorage.session.first()?.userId
+                ?: return Result.failure(IllegalStateException("There is no active session"))
+            val request = UpdateProfileRequestDto(
+                fullName = fullName,
+                phoneNumber = phoneNumber,
+                birthDate = birthDate?.toRequestValue(),
+                locale = LOCALE,
+                timeZone = TimeZone.getDefault().id
+            )
+            val response = api.updateProfile(userId, request)
+
+            if (response.isSuccessful) {
+                response.body()?.let { userDto ->
+                    return Result.success(userDto.toDomain())
+                }
+            }
+            return Result.failure(response.toApiException())
+
+        } catch (exception: Exception) {
+            return Result.failure(exception)
+        }
+    }
+
+    override suspend fun changePassword(currentPassword: String, newPassword: String): Result<Unit> {
+        try {
+            val userId = sessionStorage.session.first()?.userId
+                ?: return Result.failure(IllegalStateException("There is no active session"))
+            val response = api.changePassword(userId, ChangePasswordRequestDto(currentPassword, newPassword))
+
+            if (response.isSuccessful) {
+                return Result.success(Unit)
+            }
+            if (response.code() == INCORRECT_PASSWORD) {
+                return Result.failure(IncorrectPasswordException())
+            }
+            return Result.failure(response.toApiException())
+
+        } catch (exception: Exception) {
+            return Result.failure(exception)
+        }
+    }
+
+    override suspend fun signOut(): Result<Unit> {
+        try {
+            val sessionId = sessionStorage.session.first()?.sessionId
+                ?: return Result.success(Unit)
+            val response = api.signOut(sessionId)
+
+            if (response.isSuccessful || response.code() in SESSION_ALREADY_CLOSED) {
+                sessionStorage.clear()
+                return Result.success(Unit)
+            }
+            return Result.failure(response.toApiException())
+
+        } catch (exception: Exception) {
+            return Result.failure(exception)
+        }
+    }
+
     override fun isSignedIn(): Flow<Boolean> {
         return sessionStorage.session.map { session -> session != null }
     }
 
     private companion object {
         const val LOCALE = "es-PE"
+        const val INCORRECT_PASSWORD = 422
+        val SESSION_ALREADY_CLOSED = setOf(401, 404)
     }
 }

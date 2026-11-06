@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.vitalcare.serenia.core.designsystems.logout
 import com.vitalcare.serenia.core.designsystems.share
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
@@ -114,6 +115,32 @@ fun SecondaryButton(
 }
 
 @Composable
+fun QuietButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    icon: ImageVector? = null
+) {
+    OutlinedButton(
+        onClick = onClick,
+        enabled = enabled,
+        shape = CircleShape,
+        border = BorderStroke(2.dp, SereniaPalette.Neutro400),
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = SereniaPalette.Neutro700
+        ),
+        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = SereniaTouch.seniorPrimary)
+    ) {
+        ButtonContent(text = text, icon = icon)
+    }
+}
+
+@Composable
 fun TextLinkButton(
     text: String,
     onClick: () -> Unit,
@@ -164,6 +191,7 @@ fun ButtonsPreview() {
         Column {
             PrimaryButton(text = "Entrar", onClick = {})
             SecondaryButton(text = "Compartir código", icon = share, onClick = {})
+            QuietButton(text = "Cerrar sesión", icon = logout, onClick = {})
             TextLinkButton(text = "Crear mi cuenta", onClick = {})
         }
     }

@@ -7,6 +7,7 @@ import com.vitalcare.serenia.core.designsystems.eventAvailable
 import com.vitalcare.serenia.core.designsystems.home
 import com.vitalcare.serenia.core.designsystems.peopleOutline
 import com.vitalcare.serenia.core.designsystems.personOutline
+import com.vitalcare.serenia.features.account.presentation.AccountNavGraphRoute
 import com.vitalcare.serenia.features.home.presentation.HomeNavGraphRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.FamilyNavGraphRoute
 import com.vitalcare.serenia.features.socialcompanionship.presentation.SocialCompanionshipNavGraphRoute
@@ -32,7 +33,7 @@ enum class NavigationItem(
         title = R.string.tab_family
     ),
     PROFILE(
-        route = ProfileRoute,
+        route = AccountNavGraphRoute,
         icon = personOutline,
         title = R.string.tab_profile
     )

@@ -40,6 +40,7 @@ fun ChosenValueCard(
     onChange: () -> Unit,
     modifier: Modifier = Modifier,
     tone: ChosenValueTone = ChosenValueTone.Teal,
+    actionLabel: String = "Cambiar",
     isError: Boolean = false,
     errorMessage: String? = null
 ) {
@@ -60,7 +61,7 @@ fun ChosenValueCard(
             .fillMaxWidth()
             .heightIn(min = 80.dp)
             .clearAndSetSemantics {
-                contentDescription = "$label: $value. Cambiar"
+                contentDescription = "$label: $value. $actionLabel"
                 if (isError && errorMessage != null) error(errorMessage)
             }
     ) {
@@ -88,7 +89,7 @@ fun ChosenValueCard(
                 )
             }
             Text(
-                text = "Cambiar",
+                text = actionLabel,
                 fontFamily = Nunito,
                 fontSize = 16.sp,
                 lineHeight = 20.sp,

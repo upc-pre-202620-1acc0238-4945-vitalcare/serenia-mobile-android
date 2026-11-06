@@ -20,7 +20,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,6 +33,7 @@ import com.vitalcare.serenia.core.designsystems.components.StepIndicator
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaSpacing
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
+import com.vitalcare.serenia.features.iam.domain.BirthDate
 
 @Composable
 fun SignUpScreen(
@@ -52,6 +52,8 @@ fun SignUpScreen(
         state = state,
         modifier = modifier,
         onFullNameChange = viewModel::onFullNameChange,
+        onBirthDateChange = viewModel::onBirthDateChange,
+        onPhoneNumberChange = viewModel::onPhoneNumberChange,
         onEmailChange = viewModel::onEmailChange,
         onPasswordChange = viewModel::onPasswordChange,
         onSubmit = viewModel::submit,
@@ -63,6 +65,8 @@ fun SignUpScreen(
 fun SignUpContent(
     state: SignUpUiState,
     onFullNameChange: (String) -> Unit,
+    onBirthDateChange: (BirthDate) -> Unit,
+    onPhoneNumberChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onSubmit: () -> Unit,
@@ -104,16 +108,15 @@ fun SignUpContent(
             AlertBanner(message = message)
         }
 
-        SereniaTextField(
-            label = "¿Cómo te llamas?",
-            value = state.fullName,
-            onValueChange = onFullNameChange,
-            placeholder = "Ej. Rosa Mendoza",
-            error = state.fullNameError,
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Words,
-                imeAction = ImeAction.Next
-            )
+        PersonalDataFields(
+            fullName = state.fullName,
+            fullNameError = state.fullNameError,
+            onFullNameChange = onFullNameChange,
+            birthDate = state.birthDate,
+            onBirthDateChange = onBirthDateChange,
+            phoneNumber = state.phoneNumber,
+            phoneNumberError = state.phoneNumberError,
+            onPhoneNumberChange = onPhoneNumberChange
         )
 
         SereniaTextField(
@@ -158,6 +161,8 @@ fun SignUpContentPreview() {
                 passwordError = "Debe tener al menos 8 letras o números."
             ),
             onFullNameChange = {},
+            onBirthDateChange = {},
+            onPhoneNumberChange = {},
             onEmailChange = {},
             onPasswordChange = {},
             onSubmit = {},

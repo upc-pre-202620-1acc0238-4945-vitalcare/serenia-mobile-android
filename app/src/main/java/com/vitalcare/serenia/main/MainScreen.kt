@@ -7,18 +7,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.vitalcare.serenia.features.account.presentation.AccountRoute
+import com.vitalcare.serenia.features.account.presentation.ChangePasswordRoute
+import com.vitalcare.serenia.features.account.presentation.ProfileDataRoute
+import com.vitalcare.serenia.features.account.presentation.accountNavGraph
 import com.vitalcare.serenia.features.alertsandsafety.presentation.alertsAndSafetyNavGraph
 import com.vitalcare.serenia.features.carecircle.presentation.CircleRoute
 import com.vitalcare.serenia.features.carecircle.presentation.careCircleNavGraph
@@ -27,6 +34,7 @@ import com.vitalcare.serenia.features.home.presentation.HomeNavGraphRoute
 import com.vitalcare.serenia.features.home.presentation.HomeRoute
 import com.vitalcare.serenia.features.home.presentation.homeNavGraph
 import com.vitalcare.serenia.features.iam.presentation.IamNavGraphRoute
+import com.vitalcare.serenia.features.iam.presentation.SignInRoute
 import com.vitalcare.serenia.features.iam.presentation.WelcomeRoute
 import com.vitalcare.serenia.features.iam.presentation.iamNavGraph
 import com.vitalcare.serenia.features.socialcompanionship.presentation.FamilyNavGraphRoute
@@ -54,6 +62,14 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
     val startDestination: Any = remember { if (signedIn) HomeNavGraphRoute else IamNavGraphRoute }
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
+    var wasSignedIn by remember { mutableStateOf(signedIn) }
+
+    LaunchedEffect(signedIn) {
+        if (wasSignedIn && !signedIn) {
+            navController.goToSignIn()
+        }
+        wasSignedIn = signedIn
+    }
     val destination = backStackEntry?.destination
 
     // The bar is only shown on the main screen of each tab
@@ -61,7 +77,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
         destination?.hasRoute<HomeRoute>() == true -> NavigationItem.HOME
         destination?.hasRoute<RemindersRoute>() == true -> NavigationItem.REMINDERS
         destination?.hasRoute<FamilyRoute>() == true || destination?.hasRoute<CircleRoute>() == true -> NavigationItem.FAMILY
-        destination?.hasRoute<ProfileRoute>() == true -> NavigationItem.PROFILE
+        destination?.hasRoute<AccountRoute>() == true || destination.isAccountSubscreen() -> NavigationItem.PROFILE
         else -> null
     }
     val isFullScreen = destination?.hasRoute<WelcomeRoute>() == true
@@ -77,6 +93,10 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
                         // Tapping the active tab from a deeper screen goes back to its main screen
                         if (item == NavigationItem.FAMILY && destination?.hasRoute<CircleRoute>() == true) {
                             navController.popBackStack<FamilyRoute>(inclusive = false)
+                            return@MainNavigationBar
+                        }
+                        if (item == NavigationItem.PROFILE && destination.isAccountSubscreen()) {
+                            navController.popBackStack<AccountRoute>(inclusive = false)
                             return@MainNavigationBar
                         }
 
@@ -106,9 +126,19 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
             socialCompanionshipNavGraph(navController)
             familyNavGraph(navController)
             careCircleNavGraph(navController)
-            composable<ProfileRoute> {
-                Text(text = "Profile Screen")
-            }
+            accountNavGraph(navController)
         }
     }
+}
+
+private fun NavDestination?.isAccountSubscreen(): Boolean {
+    return this?.hasRoute<ProfileDataRoute>() == true || this?.hasRoute<ChangePasswordRoute>() == true
+}
+
+private fun NavController.goToSignIn() {
+    navigate(IamNavGraphRoute) {
+        popUpTo(graph.id) { inclusive = true }
+    }
+    navigate(SignInRoute)
+    NavigationItem.entries.forEach { item -> clearBackStack(item.route) }
 }

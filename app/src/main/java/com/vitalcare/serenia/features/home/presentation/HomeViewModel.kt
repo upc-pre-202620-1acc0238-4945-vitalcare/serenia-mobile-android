@@ -30,7 +30,7 @@ class HomeViewModel @Inject constructor(
         _state.update { it.copy(date = formatLongDate(now), greeting = greetingFor(now)) }
     }
 
-    private fun loadUser() {
+    fun loadUser() {
         viewModelScope.launch(Dispatchers.IO) {
             getCurrentUser().onSuccess { user ->
                 _state.update { it.copy(firstName = user.fullName.trim().substringBefore(" ")) }
@@ -48,7 +48,6 @@ class HomeViewModel @Inject constructor(
 
     init {
         refreshGreeting()
-        loadUser()
         observeSimplifiedMode()
     }
 }

@@ -35,6 +35,7 @@ fun HomeScreen(
 
     LifecycleResumeEffect(Unit) {
         viewModel.refreshGreeting()
+        viewModel.loadUser()
         onPauseOrDispose { }
     }
 

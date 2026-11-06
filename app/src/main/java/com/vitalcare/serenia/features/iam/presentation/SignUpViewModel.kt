@@ -7,7 +7,9 @@ import androidx.navigation.toRoute
 import com.vitalcare.serenia.core.network.ApiException
 import com.vitalcare.serenia.core.network.toUserMessage
 import com.vitalcare.serenia.features.iam.application.SignUpUseCase
+import com.vitalcare.serenia.features.iam.domain.BirthDate
 import com.vitalcare.serenia.features.iam.domain.CredentialsValidator
+import com.vitalcare.serenia.features.iam.domain.PhoneNumber
 import com.vitalcare.serenia.features.iam.domain.UserRole
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +35,14 @@ class SignUpViewModel @Inject constructor(
         _state.update { it.copy(fullName = fullName, fullNameError = null) }
     }
 
+    fun onBirthDateChange(birthDate: BirthDate) {
+        _state.update { it.copy(birthDate = birthDate) }
+    }
+
+    fun onPhoneNumberChange(phoneNumber: String) {
+        _state.update { it.copy(phoneNumber = phoneNumber.toPhoneDigits(), phoneNumberError = null) }
+    }
+
     fun onEmailChange(email: String) {
         _state.update { it.copy(email = email, emailError = null) }
     }
@@ -45,11 +55,8 @@ class SignUpViewModel @Inject constructor(
         val currentState = _state.value
         if (currentState.isLoading) return
 
-        val fullNameError = when {
-            currentState.fullName.isBlank() -> "Escribe tu nombre."
-            !CredentialsValidator.isValidName(currentState.fullName) -> "Tu nombre es muy largo. Usa uno más corto."
-            else -> null
-        }
+        val fullNameError = fullNameErrorFor(currentState.fullName)
+        val phoneNumberError = phoneNumberErrorFor(currentState.phoneNumber)
         val emailError = when {
             currentState.email.isBlank() -> "Escribe tu correo."
             !CredentialsValidator.isValidEmail(currentState.email) -> "Revisa el correo: parece incompleto."
@@ -63,10 +70,11 @@ class SignUpViewModel @Inject constructor(
             else -> null
         }
 
-        if (fullNameError != null || emailError != null || passwordError != null) {
+        if (fullNameError != null || phoneNumberError != null || emailError != null || passwordError != null) {
             _state.update {
                 it.copy(
                     fullNameError = fullNameError,
+                    phoneNumberError = phoneNumberError,
                     emailError = emailError,
                     passwordError = passwordError,
                     formError = null
@@ -78,7 +86,16 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _state.update { it.copy(isLoading = true, formError = null) }
 
-            signUp(currentState.fullName, currentState.email, currentState.password, role).fold(
+            val phoneNumber = currentState.phoneNumber.ifEmpty { null }?.let(PhoneNumber::fromLocal)
+
+            signUp(
+                fullName = currentState.fullName,
+                email = currentState.email,
+                password = currentState.password,
+                role = role,
+                phoneNumber = phoneNumber,
+                birthDate = currentState.birthDate
+            ).fold(
                 onSuccess = {
                     _state.update { it.copy(isLoading = false, isSignedUp = true) }
                 },
