@@ -1,233 +1,223 @@
 package com.vitalcare.serenia.features.carecircle.presentation
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.launch
-import com.vitalcare.serenia.core.designsystems.components.SereniaBackground
-import com.vitalcare.serenia.core.designsystems.components.SereniaSnackbar
-import com.vitalcare.serenia.core.designsystems.chevronLeft
-import com.vitalcare.serenia.core.designsystems.contentCopy
+import com.vitalcare.serenia.core.designsystems.components.AlertBanner
+import com.vitalcare.serenia.core.designsystems.components.BackLink
+import com.vitalcare.serenia.core.designsystems.components.SecondaryButton
 import com.vitalcare.serenia.core.designsystems.refresh
+import com.vitalcare.serenia.core.designsystems.share
+import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
+import com.vitalcare.serenia.core.designsystems.theme.SereniaRadius
+import com.vitalcare.serenia.core.designsystems.theme.SereniaSpacing
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
-import com.vitalcare.serenia.features.carecircle.domain.CircleMember
+import com.vitalcare.serenia.features.carecircle.domain.InvitationCode
 
 @Composable
 fun CircleScreen(
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: CircleViewModel = hiltViewModel(),
-    onBack: () -> Unit
+    viewModel: CircleViewModel = hiltViewModel()
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    LaunchedEffect(Unit) {
-        viewModel.events.collect { event ->
-            val message = when (event) {
-                CircleEvent.CodeCopied -> "Código copiado"
-                CircleEvent.CodeRenewed -> "Generamos un código nuevo"
-                is CircleEvent.MemberRemoved -> "${event.name} ya no tiene acceso"
-            }
-            // The message runs on its own so it never holds back the next event
-            launch {
-                snackbarHostState.currentSnackbarData?.dismiss()
-                snackbarHostState.showSnackbar(message)
-            }
-        }
+    LifecycleResumeEffect(Unit) {
+        viewModel.refresh()
+        onPauseOrDispose { }
     }
 
     CircleContent(
-        uiState = uiState,
-        snackbarHostState = snackbarHostState,
-        onBackClick = onBack,
-        onCopyClick = viewModel::copyCode,
-        onRenewClick = viewModel::renewCode,
-        onRemoveClick = viewModel::askToRemove,
-        onConfirmRemoval = viewModel::confirmRemoval,
-        onCancelRemoval = viewModel::cancelRemoval,
-        modifier = modifier
+        state = state,
+        modifier = modifier,
+        onBack = onBack,
+        onShare = { invitationCode -> shareInvitationCode(context, invitationCode) },
+        onNewCode = viewModel::generateNewCode,
+        onRetry = viewModel::refresh,
+        onRemove = viewModel::askToRemove,
+        onConfirmRemove = viewModel::confirmRemove,
+        onCancelRemove = viewModel::cancelRemove
     )
 }
 
 @Composable
 fun CircleContent(
-    uiState: CircleUiState,
-    snackbarHostState: SnackbarHostState,
-    onBackClick: () -> Unit,
-    onCopyClick: () -> Unit,
-    onRenewClick: () -> Unit,
-    onRemoveClick: (Int) -> Unit,
-    onConfirmRemoval: () -> Unit,
-    onCancelRemoval: () -> Unit,
+    state: CircleUiState,
+    onBack: () -> Unit,
+    onShare: (InvitationCode) -> Unit,
+    onNewCode: () -> Unit,
+    onRetry: () -> Unit,
+    onRemove: (String) -> Unit,
+    onConfirmRemove: () -> Unit,
+    onCancelRemove: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val avatarColors = listOf(
-        MaterialTheme.colorScheme.secondaryContainer,
-        MaterialTheme.colorScheme.primaryContainer
-    )
-
-    SereniaBackground(modifier = modifier) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp, vertical = 12.dp)
-        ) {
-            TextButton(
-                onClick = onBackClick,
-                modifier = Modifier.heightIn(min = 56.dp),
-                contentPadding = PaddingValues(start = 0.dp, end = 12.dp)
-            ) {
-                Icon(
-                    imageVector = chevronLeft,
-                    contentDescription = null,
-                    modifier = Modifier.size(32.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "Atrás", style = MaterialTheme.typography.titleLarge)
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .background(SereniaPalette.Neutro100)
+            .verticalScroll(rememberScrollState())
+            .padding(start = SereniaSpacing.screen, top = 12.dp, end = SereniaSpacing.screen, bottom = 24.dp)
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            BackLink(onClick = onBack, text = "Mi familia")
             Text(
                 text = "Mi círculo",
                 style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                color = SereniaPalette.Teal700,
+                modifier = Modifier.semantics { heading() }
             )
+        }
 
-            Spacer(modifier = Modifier.height(16.dp))
+        InvitationCodeCard(label = "Tu código para invitar", invitationCode = state.invitationCode)
 
-            InvitationCodeCard(code = uiState.invitationCode)
+        state.codeError?.let { message ->
+            AlertBanner(message = message)
+        }
 
-            Spacer(modifier = Modifier.height(10.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            SecondaryButton(
+                text = "Compartir",
+                icon = share,
+                enabled = state.invitationCode != null,
+                onClick = { state.invitationCode?.let(onShare) },
+                modifier = Modifier.weight(1f)
+            )
+            SecondaryButton(
+                text = "Código nuevo",
+                icon = refresh,
+                enabled = !state.isGeneratingCode,
+                onClick = onNewCode,
+                modifier = Modifier.weight(1f)
+            )
+        }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                CodeActionButton(
-                    text = "Copiar",
-                    icon = contentCopy,
-                    onClick = onCopyClick,
-                    modifier = Modifier.weight(1f)
-                )
-                CodeActionButton(
-                    text = "Código nuevo",
-                    icon = refresh,
-                    onClick = onRenewClick,
-                    modifier = Modifier.weight(1f)
-                )
+        Text(
+            text = "Quién me acompaña",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = SereniaPalette.Neutro800,
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .semantics { heading() }
+        )
+
+        val members = state.members
+        val membersError = state.membersError
+        when {
+            membersError != null && members == null -> {
+                AlertBanner(message = membersError)
+                SecondaryButton(text = "Intentar de nuevo", icon = refresh, onClick = onRetry)
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Text(
-                text = "Quién me acompaña",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+            members == null -> Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 120.dp)
             ) {
-                uiState.members.forEach { member ->
-                    CircleMemberCard(
+                CircularProgressIndicator(color = SereniaPalette.Teal700)
+            }
+
+            members.isEmpty() -> EmptyCircleCard()
+
+            else -> members.forEachIndexed { position, member ->
+                val tone = MemberTone.forPosition(position)
+                if (member.familyLinkId == state.memberToRemove) {
+                    RemoveMemberCard(
                         member = member,
-                        // The color follows the member so it does not change when someone else is removed
-                        avatarColor = avatarColors[(member.id - 1) % avatarColors.size],
-                        isConfirmingRemoval = uiState.memberPendingRemovalId == member.id,
-                        onRemoveClick = { onRemoveClick(member.id) },
-                        onConfirmRemoval = onConfirmRemoval,
-                        onCancelRemoval = onCancelRemoval
+                        tone = tone,
+                        isRemoving = state.isRemoving,
+                        errorMessage = state.removeError,
+                        onConfirm = onConfirmRemove,
+                        onCancel = onCancelRemove
+                    )
+                } else {
+                    FamilyMemberCard(
+                        member = member,
+                        tone = tone,
+                        onRemove = { onRemove(member.familyLinkId) }
                     )
                 }
             }
-
-            // Leaves room so the message never covers the last member
-            Spacer(modifier = Modifier.height(72.dp))
-        }
-
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-        ) { snackbarData ->
-            SereniaSnackbar(message = snackbarData.visuals.message)
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun CircleScreenPreview() {
-    SereniaTheme {
-        CircleContent(
-            uiState = CircleUiState(
-                invitationCode = "4821",
-                members = listOf(
-                    CircleMember(id = 1, name = "Lucía", relationship = "Tu hija", initials = "LM"),
-                    CircleMember(id = 2, name = "Martín", relationship = "Tu nieto", initials = "MR")
-                )
-            ),
-            snackbarHostState = remember { SnackbarHostState() },
-            onBackClick = {},
-            onCopyClick = {},
-            onRenewClick = {},
-            onRemoveClick = {},
-            onConfirmRemoval = {},
-            onCancelRemoval = {}
+private fun EmptyCircleCard() {
+    val shape = RoundedCornerShape(SereniaRadius.lg)
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(SereniaPalette.Neutro50, shape)
+            .border(BorderStroke(2.dp, SereniaPalette.Neutro200), shape)
+            .padding(horizontal = 20.dp, vertical = 20.dp)
+    ) {
+        Text(
+            text = "Todavía no se ha unido nadie",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.ExtraBold,
+            color = SereniaPalette.Neutro800
+        )
+        Text(
+            text = "Comparte tu código con tu familia. Cuando lo escriban en su app, aparecerán aquí.",
+            style = MaterialTheme.typography.bodySmall,
+            color = SereniaPalette.Neutro700
         )
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = 0xFFF5F1EA)
 @Composable
-fun CircleScreenConfirmingPreview() {
+fun CircleContentPreview() {
     SereniaTheme {
         CircleContent(
-            uiState = CircleUiState(
-                invitationCode = "4821",
+            state = CircleUiState(
+                invitationCode = InvitationCode(id = "1", code = "K7M4QX2P", expiresAtMillis = 1_778_250_600_000),
                 members = listOf(
-                    CircleMember(id = 1, name = "Lucía", relationship = "Tu hija", initials = "LM"),
-                    CircleMember(id = 2, name = "Martín", relationship = "Tu nieto", initials = "MR")
-                ),
-                memberPendingRemovalId = 1
+                    FamilyMember(familyLinkId = "1", fullName = "Lucía Mendoza", relationshipLabel = "hija"),
+                    FamilyMember(familyLinkId = "2", fullName = "Martín Ríos", relationshipLabel = "nieto")
+                )
             ),
-            snackbarHostState = remember { SnackbarHostState() },
-            onBackClick = {},
-            onCopyClick = {},
-            onRenewClick = {},
-            onRemoveClick = {},
-            onConfirmRemoval = {},
-            onCancelRemoval = {}
+            onBack = {},
+            onShare = {},
+            onNewCode = {},
+            onRetry = {},
+            onRemove = {},
+            onConfirmRemove = {},
+            onCancelRemove = {}
         )
     }
 }

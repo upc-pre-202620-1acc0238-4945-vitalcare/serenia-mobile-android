@@ -44,7 +44,10 @@ fun CheckInTimeScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state.isSaved) {
-        if (state.isSaved) onContinue()
+        if (state.isSaved) {
+            viewModel.onContinued()
+            onContinue()
+        }
     }
 
     CheckInTimeContent(

@@ -17,6 +17,8 @@ interface AuthRepository {
 
     suspend fun getCurrentUser(): Result<User>
 
+    suspend fun getUser(userId: String): Result<User>
+
     suspend fun updateProfile(fullName: String, phoneNumber: String?, birthDate: BirthDate?): Result<User>
 
     suspend fun changePassword(currentPassword: String, newPassword: String): Result<Unit>

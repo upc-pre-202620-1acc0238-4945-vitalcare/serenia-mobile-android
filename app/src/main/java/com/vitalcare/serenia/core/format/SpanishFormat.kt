@@ -26,6 +26,10 @@ fun formatDate(year: Int, month: Int, day: Int): String {
     return "$day de ${MONTHS[month - 1]} de $year"
 }
 
+fun formatDayAndMonth(month: Int, day: Int): String {
+    return "$day de ${MONTHS[month - 1]}"
+}
+
 fun greetingFor(calendar: Calendar): String {
     return when (calendar.get(Calendar.HOUR_OF_DAY)) {
         in 5..11 -> "Buenos días"
