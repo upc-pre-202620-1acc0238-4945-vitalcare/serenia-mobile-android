@@ -207,8 +207,8 @@ fun CircleContentPreview() {
             state = CircleUiState(
                 invitationCode = InvitationCode(id = "1", code = "K7M4QX2P", expiresAtMillis = 1_778_250_600_000),
                 members = listOf(
-                    FamilyMember(familyLinkId = "1", fullName = "Lucía Mendoza", relationshipLabel = "hija"),
-                    FamilyMember(familyLinkId = "2", fullName = "Martín Ríos", relationshipLabel = "nieto")
+                    FamilyMember(familyLinkId = "1", relativeId = "1", fullName = "Lucía Mendoza", relationshipLabel = "hija"),
+                    FamilyMember(familyLinkId = "2", relativeId = "2", fullName = "Martín Ríos", relationshipLabel = "nieto")
                 )
             ),
             onBack = {},

@@ -29,6 +29,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vitalcare.serenia.core.designsystems.components.AlertBanner
@@ -170,17 +171,31 @@ enum class MemberTone(val background: Color, val content: Color) {
 }
 
 @Composable
-private fun MemberAvatar(initials: String, tone: MemberTone, size: Dp) {
+fun MemberAvatar(
+    initials: String,
+    tone: MemberTone,
+    size: Dp,
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = 22.sp,
+    borderWidth: Dp = 0.dp
+) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
+        modifier = modifier
             .size(size)
+            .then(
+                if (borderWidth > 0.dp) {
+                    Modifier.border(BorderStroke(borderWidth, SereniaPalette.Neutro50), CircleShape)
+                } else {
+                    Modifier
+                }
+            )
             .background(tone.background, CircleShape)
     ) {
         Text(
             text = initials,
             fontFamily = Nunito,
-            fontSize = 22.sp,
+            fontSize = fontSize,
             fontWeight = FontWeight.ExtraBold,
             color = tone.content
         )
@@ -190,8 +205,8 @@ private fun MemberAvatar(initials: String, tone: MemberTone, size: Dp) {
 @Preview(showBackground = true, backgroundColor = 0xFFF5F1EA)
 @Composable
 fun CircleCardsPreview() {
-    val lucia = FamilyMember(familyLinkId = "1", fullName = "Lucía Mendoza", relationshipLabel = "hija")
-    val martin = FamilyMember(familyLinkId = "2", fullName = "Martín Ríos", relationshipLabel = "nieto")
+    val lucia = FamilyMember(familyLinkId = "1", relativeId = "1", fullName = "Lucía Mendoza", relationshipLabel = "hija")
+    val martin = FamilyMember(familyLinkId = "2", relativeId = "2", fullName = "Martín Ríos", relationshipLabel = "nieto")
 
     SereniaTheme {
         Column(
