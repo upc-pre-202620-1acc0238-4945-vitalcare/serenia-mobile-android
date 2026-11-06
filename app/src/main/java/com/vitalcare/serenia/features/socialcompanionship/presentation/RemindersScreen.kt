@@ -28,10 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import com.vitalcare.serenia.core.designsystems.add
 import com.vitalcare.serenia.core.designsystems.components.AlertBanner
 import com.vitalcare.serenia.core.designsystems.components.PrimaryButton
@@ -56,28 +53,13 @@ fun RemindersScreen(
     viewModel: RemindersViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val lifecycleOwner = LocalLifecycleOwner.current
 
-    LaunchedEffect(lifecycleOwner) {
-        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            while (true) {
-                viewModel.refresh()
-                delay(REFRESH_INTERVAL_MILLIS)
-            }
-        }
-    }
+    RefreshWhileResumed(onRefresh = viewModel::refresh)
 
     LaunchedEffect(message) {
         if (message != null) {
             viewModel.showMessage(message)
             onMessageShown()
-        }
-    }
-
-    LaunchedEffect(state.message) {
-        if (state.message != null) {
-            delay(MESSAGE_DURATION_MILLIS)
-            viewModel.onMessageShown()
         }
     }
 
@@ -93,21 +75,41 @@ fun RemindersScreen(
             onKeep = viewModel::keepReminder
         )
 
-        val snackbarModifier = Modifier
-            .align(Alignment.BottomCenter)
-            .padding(SereniaSpacing.md)
-        val completedReminder = state.completedReminder
-        val message = state.message
-        if (completedReminder != null) {
-            SereniaSnackbar(
-                message = "Listo, está hecho.",
-                actionLabel = "Deshacer",
-                onAction = viewModel::undoComplete,
-                modifier = snackbarModifier
-            )
-        } else if (message != null) {
-            SereniaSnackbar(message = message, modifier = snackbarModifier)
+        ReminderSnackbar(
+            state = state,
+            onUndo = viewModel::undoComplete,
+            onMessageShown = viewModel::onMessageShown,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(SereniaSpacing.md)
+        )
+    }
+}
+
+@Composable
+fun ReminderSnackbar(
+    state: RemindersUiState,
+    onUndo: () -> Unit,
+    onMessageShown: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LaunchedEffect(state.message) {
+        if (state.message != null) {
+            delay(MESSAGE_DURATION_MILLIS)
+            onMessageShown()
         }
+    }
+
+    val message = state.message
+    if (state.completedReminder != null) {
+        SereniaSnackbar(
+            message = "Listo, está hecho.",
+            actionLabel = "Deshacer",
+            onAction = onUndo,
+            modifier = modifier
+        )
+    } else if (message != null) {
+        SereniaSnackbar(message = message, modifier = modifier)
     }
 }
 
@@ -328,7 +330,6 @@ private fun EmptyReminders(
 }
 
 private val EMPTY_STATE_OFFSET = 180.dp
-private const val REFRESH_INTERVAL_MILLIS = 60_000L
 private const val MESSAGE_DURATION_MILLIS = 4_000L
 
 @Preview(showBackground = true, backgroundColor = 0xFFF5F1EA)
