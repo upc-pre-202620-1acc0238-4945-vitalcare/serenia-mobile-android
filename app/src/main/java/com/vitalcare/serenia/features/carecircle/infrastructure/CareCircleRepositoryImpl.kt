@@ -57,7 +57,7 @@ class CareCircleRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun getCareCircleId(): Result<String> {
+    override suspend fun getCareCircleId(): Result<String> {
         val userId = sessionStorage.session.first()?.userId
             ?: return Result.failure(IllegalStateException("There is no active session"))
 
@@ -65,9 +65,14 @@ class CareCircleRepositoryImpl @Inject constructor(
             if (cachedUserId == userId) return Result.success(careCircleId)
         }
 
-        return api.getCareCircle(userId).toResult { careCircle ->
-            cachedCareCircle = userId to careCircle.id
-            careCircle.id
+        try {
+            return api.getCareCircle(userId).toResult { careCircle ->
+                cachedCareCircle = userId to careCircle.id
+                careCircle.id
+            }
+
+        } catch (exception: Exception) {
+            return Result.failure(exception)
         }
     }
 
