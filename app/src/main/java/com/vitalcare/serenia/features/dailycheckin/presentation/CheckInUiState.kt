@@ -16,4 +16,16 @@ data class CheckInUiState(
     val content: CheckInContent = CheckInContent.Loading,
     val isSubmitting: Boolean = false,
     val actionError: String? = null
-)
+) {
+    val isQuestionSettled: Boolean
+        get() = when (content) {
+            is CheckInContent.Answered,
+            CheckInContent.Paused,
+            CheckInContent.Missed,
+            is CheckInContent.Unavailable -> true
+
+            CheckInContent.Loading,
+            is CheckInContent.Pending,
+            is CheckInContent.Failed -> false
+        }
+}
