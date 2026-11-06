@@ -2,6 +2,7 @@ package com.vitalcare.serenia.features.home.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -27,6 +29,9 @@ import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 import com.vitalcare.serenia.features.alertsandsafety.presentation.HelpLayout
 import com.vitalcare.serenia.features.alertsandsafety.presentation.HelpOutcome
 import com.vitalcare.serenia.features.dailycheckin.presentation.CheckInSection
+import com.vitalcare.serenia.features.dailycheckin.presentation.CheckInViewModel
+import com.vitalcare.serenia.features.socialcompanionship.presentation.HomeReminderSection
+import com.vitalcare.serenia.features.socialcompanionship.presentation.HomeReminderSnackbar
 
 @Composable
 fun HomeScreen(
@@ -35,6 +40,9 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val checkInViewModel: CheckInViewModel = hiltViewModel()
+    val checkInState by checkInViewModel.state.collectAsStateWithLifecycle()
+    val showsReminder = !state.simplifiedMode && checkInState.isQuestionSettled
 
     LifecycleResumeEffect(Unit) {
         viewModel.refreshGreeting()
@@ -43,10 +51,25 @@ fun HomeScreen(
     }
 
     HelpLayout(onHelpSent = onHelpSent, modifier = modifier) {
-        HomeContent(state = state) {
-            CheckInSection(
-                firstName = state.firstName,
-                simplified = state.simplifiedMode
+        Box(modifier = Modifier.fillMaxSize()) {
+            HomeContent(
+                state = state,
+                checkIn = {
+                    CheckInSection(
+                        firstName = state.firstName,
+                        simplified = state.simplifiedMode,
+                        viewModel = checkInViewModel
+                    )
+                },
+                companionship = {
+                    if (showsReminder) HomeReminderSection()
+                }
+            )
+
+            HomeReminderSnackbar(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(SereniaSpacing.md)
             )
         }
     }
@@ -56,7 +79,8 @@ fun HomeScreen(
 fun HomeContent(
     state: HomeUiState,
     modifier: Modifier = Modifier,
-    checkIn: @Composable () -> Unit
+    checkIn: @Composable () -> Unit,
+    companionship: @Composable () -> Unit = {}
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -83,6 +107,7 @@ fun HomeContent(
         }
 
         checkIn()
+        companionship()
     }
 }
 
