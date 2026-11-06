@@ -13,6 +13,9 @@ data class RemindersUiState(
     val actionError: String? = null,
     val message: String? = null
 ) {
+    val nextReminder: SocialReminder?
+        get() = dueReminders.firstOrNull() ?: reminders.orEmpty().minByOrNull { it.remindAt }
+
     val dueReminders: List<SocialReminder>
         get() = reminders.orEmpty().filter { it.isDue }
 
