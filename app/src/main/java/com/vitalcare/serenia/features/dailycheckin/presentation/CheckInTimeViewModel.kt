@@ -45,6 +45,10 @@ class CheckInTimeViewModel @Inject constructor(
         }
     }
 
+    fun onContinued() {
+        _state.update { it.copy(isSaved = false) }
+    }
+
     fun saveTime() {
         val currentState = _state.value
         if (currentState.isSaving || currentState.timeError != null) return
