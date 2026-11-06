@@ -57,3 +57,38 @@ fun greetingFor(calendar: Calendar): String {
         else -> "Buenas noches"
     }
 }
+
+fun formatPastDay(date: Calendar, today: Calendar = Calendar.getInstance()): String {
+    val daysAgo = daysBetween(date, today)
+    return when (daysAgo) {
+        0L -> "hoy"
+        1L -> "ayer"
+        in 2L..6L -> WEEKDAYS[date.get(Calendar.DAY_OF_WEEK) - 1].lowercase()
+        else -> formatDayAndMonth(date.get(Calendar.MONTH) + 1, date.get(Calendar.DAY_OF_MONTH))
+    }
+}
+
+fun formatDuration(totalSeconds: Int): String {
+    val seconds = totalSeconds.coerceAtLeast(0)
+    return "${seconds / 60}:${(seconds % 60).toString().padStart(2, '0')}"
+}
+
+fun joinNames(names: List<String>, conjunction: String = "y"): String {
+    return when (names.size) {
+        0 -> ""
+        1 -> names.first()
+        else -> "${names.dropLast(1).joinToString(", ")} $conjunction ${names.last()}"
+    }
+}
+
+private fun daysBetween(from: Calendar, to: Calendar): Long {
+    val start = Calendar.getInstance().apply {
+        clear()
+        set(from.get(Calendar.YEAR), from.get(Calendar.MONTH), from.get(Calendar.DAY_OF_MONTH))
+    }
+    val end = Calendar.getInstance().apply {
+        clear()
+        set(to.get(Calendar.YEAR), to.get(Calendar.MONTH), to.get(Calendar.DAY_OF_MONTH))
+    }
+    return Math.round((end.timeInMillis - start.timeInMillis) / MILLIS_PER_DAY.toDouble())
+}
