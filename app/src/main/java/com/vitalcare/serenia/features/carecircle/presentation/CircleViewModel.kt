@@ -4,14 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vitalcare.serenia.core.network.toUserMessage
 import com.vitalcare.serenia.features.carecircle.application.GenerateInvitationCodeUseCase
-import com.vitalcare.serenia.features.carecircle.application.GetFamilyLinksUseCase
 import com.vitalcare.serenia.features.carecircle.application.GetInvitationCodeUseCase
 import com.vitalcare.serenia.features.carecircle.application.RevokeFamilyLinkUseCase
-import com.vitalcare.serenia.features.iam.application.GetUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,9 +19,8 @@ import javax.inject.Inject
 class CircleViewModel @Inject constructor(
     private val getInvitationCode: GetInvitationCodeUseCase,
     private val generateInvitationCode: GenerateInvitationCodeUseCase,
-    private val getFamilyLinks: GetFamilyLinksUseCase,
     private val revokeFamilyLink: RevokeFamilyLinkUseCase,
-    private val getUser: GetUserUseCase
+    private val getFamilyMembers: FamilyMembersProvider
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CircleUiState())
@@ -102,17 +97,8 @@ class CircleViewModel @Inject constructor(
 
     private fun loadMembers() {
         viewModelScope.launch(Dispatchers.IO) {
-            getFamilyLinks().fold(
-                onSuccess = { familyLinks ->
-                    val members = familyLinks.map { familyLink ->
-                        async {
-                            FamilyMember(
-                                familyLinkId = familyLink.id,
-                                fullName = getUser(familyLink.relativeId).getOrNull()?.fullName ?: "Familiar",
-                                relationshipLabel = familyLink.relationshipLabel
-                            )
-                        }
-                    }.awaitAll()
+            getFamilyMembers().fold(
+                onSuccess = { members ->
                     _state.update { it.copy(members = members, membersError = null) }
                 },
                 onFailure = { exception ->
