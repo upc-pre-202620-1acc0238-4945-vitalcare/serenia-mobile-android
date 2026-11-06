@@ -21,10 +21,16 @@ class AuthInterceptor @Inject constructor(private val sessionStorage: SessionSto
             }
             .build()
 
-        return chain.proceed(request)
+        val response = chain.proceed(request)
+
+        if (token != null && response.code == UNAUTHORIZED) {
+            runBlocking { sessionStorage.clear() }
+        }
+        return response
     }
 
     private companion object {
         const val LANGUAGE = "es-PE"
+        const val UNAUTHORIZED = 401
     }
 }
