@@ -11,6 +11,7 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Surface
@@ -25,13 +26,17 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.vitalcare.serenia.core.designsystems.theme.Nunito
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaRadius
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
+import com.vitalcare.serenia.core.format.formatLongDate
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
@@ -43,7 +48,8 @@ fun DateInputDialog(
     initialMonth: Int?,
     initialDay: Int?,
     onConfirm: (year: Int, month: Int, day: Int) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    upcoming: Boolean = false
 ) {
     val context = LocalContext.current
     val spanishConfiguration = remember(context) {
@@ -65,7 +71,8 @@ fun DateInputDialog(
                 initialMonth = initialMonth,
                 initialDay = initialDay,
                 onConfirm = onConfirm,
-                onDismiss = onDismiss
+                onDismiss = onDismiss,
+                upcoming = upcoming
             )
         }
     }
@@ -79,7 +86,8 @@ private fun DateInputContent(
     initialMonth: Int?,
     initialDay: Int?,
     onConfirm: (year: Int, month: Int, day: Int) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    upcoming: Boolean
 ) {
     val today = remember { Calendar.getInstance() }
     val todayUtcMillis = remember {
@@ -91,10 +99,16 @@ private fun DateInputContent(
         } else {
             null
         },
-        yearRange = FIRST_YEAR..today.get(Calendar.YEAR),
-        initialDisplayMode = DisplayMode.Input,
+        yearRange = if (upcoming) {
+            today.get(Calendar.YEAR)..today.get(Calendar.YEAR) + UPCOMING_YEARS
+        } else {
+            FIRST_YEAR..today.get(Calendar.YEAR)
+        },
+        initialDisplayMode = if (upcoming) DisplayMode.Picker else DisplayMode.Input,
         selectableDates = object : SelectableDates {
-            override fun isSelectableDate(utcTimeMillis: Long): Boolean = utcTimeMillis <= todayUtcMillis
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                return if (upcoming) utcTimeMillis >= todayUtcMillis else utcTimeMillis <= todayUtcMillis
+            }
         }
     )
 
@@ -104,33 +118,47 @@ private fun DateInputContent(
         shadowElevation = 16.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = if (upcoming) 16.dp else 20.dp)
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(20.dp),
+            verticalArrangement = Arrangement.spacedBy(if (upcoming) 12.dp else 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(24.dp)
+            modifier = Modifier.padding(vertical = 24.dp, horizontal = if (upcoming) 0.dp else 24.dp)
         ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.headlineMedium,
-                color = SereniaPalette.Neutro800,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .semantics { heading() }
-            )
+            if (upcoming) {
+                UpcomingDateHeader(title = title, selectedDateMillis = state.selectedDateMillis)
+            } else {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = SereniaPalette.Neutro800,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .semantics { heading() }
+                )
+            }
 
             DatePicker(
                 state = state,
                 title = null,
                 headline = null,
                 showModeToggle = false,
-                colors = DatePickerDefaults.colors(containerColor = SereniaPalette.Neutro50)
+                colors = DatePickerDefaults.colors(
+                    containerColor = SereniaPalette.Neutro50,
+                    selectedDayContainerColor = SereniaPalette.Teal700,
+                    selectedDayContentColor = SereniaPalette.Neutro50,
+                    todayDateBorderColor = SereniaPalette.Teal700,
+                    todayContentColor = SereniaPalette.Teal700,
+                    selectedYearContainerColor = SereniaPalette.Teal700,
+                    selectedYearContentColor = SereniaPalette.Neutro50
+                )
             )
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = if (upcoming) 24.dp else 0.dp)
             ) {
                 SecondaryButton(
                     text = "Cancelar",
@@ -159,6 +187,51 @@ private fun DateInputContent(
     }
 }
 
+@Composable
+private fun UpcomingDateHeader(title: String, selectedDateMillis: Long?) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+            modifier = Modifier.padding(horizontal = 24.dp)
+        ) {
+            Text(
+                text = title,
+                fontFamily = Nunito,
+                fontSize = 18.sp,
+                lineHeight = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = SereniaPalette.Neutro600,
+                modifier = Modifier.semantics { heading() }
+            )
+            if (selectedDateMillis != null) {
+                Text(
+                    text = formatLongDate(localCalendarFor(selectedDateMillis)),
+                    fontFamily = Nunito,
+                    fontSize = 24.sp,
+                    lineHeight = 30.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = SereniaPalette.Neutro800
+                )
+            }
+        }
+        HorizontalDivider(
+            color = SereniaPalette.Neutro200,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+    }
+}
+
+private fun localCalendarFor(utcMillis: Long): Calendar {
+    val utc = Calendar.getInstance(UTC).apply { timeInMillis = utcMillis }
+    return Calendar.getInstance().apply {
+        clear()
+        set(utc.get(Calendar.YEAR), utc.get(Calendar.MONTH), utc.get(Calendar.DAY_OF_MONTH))
+    }
+}
+
 private fun utcMillis(year: Int, month: Int, day: Int): Long {
     return Calendar.getInstance(UTC).apply {
         clear()
@@ -167,6 +240,7 @@ private fun utcMillis(year: Int, month: Int, day: Int): Long {
 }
 
 private const val FIRST_YEAR = 1900
+private const val UPCOMING_YEARS = 2
 private val UTC = TimeZone.getTimeZone("UTC")
 private val SPANISH = Locale("es", "PE")
 
@@ -181,6 +255,22 @@ fun DateInputDialogPreview() {
             initialDay = 12,
             onConfirm = { _, _, _ -> },
             onDismiss = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun UpcomingDateInputDialogPreview() {
+    SereniaTheme {
+        DateInputDialog(
+            title = "¿Qué día?",
+            initialYear = 2026,
+            initialMonth = 11,
+            initialDay = 7,
+            onConfirm = { _, _, _ -> },
+            onDismiss = {},
+            upcoming = true
         )
     }
 }

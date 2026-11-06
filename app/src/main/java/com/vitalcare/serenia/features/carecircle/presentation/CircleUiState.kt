@@ -4,6 +4,7 @@ import com.vitalcare.serenia.features.carecircle.domain.InvitationCode
 
 data class FamilyMember(
     val familyLinkId: String,
+    val relativeId: String,
     val fullName: String,
     val relationshipLabel: String?
 ) {

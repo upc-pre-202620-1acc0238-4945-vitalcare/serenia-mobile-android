@@ -58,7 +58,9 @@ fun SereniaTextField(
     prefix: String? = null,
     isPassword: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    maxLength: Int? = null,
+    labelContent: (@Composable () -> Unit)? = null
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
     val shape = RoundedCornerShape(SereniaRadius.sm)
@@ -72,15 +74,19 @@ fun SereniaTextField(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier.fillMaxWidth()
     ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.titleMedium,
-            color = SereniaPalette.Neutro800
-        )
+        if (labelContent != null) {
+            labelContent()
+        } else {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.titleMedium,
+                color = SereniaPalette.Neutro800
+            )
+        }
 
         BasicTextField(
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = { text -> onValueChange(if (maxLength != null) text.take(maxLength) else text) },
             singleLine = true,
             textStyle = MaterialTheme.typography.bodyMedium.copy(
                 fontFamily = Nunito,

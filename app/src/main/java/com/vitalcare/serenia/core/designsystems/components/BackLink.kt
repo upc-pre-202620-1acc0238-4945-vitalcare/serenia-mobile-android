@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,7 +30,8 @@ import com.vitalcare.serenia.core.designsystems.theme.SereniaTouch
 fun BackLink(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    text: String = "Atrás"
+    text: String = "Atrás",
+    color: Color = SereniaPalette.Neutro700
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -42,7 +44,7 @@ fun BackLink(
         Icon(
             imageVector = chevronLeft,
             contentDescription = null,
-            tint = SereniaPalette.Neutro700,
+            tint = color,
             modifier = Modifier.size(28.dp)
         )
         Spacer(modifier = Modifier.width(4.dp))
@@ -52,7 +54,7 @@ fun BackLink(
             fontSize = 18.sp,
             lineHeight = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = SereniaPalette.Neutro700
+            color = color
         )
     }
 }

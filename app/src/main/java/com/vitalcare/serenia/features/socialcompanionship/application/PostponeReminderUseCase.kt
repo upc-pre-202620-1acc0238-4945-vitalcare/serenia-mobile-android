@@ -1,11 +1,12 @@
 package com.vitalcare.serenia.features.socialcompanionship.application
 
-import com.vitalcare.serenia.features.socialcompanionship.domain.ReminderRepository
+import com.vitalcare.serenia.features.socialcompanionship.domain.SocialReminder
+import com.vitalcare.serenia.features.socialcompanionship.domain.SocialReminderRepository
 import javax.inject.Inject
 
-class PostponeReminderUseCase @Inject constructor(private val repository: ReminderRepository) {
+class PostponeReminderUseCase @Inject constructor(private val repository: SocialReminderRepository) {
 
-    suspend operator fun invoke(id: Int): Result<Unit> {
-        return repository.postponeReminder(id)
+    suspend operator fun invoke(reminderId: String): Result<SocialReminder> {
+        return repository.postponeReminder(reminderId)
     }
 }
