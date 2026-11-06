@@ -34,4 +34,10 @@ interface DailyCheckInApi {
 
     @DELETE("check-in-preferences/{preferencesId}/daily-pause")
     suspend fun resumeDailyCheckIn(@Path("preferencesId") preferencesId: String): Response<CheckInPreferencesDto>
+
+    @PUT("check-in-preferences/{preferencesId}/simplified-mode")
+    suspend fun updateSimplifiedMode(
+        @Path("preferencesId") preferencesId: String,
+        @Body request: UpdateSimplifiedModeRequestDto
+    ): Response<CheckInPreferencesDto>
 }

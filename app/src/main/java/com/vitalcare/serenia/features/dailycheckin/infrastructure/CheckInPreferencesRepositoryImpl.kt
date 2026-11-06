@@ -47,6 +47,16 @@ class CheckInPreferencesRepositoryImpl @Inject constructor(
         return change { preferencesId -> api.resumeDailyCheckIn(preferencesId) }
     }
 
+    override suspend fun updateSimplifiedMode(enabled: Boolean): Result<CheckInPreferences> {
+        return change { preferencesId ->
+            api.updateSimplifiedMode(preferencesId, UpdateSimplifiedModeRequestDto(enabled))
+        }
+    }
+
+    override fun clear() {
+        _preferences.value = null
+    }
+
     private suspend fun change(
         request: suspend (preferencesId: String) -> Response<CheckInPreferencesDto>
     ): Result<CheckInPreferences> {
