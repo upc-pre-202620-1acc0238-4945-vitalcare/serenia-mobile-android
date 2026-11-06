@@ -30,19 +30,22 @@ import com.vitalcare.serenia.features.alertsandsafety.presentation.HelpLayout
 import com.vitalcare.serenia.features.alertsandsafety.presentation.HelpOutcome
 import com.vitalcare.serenia.features.dailycheckin.presentation.CheckInSection
 import com.vitalcare.serenia.features.dailycheckin.presentation.CheckInViewModel
+import com.vitalcare.serenia.features.socialcompanionship.presentation.HomeCompanionshipCards
 import com.vitalcare.serenia.features.socialcompanionship.presentation.HomeReminderSection
 import com.vitalcare.serenia.features.socialcompanionship.presentation.HomeReminderSnackbar
 
 @Composable
 fun HomeScreen(
     onHelpSent: (HelpOutcome) -> Unit,
+    onTellSomething: () -> Unit,
+    onSeePhotos: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val checkInViewModel: CheckInViewModel = hiltViewModel()
     val checkInState by checkInViewModel.state.collectAsStateWithLifecycle()
-    val showsReminder = !state.simplifiedMode && checkInState.isQuestionSettled
+    val showsCompanionship = !state.simplifiedMode && checkInState.isQuestionSettled
 
     LifecycleResumeEffect(Unit) {
         viewModel.refreshGreeting()
@@ -62,7 +65,10 @@ fun HomeScreen(
                     )
                 },
                 companionship = {
-                    if (showsReminder) HomeReminderSection()
+                    if (showsCompanionship) {
+                        HomeCompanionshipCards(onTellSomething = onTellSomething, onSeePhotos = onSeePhotos)
+                        HomeReminderSection()
+                    }
                 }
             )
 
