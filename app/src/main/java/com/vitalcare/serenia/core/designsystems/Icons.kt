@@ -292,3 +292,24 @@ val calendarToday: ImageVector by lazy {
         pathData = "M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 0.9-2 2v16c0 1.1 0.9 2 2 2h16c1.1 0 2-0.9 2-2V5c0-1.1-0.9-2-2-2zm0 18H4V10h16v11zm0-13H4V5h16v3z"
     )
 }
+
+val image: ImageVector by lazy {
+    materialIcon(
+        name = "image",
+        pathData = "M19 5v14H5V5h14m0-2H5c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2V5c0-1.1-0.9-2-2-2zm-4.86 8.86l-3 3.87L9 13.14 6 17h12l-3.86-5.14z"
+    )
+}
+
+val playArrow: ImageVector by lazy {
+    materialIcon(
+        name = "playArrow",
+        pathData = "M8 5v14l11-7z"
+    )
+}
+
+val pause: ImageVector by lazy {
+    materialIcon(
+        name = "pause",
+        pathData = "M6 19h4V5H6v14zm8-14v14h4V5h-4z"
+    )
+}
