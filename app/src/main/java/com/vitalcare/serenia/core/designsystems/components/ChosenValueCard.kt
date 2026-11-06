@@ -42,14 +42,15 @@ fun ChosenValueCard(
     tone: ChosenValueTone = ChosenValueTone.Teal,
     actionLabel: String = "Cambiar",
     isError: Boolean = false,
-    errorMessage: String? = null
+    errorMessage: String? = null,
+    compact: Boolean = false
 ) {
     val shape = RoundedCornerShape(SereniaRadius.md)
     val background = if (tone == ChosenValueTone.Teal) SereniaPalette.Teal50 else SereniaPalette.Verde50
     val border = when {
         isError -> BorderStroke(3.dp, SereniaPalette.Error)
         tone == ChosenValueTone.Teal -> BorderStroke(2.dp, SereniaPalette.Teal200)
-        else -> BorderStroke(2.dp, SereniaPalette.Verde200)
+        else -> BorderStroke(2.dp, SereniaPalette.Verde300)
     }
 
     Surface(
@@ -59,7 +60,7 @@ fun ChosenValueCard(
         border = border,
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 80.dp)
+            .heightIn(min = if (compact) 72.dp else 80.dp)
             .clearAndSetSemantics {
                 contentDescription = "$label: $value. $actionLabel"
                 if (isError && errorMessage != null) error(errorMessage)
@@ -68,7 +69,12 @@ fun ChosenValueCard(
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(start = 20.dp, top = 12.dp, end = 16.dp, bottom = 12.dp)
+            modifier = Modifier.padding(
+                start = if (compact) 18.dp else 20.dp,
+                top = if (compact) 10.dp else 12.dp,
+                end = 16.dp,
+                bottom = if (compact) 10.dp else 12.dp
+            )
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -82,8 +88,8 @@ fun ChosenValueCard(
                 Text(
                     text = value,
                     fontFamily = Nunito,
-                    fontSize = 28.sp,
-                    lineHeight = 34.sp,
+                    fontSize = if (compact) 22.sp else 28.sp,
+                    lineHeight = if (compact) 28.sp else 34.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = SereniaPalette.Neutro800
                 )
@@ -114,6 +120,13 @@ fun ChosenValueCardPreview() {
         ) {
             ChosenValueCard(label = "Hora de tu pregunta", value = "10:00 a. m.", onChange = {})
             ChosenValueCard(label = "Hora de tu pregunta", value = "10:30 p. m.", onChange = {}, isError = true)
+            ChosenValueCard(
+                label = "Día elegido",
+                value = "Sábado 7 de noviembre",
+                onChange = {},
+                tone = ChosenValueTone.Verde,
+                compact = true
+            )
         }
     }
 }
