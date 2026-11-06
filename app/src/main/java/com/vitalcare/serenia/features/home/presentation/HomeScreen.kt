@@ -24,10 +24,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaSpacing
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
+import com.vitalcare.serenia.features.alertsandsafety.presentation.HelpLayout
+import com.vitalcare.serenia.features.alertsandsafety.presentation.HelpOutcome
 import com.vitalcare.serenia.features.dailycheckin.presentation.CheckInSection
 
 @Composable
 fun HomeScreen(
+    onHelpSent: (HelpOutcome) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -39,11 +42,13 @@ fun HomeScreen(
         onPauseOrDispose { }
     }
 
-    HomeContent(state = state, modifier = modifier) {
-        CheckInSection(
-            firstName = state.firstName,
-            simplified = state.simplifiedMode
-        )
+    HelpLayout(onHelpSent = onHelpSent, modifier = modifier) {
+        HomeContent(state = state) {
+            CheckInSection(
+                firstName = state.firstName,
+                simplified = state.simplifiedMode
+            )
+        }
     }
 }
 
