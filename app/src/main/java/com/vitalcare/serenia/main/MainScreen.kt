@@ -39,6 +39,7 @@ import com.vitalcare.serenia.features.socialcompanionship.presentation.socialCom
 fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
 
     val isSignedIn by viewModel.isSignedIn.collectAsStateWithLifecycle()
+    val simplifiedMode by viewModel.simplifiedMode.collectAsStateWithLifecycle()
     val signedIn = isSignedIn
 
     if (signedIn == null) {
@@ -71,6 +72,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
             if (selectedItem != null) {
                 MainNavigationBar(
                     selectedItem = selectedItem,
+                    simplified = simplifiedMode,
                     onItemClick = { item ->
                         // Tapping the active tab from a deeper screen goes back to its main screen
                         if (item == NavigationItem.FAMILY && destination?.hasRoute<CircleRoute>() == true) {

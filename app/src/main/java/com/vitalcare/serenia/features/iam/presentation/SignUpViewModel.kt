@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.vitalcare.serenia.core.network.ApiException
+import com.vitalcare.serenia.core.network.toUserMessage
 import com.vitalcare.serenia.features.iam.application.SignUpUseCase
 import com.vitalcare.serenia.features.iam.domain.CredentialsValidator
 import com.vitalcare.serenia.features.iam.domain.UserRole
@@ -85,7 +86,7 @@ class SignUpViewModel @Inject constructor(
                     if (exception is ApiException && exception.status == CONFLICT) {
                         _state.update { it.copy(isLoading = false, emailError = EMAIL_TAKEN) }
                     } else {
-                        _state.update { it.copy(isLoading = false, formError = exception.toAuthMessage()) }
+                        _state.update { it.copy(isLoading = false, formError = exception.toUserMessage()) }
                     }
                 }
             )
