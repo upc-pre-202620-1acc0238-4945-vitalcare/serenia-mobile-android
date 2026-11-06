@@ -229,3 +229,24 @@ val sentimentDissatisfied: ImageVector by lazy {
         pathData = "M15.5 11c0.83 0 1.5-0.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s0.67 1.5 1.5 1.5zm-7 0c0.83 0 1.5-0.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.49-9C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-6c-2.33 0-4.32 1.45-5.12 3.5h1.67c0.69-1.19 1.97-2 3.45-2s2.75 0.81 3.45 2h1.67c-0.8-2.05-2.79-3.5-5.12-3.5z"
     )
 }
+
+val simplifiedMode: ImageVector by lazy {
+    materialIcon(
+        name = "simplifiedMode",
+        pathData = "M7 11h10v2H7zm12-8H5c-1.11 0-2 0.9-2 2v14c0 1.1 0.89 2 2 2h14c1.11 0 2-0.9 2-2V5c0-1.1-0.89-2-2-2zm0 16H5V5h14v14z"
+    )
+}
+
+val contrast: ImageVector by lazy {
+    materialIcon(
+        name = "contrast",
+        pathData = "M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10zm0-18c4.41 0 8 3.59 8 8s-3.59 8-8 8V4z"
+    )
+}
+
+val logout: ImageVector by lazy {
+    materialIcon(
+        name = "logout",
+        pathData = "M8 7l-5 5 5 5 1.41-1.41L6.83 13H16v-2H6.83l2.58-2.59L8 7zm4-4v2h8v14h-8v2h8c1.1 0 2-0.9 2-2V5c0-1.1-0.9-2-2-2h-8z"
+    )
+}
