@@ -94,7 +94,8 @@ fun SecondaryButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     icon: ImageVector? = null,
-    color: Color = SereniaPalette.Teal700
+    color: Color = SereniaPalette.Teal700,
+    containerColor: Color = SereniaPalette.Neutro50
 ) {
     OutlinedButton(
         onClick = onClick,
@@ -102,7 +103,7 @@ fun SecondaryButton(
         shape = CircleShape,
         border = BorderStroke(2.dp, color),
         colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = SereniaPalette.Neutro50,
+            containerColor = containerColor,
             contentColor = color
         ),
         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
