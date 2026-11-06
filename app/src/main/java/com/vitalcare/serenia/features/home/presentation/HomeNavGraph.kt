@@ -6,6 +6,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import kotlinx.serialization.Serializable
 import com.vitalcare.serenia.features.alertsandsafety.presentation.HelpSentRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.AudioMessageRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.FamilyNavGraphRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.PhotosRoute
 
 @Serializable
 data object HomeNavGraphRoute
@@ -20,8 +23,19 @@ fun NavGraphBuilder.homeNavGraph(navController: NavController) {
             HomeScreen(
                 onHelpSent = { outcome ->
                     navController.navigate(HelpSentRoute(outcome = outcome.name)) { launchSingleTop = true }
-                }
+                },
+                onTellSomething = { navController.openInFamilyTab(AudioMessageRoute) },
+                onSeePhotos = { navController.openInFamilyTab(PhotosRoute) }
             )
         }
     }
+}
+
+private fun NavController.openInFamilyTab(route: Any) {
+    navigate(FamilyNavGraphRoute) {
+        popUpTo<HomeNavGraphRoute> { saveState = true }
+        launchSingleTop = true
+        restoreState = true
+    }
+    navigate(route) { launchSingleTop = true }
 }
