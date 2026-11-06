@@ -1,16 +1,20 @@
 package com.vitalcare.serenia.features.account.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -19,11 +23,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vitalcare.serenia.core.designsystems.components.AlertBanner
 import com.vitalcare.serenia.core.designsystems.components.ChosenValueCard
 import com.vitalcare.serenia.core.designsystems.components.FieldError
 import com.vitalcare.serenia.core.designsystems.components.QuietButton
+import com.vitalcare.serenia.core.designsystems.components.SereniaSnackbar
 import com.vitalcare.serenia.core.designsystems.components.SwitchRow
 import com.vitalcare.serenia.core.designsystems.components.TimeInputDialog
 import com.vitalcare.serenia.core.designsystems.contrast
@@ -35,23 +41,53 @@ import com.vitalcare.serenia.core.designsystems.theme.SereniaSpacing
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 import com.vitalcare.serenia.core.format.formatTime
 import com.vitalcare.serenia.features.dailycheckin.domain.ReminderTime
+import kotlinx.coroutines.delay
 
 @Composable
 fun AccountScreen(
+    message: String?,
+    onMessageShown: () -> Unit,
+    onEditProfile: () -> Unit,
+    onChangePassword: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AccountViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    AccountContent(
-        state = state,
-        modifier = modifier,
-        onChangeTime = viewModel::openPicker,
-        onSimplifiedModeChange = viewModel::changeSimplifiedMode,
-        onSignOut = viewModel::askToSignOut,
-        onConfirmSignOut = viewModel::confirmSignOut,
-        onCancelSignOut = viewModel::cancelSignOut
-    )
+    LifecycleResumeEffect(Unit) {
+        viewModel.loadUser()
+        onPauseOrDispose { }
+    }
+
+    LaunchedEffect(message) {
+        if (message != null) {
+            delay(MESSAGE_DURATION_MILLIS)
+            onMessageShown()
+        }
+    }
+
+    Box(modifier = modifier.fillMaxSize()) {
+        AccountContent(
+            state = state,
+            onEditProfile = onEditProfile,
+            onChangeTime = viewModel::openPicker,
+            onSimplifiedModeChange = viewModel::changeSimplifiedMode,
+            onChangePassword = onChangePassword,
+            onSignOut = viewModel::askToSignOut,
+            onConfirmSignOut = viewModel::confirmSignOut,
+            onCancelSignOut = viewModel::cancelSignOut
+        )
+
+        message?.let { text ->
+            SereniaSnackbar(
+                message = text,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .padding(horizontal = SereniaSpacing.md, vertical = SereniaSpacing.md)
+            )
+        }
+    }
 
     if (state.isPickerVisible) {
         val time = state.displayedTime ?: ReminderTime.DEFAULT
@@ -68,8 +104,10 @@ fun AccountScreen(
 @Composable
 fun AccountContent(
     state: AccountUiState,
+    onEditProfile: () -> Unit,
     onChangeTime: () -> Unit,
     onSimplifiedModeChange: (Boolean) -> Unit,
+    onChangePassword: () -> Unit,
     onSignOut: () -> Unit,
     onConfirmSignOut: () -> Unit,
     onCancelSignOut: () -> Unit,
@@ -91,7 +129,7 @@ fun AccountContent(
             modifier = Modifier.semantics { heading() }
         )
 
-        ProfileCard(fullName = state.fullName, initial = state.initial)
+        ProfileCard(fullName = state.fullName, initial = state.initial, onClick = onEditProfile)
 
         SectionTitle(text = "Mi pregunta del día")
         state.displayedTime?.let { time ->
@@ -131,7 +169,7 @@ fun AccountContent(
         }
 
         SectionTitle(text = "Seguridad")
-        AccountOptionRow(icon = lock, text = "Cambiar mi contraseña")
+        AccountOptionRow(icon = lock, text = "Cambiar mi contraseña", onClick = onChangePassword)
 
         if (state.isConfirmingSignOut) {
             SignOutConfirmationCard(
@@ -170,11 +208,15 @@ fun AccountContentPreview() {
     SereniaTheme {
         AccountContent(
             state = AccountUiState(fullName = "Rosa Mendoza", reminderTime = ReminderTime.DEFAULT),
+            onEditProfile = {},
             onChangeTime = {},
             onSimplifiedModeChange = {},
+            onChangePassword = {},
             onSignOut = {},
             onConfirmSignOut = {},
             onCancelSignOut = {}
         )
     }
 }
+
+private const val MESSAGE_DURATION_MILLIS = 4_000L

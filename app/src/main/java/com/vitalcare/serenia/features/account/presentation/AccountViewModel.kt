@@ -120,7 +120,7 @@ class AccountViewModel @Inject constructor(
         }
     }
 
-    private fun loadUser() {
+    fun loadUser() {
         viewModelScope.launch(Dispatchers.IO) {
             getCurrentUser().onSuccess { user ->
                 _state.update { it.copy(fullName = user.fullName) }
@@ -152,7 +152,6 @@ class AccountViewModel @Inject constructor(
     }
 
     init {
-        loadUser()
         observePreferences()
         loadPreferences()
     }

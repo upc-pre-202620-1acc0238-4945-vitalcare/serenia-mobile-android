@@ -3,6 +3,7 @@ package com.vitalcare.serenia.features.account.presentation
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,8 +24,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +48,7 @@ import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 fun ProfileCard(
     fullName: String,
     initial: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val shape = RoundedCornerShape(SereniaRadius.lg)
@@ -57,6 +61,8 @@ fun ProfileCard(
             .heightIn(min = 96.dp)
             .background(SereniaPalette.Durazno100, shape)
             .border(BorderStroke(2.dp, SereniaPalette.Durazno300), shape)
+            .clip(shape)
+            .clickable(role = Role.Button, onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 14.dp)
     ) {
         Box(
@@ -104,6 +110,7 @@ fun ProfileCard(
 fun AccountOptionRow(
     icon: ImageVector,
     text: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val shape = RoundedCornerShape(SereniaRadius.lg)
@@ -121,6 +128,8 @@ fun AccountOptionRow(
                 spotColor = SereniaPalette.Teal700.copy(alpha = 0.08f)
             )
             .background(SereniaPalette.Neutro50, shape)
+            .clip(shape)
+            .clickable(role = Role.Button, onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 10.dp)
     ) {
         Box(
@@ -228,8 +237,8 @@ fun AccountCardsPreview() {
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.padding(20.dp)
         ) {
-            ProfileCard(fullName = "Rosa Mendoza", initial = "R")
-            AccountOptionRow(icon = lock, text = "Cambiar mi contraseña")
+            ProfileCard(fullName = "Rosa Mendoza", initial = "R", onClick = {})
+            AccountOptionRow(icon = lock, text = "Cambiar mi contraseña", onClick = {})
             SignOutConfirmationCard(isSigningOut = false, errorMessage = null, onConfirm = {}, onCancel = {})
         }
     }
