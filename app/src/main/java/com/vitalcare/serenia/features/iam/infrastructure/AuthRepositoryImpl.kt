@@ -12,6 +12,9 @@ import com.vitalcare.serenia.features.iam.domain.UserRole
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.TimeZone
 import javax.inject.Inject
 
@@ -137,6 +140,29 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun uploadProfilePhoto(photo: ByteArray): Result<User> {
+        try {
+            val userId = sessionStorage.session.first()?.userId
+                ?: return Result.failure(IllegalStateException("There is no active session"))
+            val filePart = MultipartBody.Part.createFormData(
+                PHOTO_PART,
+                PHOTO_FILE_NAME,
+                photo.toRequestBody(PHOTO_TYPE.toMediaType())
+            )
+            val response = api.uploadPhoto(userId, filePart)
+
+            if (response.isSuccessful) {
+                response.body()?.let { userDto ->
+                    return Result.success(userDto.toDomain())
+                }
+            }
+            return Result.failure(response.toApiException())
+
+        } catch (exception: Exception) {
+            return Result.failure(exception)
+        }
+    }
+
     override suspend fun changePassword(currentPassword: String, newPassword: String): Result<Unit> {
         try {
             val userId = sessionStorage.session.first()?.userId
@@ -180,6 +206,9 @@ class AuthRepositoryImpl @Inject constructor(
     private companion object {
         const val LOCALE = "es-PE"
         const val INCORRECT_PASSWORD = 422
+        const val PHOTO_PART = "file"
+        const val PHOTO_FILE_NAME = "profile.jpg"
+        const val PHOTO_TYPE = "image/jpeg"
         val SESSION_ALREADY_CLOSED = setOf(401, 404)
     }
 }
