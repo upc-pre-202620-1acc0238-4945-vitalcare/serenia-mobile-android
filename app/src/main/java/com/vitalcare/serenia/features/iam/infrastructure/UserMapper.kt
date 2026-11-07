@@ -1,5 +1,6 @@
 package com.vitalcare.serenia.features.iam.infrastructure
 
+import com.vitalcare.serenia.BuildConfig
 import com.vitalcare.serenia.features.iam.domain.BirthDate
 import com.vitalcare.serenia.features.iam.domain.User
 import com.vitalcare.serenia.features.iam.domain.UserRole
@@ -13,7 +14,7 @@ fun UserDto.toDomain(): User {
         fullName = this.fullName,
         phoneNumber = this.phoneNumber,
         birthDate = this.birthDate?.toBirthDate(),
-        photoUrl = this.photoUrl,
+        photoUrl = this.photoUrl?.toAbsoluteUrl(),
         locale = this.locale,
         timeZone = this.timeZone
     )
@@ -22,6 +23,12 @@ fun UserDto.toDomain(): User {
 fun BirthDate.toRequestValue(): String {
     return String.format(Locale.ROOT, "%04d-%02d-%02d", year, month, day)
 }
+
+private fun String.toAbsoluteUrl(): String {
+    return if (startsWith("/")) BuildConfig.API_BASE_URL.substringBefore(API_PATH) + this else this
+}
+
+private const val API_PATH = "/api/"
 
 private fun String.toBirthDate(): BirthDate {
     val parts = split("-")

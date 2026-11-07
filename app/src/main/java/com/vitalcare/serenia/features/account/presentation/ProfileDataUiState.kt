@@ -5,6 +5,10 @@ import com.vitalcare.serenia.features.iam.domain.BirthDate
 data class ProfileDataUiState(
     val isLoading: Boolean = true,
     val fullName: String = "",
+    val photoUrl: String? = null,
+    val isUploadingPhoto: Boolean = false,
+    val photoError: String? = null,
+    val message: String? = null,
     val birthDate: BirthDate? = null,
     val phoneNumber: String = "",
     val fullNameError: String? = null,
@@ -12,7 +16,4 @@ data class ProfileDataUiState(
     val formError: String? = null,
     val isSaving: Boolean = false,
     val isSaved: Boolean = false
-) {
-    val initial: String
-        get() = fullName.trim().firstOrNull()?.uppercase().orEmpty()
-}
+) {}

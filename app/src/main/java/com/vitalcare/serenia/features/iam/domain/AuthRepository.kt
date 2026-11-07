@@ -21,6 +21,8 @@ interface AuthRepository {
 
     suspend fun updateProfile(fullName: String, phoneNumber: String?, birthDate: BirthDate?): Result<User>
 
+    suspend fun uploadProfilePhoto(photo: ByteArray): Result<User>
+
     suspend fun changePassword(currentPassword: String, newPassword: String): Result<Unit>
 
     suspend fun signOut(): Result<Unit>

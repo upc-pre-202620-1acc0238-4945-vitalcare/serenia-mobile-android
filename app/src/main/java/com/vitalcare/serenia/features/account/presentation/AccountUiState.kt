@@ -4,6 +4,7 @@ import com.vitalcare.serenia.features.dailycheckin.domain.ReminderTime
 
 data class AccountUiState(
     val fullName: String = "",
+    val photoUrl: String? = null,
     val reminderTime: ReminderTime? = null,
     val chosenTime: ReminderTime? = null,
     val isPickerVisible: Boolean = false,
@@ -16,9 +17,6 @@ data class AccountUiState(
     val isSigningOut: Boolean = false,
     val signOutError: String? = null
 ) {
-    val initial: String
-        get() = fullName.trim().firstOrNull()?.uppercase().orEmpty()
-
     val displayedTime: ReminderTime?
         get() = chosenTime ?: reminderTime
 }
