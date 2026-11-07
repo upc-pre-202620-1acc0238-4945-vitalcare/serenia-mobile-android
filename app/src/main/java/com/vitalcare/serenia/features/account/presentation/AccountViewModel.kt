@@ -123,7 +123,7 @@ class AccountViewModel @Inject constructor(
     fun loadUser() {
         viewModelScope.launch(Dispatchers.IO) {
             getCurrentUser().onSuccess { user ->
-                _state.update { it.copy(fullName = user.fullName) }
+                _state.update { it.copy(fullName = user.fullName, photoUrl = user.photoUrl) }
             }
         }
     }

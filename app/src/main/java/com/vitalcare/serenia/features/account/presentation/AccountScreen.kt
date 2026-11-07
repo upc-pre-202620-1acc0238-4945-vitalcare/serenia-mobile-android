@@ -129,7 +129,7 @@ fun AccountContent(
             modifier = Modifier.semantics { heading() }
         )
 
-        ProfileCard(fullName = state.fullName, initial = state.initial, onClick = onEditProfile)
+        ProfileCard(fullName = state.fullName, photoUrl = state.photoUrl, onClick = onEditProfile)
 
         SectionTitle(text = "Mi pregunta del día")
         state.displayedTime?.let { time ->

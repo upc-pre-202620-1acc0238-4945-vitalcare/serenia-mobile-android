@@ -2,9 +2,11 @@ package com.vitalcare.serenia.features.account.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vitalcare.serenia.core.network.ApiException
 import com.vitalcare.serenia.core.network.toUserMessage
 import com.vitalcare.serenia.features.iam.application.GetCurrentUserUseCase
 import com.vitalcare.serenia.features.iam.application.UpdateProfileUseCase
+import com.vitalcare.serenia.features.iam.application.UploadProfilePhotoUseCase
 import com.vitalcare.serenia.features.iam.domain.BirthDate
 import com.vitalcare.serenia.features.iam.domain.PhoneNumber
 import com.vitalcare.serenia.features.iam.presentation.fullNameErrorFor
@@ -17,12 +19,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileDataViewModel @Inject constructor(
     private val getCurrentUser: GetCurrentUserUseCase,
-    private val updateProfile: UpdateProfileUseCase
+    private val updateProfile: UpdateProfileUseCase,
+    private val uploadProfilePhoto: UploadProfilePhotoUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ProfileDataUiState())
@@ -50,6 +54,7 @@ class ProfileDataViewModel @Inject constructor(
                         it.copy(
                             isLoading = false,
                             fullName = user.fullName,
+                            photoUrl = user.photoUrl,
                             birthDate = user.birthDate,
                             phoneNumber = user.phoneNumber?.let(PhoneNumber::toLocal).orEmpty()
                         )
@@ -60,6 +65,29 @@ class ProfileDataViewModel @Inject constructor(
                 }
             )
         }
+    }
+
+    fun uploadPhoto(photoUri: String) {
+        if (_state.value.isUploadingPhoto) return
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.update { it.copy(isUploadingPhoto = true, photoError = null, message = null) }
+
+            uploadProfilePhoto(photoUri).fold(
+                onSuccess = { user ->
+                    _state.update {
+                        it.copy(isUploadingPhoto = false, photoUrl = user.photoUrl, message = PHOTO_UPDATED)
+                    }
+                },
+                onFailure = { exception ->
+                    _state.update { it.copy(isUploadingPhoto = false, photoError = exception.toPhotoMessage()) }
+                }
+            )
+        }
+    }
+
+    fun onMessageShown() {
+        _state.update { it.copy(message = null) }
     }
 
     fun save() {
@@ -96,5 +124,14 @@ class ProfileDataViewModel @Inject constructor(
 
     init {
         loadUser()
+    }
+
+    private fun Throwable.toPhotoMessage(): String {
+        return if (this is IOException || this is ApiException) toUserMessage() else PHOTO_NOT_READ
+    }
+
+    private companion object {
+        const val PHOTO_UPDATED = "Listo, cambiamos tu foto."
+        const val PHOTO_NOT_READ = "No pudimos abrir esa foto. Elige otra."
     }
 }

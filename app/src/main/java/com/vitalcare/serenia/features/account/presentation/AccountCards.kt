@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.vitalcare.serenia.core.designsystems.chevronRight
 import com.vitalcare.serenia.core.designsystems.components.AlertBanner
 import com.vitalcare.serenia.core.designsystems.components.PrimaryButton
+import com.vitalcare.serenia.core.designsystems.components.ProfileAvatar
 import com.vitalcare.serenia.core.designsystems.components.SecondaryButton
 import com.vitalcare.serenia.core.designsystems.lock
 import com.vitalcare.serenia.core.designsystems.theme.Nunito
@@ -47,7 +48,7 @@ import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 @Composable
 fun ProfileCard(
     fullName: String,
-    initial: String,
+    photoUrl: String?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -65,20 +66,7 @@ fun ProfileCard(
             .clickable(role = Role.Button, onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 14.dp)
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(64.dp)
-                .background(SereniaPalette.Durazno300, CircleShape)
-        ) {
-            Text(
-                text = initial,
-                fontFamily = Nunito,
-                fontSize = 28.sp,
-                fontWeight = FontWeight.ExtraBold,
-                color = SereniaPalette.Durazno900
-            )
-        }
+        ProfileAvatar(fullName = fullName, photoUrl = photoUrl, size = 64.dp)
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = fullName,
@@ -237,7 +225,7 @@ fun AccountCardsPreview() {
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.padding(20.dp)
         ) {
-            ProfileCard(fullName = "Rosa Mendoza", initial = "R", onClick = {})
+            ProfileCard(fullName = "Rosa Mendoza", photoUrl = null, onClick = {})
             AccountOptionRow(icon = lock, text = "Cambiar mi contraseña", onClick = {})
             SignOutConfirmationCard(isSigningOut = false, errorMessage = null, onConfirm = {}, onCancel = {})
         }
