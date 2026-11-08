@@ -71,6 +71,7 @@ import com.vitalcare.serenia.core.designsystems.mic
 import com.vitalcare.serenia.core.designsystems.pause
 import com.vitalcare.serenia.core.designsystems.playArrow
 import com.vitalcare.serenia.core.designsystems.theme.Nunito
+import com.vitalcare.serenia.core.designsystems.theme.SereniaContrast
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaRadius
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
@@ -315,7 +316,7 @@ private fun MicrophoneCard(
             .fillMaxWidth()
             .padding(top = 24.dp)
             .background(SereniaPalette.Durazno100, shape)
-            .border(BorderStroke(2.dp, SereniaPalette.Durazno300), shape)
+            .border(BorderStroke(SereniaContrast.stroke(2.dp), SereniaContrast.border(SereniaPalette.Durazno300)), shape)
             .padding(20.dp)
     ) {
         Row(

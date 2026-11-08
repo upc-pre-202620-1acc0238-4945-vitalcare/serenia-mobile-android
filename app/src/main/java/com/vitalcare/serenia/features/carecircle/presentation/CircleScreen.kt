@@ -35,6 +35,7 @@ import com.vitalcare.serenia.core.designsystems.components.BackLink
 import com.vitalcare.serenia.core.designsystems.components.SecondaryButton
 import com.vitalcare.serenia.core.designsystems.refresh
 import com.vitalcare.serenia.core.designsystems.share
+import com.vitalcare.serenia.core.designsystems.theme.SereniaContrast
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaRadius
 import com.vitalcare.serenia.core.designsystems.theme.SereniaSpacing
@@ -182,7 +183,7 @@ private fun EmptyCircleCard() {
         modifier = Modifier
             .fillMaxWidth()
             .background(SereniaPalette.Neutro50, shape)
-            .border(BorderStroke(2.dp, SereniaPalette.Neutro200), shape)
+            .border(BorderStroke(SereniaContrast.stroke(2.dp), SereniaContrast.border(SereniaPalette.Neutro200)), shape)
             .padding(horizontal = 20.dp, vertical = 20.dp)
     ) {
         Text(

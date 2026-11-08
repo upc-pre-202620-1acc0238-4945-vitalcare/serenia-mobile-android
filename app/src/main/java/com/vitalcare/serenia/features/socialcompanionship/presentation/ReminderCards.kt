@@ -45,6 +45,7 @@ import com.vitalcare.serenia.core.designsystems.phone
 import com.vitalcare.serenia.core.designsystems.place
 import com.vitalcare.serenia.core.designsystems.schedule
 import com.vitalcare.serenia.core.designsystems.theme.Nunito
+import com.vitalcare.serenia.core.designsystems.theme.SereniaContrast
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaRadius
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
@@ -134,7 +135,7 @@ fun DueReminderCard(
                 onClick = onLater,
                 enabled = !isBusy,
                 shape = CircleShape,
-                border = BorderStroke(2.dp, SereniaPalette.Durazno700),
+                border = BorderStroke(SereniaContrast.stroke(2.dp), SereniaContrast.border(SereniaPalette.Durazno700)),
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = SereniaPalette.Neutro50,
                     contentColor = SereniaPalette.Durazno800,
@@ -323,7 +324,7 @@ private fun HighlightedReminderCard(
                 spotColor = SereniaPalette.Teal700.copy(alpha = 0.16f)
             )
             .background(SereniaPalette.Durazno100, shape)
-            .border(BorderStroke(2.dp, SereniaPalette.Durazno400), shape)
+            .border(BorderStroke(SereniaContrast.stroke(2.dp), SereniaContrast.border(SereniaPalette.Durazno400)), shape)
             .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 8.dp),
         content = content
     )

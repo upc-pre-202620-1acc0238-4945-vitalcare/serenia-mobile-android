@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.vitalcare.serenia.core.designsystems.bedtime
 import com.vitalcare.serenia.core.designsystems.components.PrimaryButton
 import com.vitalcare.serenia.core.designsystems.theme.Nunito
+import com.vitalcare.serenia.core.designsystems.theme.SereniaContrast
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaRadius
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
@@ -209,7 +210,7 @@ fun PauseCard(
     val cardModifier = modifier
         .fillMaxWidth()
         .background(SereniaPalette.Durazno100, shape)
-        .border(BorderStroke(2.dp, SereniaPalette.Durazno300), shape)
+        .border(BorderStroke(SereniaContrast.stroke(2.dp), SereniaContrast.border(SereniaPalette.Durazno300)), shape)
 
     if (simplified) {
         Column(
@@ -285,7 +286,7 @@ fun CheckInMessageCard(
         modifier = modifier
             .fillMaxWidth()
             .background(SereniaPalette.Neutro50, shape)
-            .border(BorderStroke(2.dp, SereniaPalette.Neutro200), shape)
+            .border(BorderStroke(SereniaContrast.stroke(2.dp), SereniaContrast.border(SereniaPalette.Neutro200)), shape)
             .padding(horizontal = 20.dp, vertical = 24.dp)
     ) {
         Text(

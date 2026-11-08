@@ -72,6 +72,7 @@ fun AccountScreen(
             onEditProfile = onEditProfile,
             onChangeTime = viewModel::openPicker,
             onSimplifiedModeChange = viewModel::changeSimplifiedMode,
+            onHighContrastChange = viewModel::changeHighContrast,
             onChangePassword = onChangePassword,
             onSignOut = viewModel::askToSignOut,
             onConfirmSignOut = viewModel::confirmSignOut,
@@ -107,6 +108,7 @@ fun AccountContent(
     onEditProfile: () -> Unit,
     onChangeTime: () -> Unit,
     onSimplifiedModeChange: (Boolean) -> Unit,
+    onHighContrastChange: (Boolean) -> Unit,
     onChangePassword: () -> Unit,
     onSignOut: () -> Unit,
     onConfirmSignOut: () -> Unit,
@@ -160,9 +162,8 @@ fun AccountContent(
             icon = contrast,
             title = "Alto contraste",
             description = "Letras y bordes más marcados",
-            checked = false,
-            onCheckedChange = {},
-            enabled = false
+            checked = state.highContrast,
+            onCheckedChange = onHighContrastChange
         )
         state.appearanceError?.let { message ->
             AlertBanner(message = message)
@@ -211,6 +212,7 @@ fun AccountContentPreview() {
             onEditProfile = {},
             onChangeTime = {},
             onSimplifiedModeChange = {},
+            onHighContrastChange = {},
             onChangePassword = {},
             onSignOut = {},
             onConfirmSignOut = {},

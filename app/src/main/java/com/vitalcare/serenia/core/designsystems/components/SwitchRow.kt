@@ -2,7 +2,9 @@ package com.vitalcare.serenia.core.designsystems.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +38,7 @@ import com.vitalcare.serenia.core.designsystems.check
 import com.vitalcare.serenia.core.designsystems.contrast
 import com.vitalcare.serenia.core.designsystems.simplifiedMode
 import com.vitalcare.serenia.core.designsystems.theme.Nunito
+import com.vitalcare.serenia.core.designsystems.theme.SereniaContrast
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaRadius
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
@@ -68,6 +71,13 @@ fun SwitchRow(
             )
             .clip(shape)
             .background(SereniaPalette.Neutro50)
+            .then(
+                if (SereniaContrast.enabled) {
+                    Modifier.border(BorderStroke(2.dp, SereniaContrast.border(SereniaPalette.Neutro400)), shape)
+                } else {
+                    Modifier
+                }
+            )
             .toggleable(
                 value = checked,
                 enabled = enabled,

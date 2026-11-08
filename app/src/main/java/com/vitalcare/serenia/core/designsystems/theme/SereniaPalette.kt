@@ -1,6 +1,28 @@
 package com.vitalcare.serenia.core.designsystems.theme
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+
+/**
+ * Estado global del modo de alto contraste.
+ *
+ * Es un estado de Compose: cualquier composable que lea un color de [SereniaPalette]
+ * se vuelve a componer solo cuando cambia. Lo escribe únicamente [SereniaTheme].
+ */
+object SereniaContrast {
+    var enabled by mutableStateOf(false)
+        internal set
+
+    /** Color de borde: negro en alto contraste, el color original en modo normal. */
+    fun border(normal: Color): Color = if (enabled) Color.Black else normal
+
+    /** Grosor de borde: 1 dp más grueso en alto contraste. */
+    fun stroke(normal: Dp): Dp = if (enabled) normal + 1.dp else normal
+}
 
 object SereniaPalette {
     val Teal50 = Color(0xFFEDF6F4)

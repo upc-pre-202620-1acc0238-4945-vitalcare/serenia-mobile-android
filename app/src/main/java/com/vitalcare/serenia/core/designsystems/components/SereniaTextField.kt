@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import com.vitalcare.serenia.core.designsystems.visibility
 import com.vitalcare.serenia.core.designsystems.visibilityOff
 import com.vitalcare.serenia.core.designsystems.theme.Nunito
+import com.vitalcare.serenia.core.designsystems.theme.SereniaContrast
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaRadius
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
@@ -67,7 +68,7 @@ fun SereniaTextField(
     val border = if (isError) {
         BorderStroke(3.dp, SereniaPalette.Error)
     } else {
-        BorderStroke(2.dp, SereniaPalette.Neutro500)
+        BorderStroke(SereniaContrast.stroke(2.dp), SereniaContrast.border(SereniaPalette.Neutro500))
     }
 
     Column(

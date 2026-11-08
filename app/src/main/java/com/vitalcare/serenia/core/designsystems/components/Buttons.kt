@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vitalcare.serenia.core.designsystems.logout
 import com.vitalcare.serenia.core.designsystems.share
+import com.vitalcare.serenia.core.designsystems.theme.SereniaContrast
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTouch
@@ -127,7 +128,7 @@ fun QuietButton(
         onClick = onClick,
         enabled = enabled,
         shape = CircleShape,
-        border = BorderStroke(2.dp, SereniaPalette.Neutro400),
+        border = BorderStroke(SereniaContrast.stroke(2.dp), SereniaContrast.border(SereniaPalette.Neutro400)),
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = Color.Transparent,
             contentColor = SereniaPalette.Neutro700

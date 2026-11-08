@@ -42,6 +42,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vitalcare.serenia.core.designsystems.image
 import com.vitalcare.serenia.core.designsystems.mic
 import com.vitalcare.serenia.core.designsystems.theme.Nunito
+import com.vitalcare.serenia.core.designsystems.theme.SereniaContrast
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaRadius
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
@@ -174,7 +175,7 @@ private fun HomeShortcutCard(
             .heightIn(min = 184.dp)
             .clip(shape)
             .background(background, shape)
-            .border(BorderStroke(2.dp, border), shape)
+            .border(BorderStroke(SereniaContrast.stroke(2.dp), SereniaContrast.border(border)), shape)
             .clickable(onClick = onClick)
             .clearAndSetSemantics {
                 contentDescription = "$title. $subtitle$accessibilityExtra"

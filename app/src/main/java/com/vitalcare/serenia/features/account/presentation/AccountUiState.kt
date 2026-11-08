@@ -12,6 +12,7 @@ data class AccountUiState(
     val timeError: String? = null,
     val simplifiedMode: Boolean = false,
     val isSavingSimplifiedMode: Boolean = false,
+    val highContrast: Boolean = false,
     val appearanceError: String? = null,
     val isConfirmingSignOut: Boolean = false,
     val isSigningOut: Boolean = false,

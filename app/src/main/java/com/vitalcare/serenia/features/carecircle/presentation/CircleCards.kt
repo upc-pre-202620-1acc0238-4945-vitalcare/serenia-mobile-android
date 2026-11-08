@@ -37,6 +37,7 @@ import com.vitalcare.serenia.core.designsystems.components.PrimaryButton
 import com.vitalcare.serenia.core.designsystems.components.SecondaryButton
 import com.vitalcare.serenia.core.designsystems.components.TextLinkButton
 import com.vitalcare.serenia.core.designsystems.theme.Nunito
+import com.vitalcare.serenia.core.designsystems.theme.SereniaContrast
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaRadius
 import com.vitalcare.serenia.core.designsystems.theme.SereniaTheme
@@ -117,7 +118,7 @@ fun RemoveMemberCard(
                 spotColor = SereniaPalette.Teal700.copy(alpha = 0.16f)
             )
             .background(SereniaPalette.Durazno100, shape)
-            .border(BorderStroke(2.dp, SereniaPalette.Durazno400), shape)
+            .border(BorderStroke(SereniaContrast.stroke(2.dp), SereniaContrast.border(SereniaPalette.Durazno400)), shape)
             .padding(18.dp)
     ) {
         Row(

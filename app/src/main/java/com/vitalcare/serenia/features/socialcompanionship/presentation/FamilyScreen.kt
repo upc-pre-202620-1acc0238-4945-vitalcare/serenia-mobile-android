@@ -43,6 +43,7 @@ import com.vitalcare.serenia.core.designsystems.components.SereniaSnackbar
 import com.vitalcare.serenia.core.designsystems.components.TextLinkButton
 import com.vitalcare.serenia.core.designsystems.mic
 import com.vitalcare.serenia.core.designsystems.theme.Nunito
+import com.vitalcare.serenia.core.designsystems.theme.SereniaContrast
 import com.vitalcare.serenia.core.designsystems.theme.SereniaPalette
 import com.vitalcare.serenia.core.designsystems.theme.SereniaRadius
 import com.vitalcare.serenia.core.designsystems.theme.SereniaSpacing
@@ -195,7 +196,7 @@ private fun TellSomethingCard(onClick: () -> Unit) {
             .heightIn(min = 104.dp)
             .clip(shape)
             .background(SereniaPalette.Durazno100, shape)
-            .border(BorderStroke(2.dp, SereniaPalette.Durazno300), shape)
+            .border(BorderStroke(SereniaContrast.stroke(2.dp), SereniaContrast.border(SereniaPalette.Durazno300)), shape)
             .clickable(role = Role.Button, onClick = onClick)
             .padding(start = 18.dp, top = 16.dp, end = 16.dp, bottom = 16.dp)
     ) {

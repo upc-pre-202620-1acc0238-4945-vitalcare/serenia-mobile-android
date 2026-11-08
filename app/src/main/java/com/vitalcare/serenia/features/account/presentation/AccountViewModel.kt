@@ -2,6 +2,7 @@ package com.vitalcare.serenia.features.account.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vitalcare.serenia.core.appearance.AppearanceStorage
 import com.vitalcare.serenia.core.network.toUserMessage
 import com.vitalcare.serenia.features.dailycheckin.application.GetCheckInPreferencesUseCase
 import com.vitalcare.serenia.features.dailycheckin.application.ObserveCheckInPreferencesUseCase
@@ -27,7 +28,8 @@ class AccountViewModel @Inject constructor(
     private val observeCheckInPreferences: ObserveCheckInPreferencesUseCase,
     private val scheduleCheckIn: ScheduleCheckInUseCase,
     private val updateSimplifiedMode: UpdateSimplifiedModeUseCase,
-    private val signOut: SignOutUseCase
+    private val signOut: SignOutUseCase,
+    private val appearanceStorage: AppearanceStorage
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AccountUiState())
@@ -99,6 +101,13 @@ class AccountViewModel @Inject constructor(
         }
     }
 
+    fun changeHighContrast(enabled: Boolean) {
+        _state.update { it.copy(highContrast = enabled) }
+        viewModelScope.launch {
+            appearanceStorage.setHighContrast(enabled)
+        }
+    }
+
     fun askToSignOut() {
         _state.update { it.copy(isConfirmingSignOut = true, signOutError = null) }
     }
@@ -151,7 +160,16 @@ class AccountViewModel @Inject constructor(
         }
     }
 
+    private fun observeHighContrast() {
+        viewModelScope.launch {
+            appearanceStorage.highContrast.collect { enabled ->
+                _state.update { it.copy(highContrast = enabled) }
+            }
+        }
+    }
+
     init {
+        observeHighContrast()
         observePreferences()
         loadPreferences()
     }
