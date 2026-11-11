@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vitalcare.serenia.core.designsystems.chevronRight
+import com.vitalcare.serenia.core.designsystems.components.AdaptivePair
 import com.vitalcare.serenia.core.designsystems.components.AlertBanner
 import com.vitalcare.serenia.core.designsystems.components.PrimaryButton
 import com.vitalcare.serenia.core.designsystems.components.ProfileAvatar
@@ -200,21 +201,25 @@ fun SignOutConfirmationCard(
         errorMessage?.let { message ->
             AlertBanner(message = message)
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            PrimaryButton(
-                text = "Sí, salir",
-                onClick = onConfirm,
-                isLoading = isSigningOut,
-                modifier = Modifier.weight(1f)
-            )
-            SecondaryButton(
-                text = "Cancelar",
-                onClick = onCancel,
-                enabled = !isSigningOut,
-                color = SereniaPalette.Durazno800,
-                modifier = Modifier.weight(1f)
-            )
-        }
+        AdaptivePair(
+            first = { buttonModifier ->
+                PrimaryButton(
+                    text = "Sí, salir",
+                    onClick = onConfirm,
+                    isLoading = isSigningOut,
+                    modifier = buttonModifier
+                )
+            },
+            second = { buttonModifier ->
+                SecondaryButton(
+                    text = "Cancelar",
+                    onClick = onCancel,
+                    enabled = !isSigningOut,
+                    color = SereniaPalette.Durazno800,
+                    modifier = buttonModifier
+                )
+            }
+        )
     }
 }
 
