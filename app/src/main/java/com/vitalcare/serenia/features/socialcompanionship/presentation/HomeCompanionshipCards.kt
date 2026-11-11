@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.vitalcare.serenia.core.designsystems.components.AdaptivePair
 import com.vitalcare.serenia.core.designsystems.image
 import com.vitalcare.serenia.core.designsystems.mic
 import com.vitalcare.serenia.core.designsystems.theme.Nunito
@@ -83,77 +84,79 @@ fun HomeCompanionshipCardsContent(
         "De ${joinNames(newPhotos.map { it.senderName }.distinct())}"
     }
 
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min)
-    ) {
-        HomeShortcutCard(
-            title = "Cuéntame algo",
-            subtitle = "Graba un audio para tu familia",
-            background = SereniaPalette.Durazno100,
-            border = SereniaPalette.Durazno300,
-            onClick = onTellSomething,
-            modifier = Modifier.weight(1f)
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(56.dp)
-                    .background(SereniaPalette.Durazno700, CircleShape)
+    // With a large font the cards go one below the other so their titles keep whole words
+    AdaptivePair(
+        modifier = modifier.fillMaxWidth(),
+        sideBySideModifier = Modifier.height(IntrinsicSize.Min),
+        spacing = 16.dp,
+        first = { cardModifier ->
+            HomeShortcutCard(
+                title = "Cuéntame algo",
+                subtitle = "Graba un audio para tu familia",
+                background = SereniaPalette.Durazno100,
+                border = SereniaPalette.Durazno300,
+                onClick = onTellSomething,
+                modifier = cardModifier
             ) {
-                Icon(
-                    imageVector = mic,
-                    contentDescription = null,
-                    tint = SereniaPalette.Neutro50,
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-        }
-
-        HomeShortcutCard(
-            title = photosTitle,
-            subtitle = photosSubtitle,
-            background = SereniaPalette.Neutro50,
-            border = SereniaPalette.Neutro200,
-            onClick = onSeePhotos,
-            accessibilityExtra = if (newPhotos.isEmpty()) "" else ". ${newPhotos.size} sin ver",
-            modifier = Modifier.weight(1f)
-        ) {
-            Box {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .size(56.dp)
-                        .background(SereniaPalette.Teal100, CircleShape)
+                        .background(SereniaPalette.Durazno700, CircleShape)
                 ) {
                     Icon(
-                        imageVector = image,
+                        imageVector = mic,
                         contentDescription = null,
-                        tint = SereniaPalette.Teal800,
+                        tint = SereniaPalette.Neutro50,
                         modifier = Modifier.size(30.dp)
                     )
                 }
-                if (newPhotos.isNotEmpty()) {
-                    Text(
-                        text = newPhotos.size.toString(),
-                        fontFamily = Nunito,
-                        fontSize = 16.sp,
-                        lineHeight = 20.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = SereniaPalette.Neutro50,
+            }
+        },
+        second = { cardModifier ->
+            HomeShortcutCard(
+                title = photosTitle,
+                subtitle = photosSubtitle,
+                background = SereniaPalette.Neutro50,
+                border = SereniaPalette.Neutro200,
+                onClick = onSeePhotos,
+                accessibilityExtra = if (newPhotos.isEmpty()) "" else ". ${newPhotos.size} sin ver",
+                modifier = cardModifier
+            ) {
+                Box {
+                    Box(
+                        contentAlignment = Alignment.Center,
                         modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .offset(x = 14.dp, y = (-8).dp)
-                            .heightIn(min = 28.dp)
-                            .background(SereniaPalette.Teal700, CircleShape)
-                            .padding(horizontal = 9.dp, vertical = 4.dp)
-                    )
+                            .size(56.dp)
+                            .background(SereniaPalette.Teal100, CircleShape)
+                    ) {
+                        Icon(
+                            imageVector = image,
+                            contentDescription = null,
+                            tint = SereniaPalette.Teal800,
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
+                    if (newPhotos.isNotEmpty()) {
+                        Text(
+                            text = newPhotos.size.toString(),
+                            fontFamily = Nunito,
+                            fontSize = 16.sp,
+                            lineHeight = 20.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = SereniaPalette.Neutro50,
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .offset(x = 14.dp, y = (-8).dp)
+                                .heightIn(min = 28.dp)
+                                .background(SereniaPalette.Teal700, CircleShape)
+                                .padding(horizontal = 9.dp, vertical = 4.dp)
+                        )
+                    }
                 }
             }
         }
-    }
+    )
 }
 
 @Composable
