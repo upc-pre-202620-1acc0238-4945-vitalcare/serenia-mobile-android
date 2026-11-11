@@ -96,7 +96,8 @@ fun SecondaryButton(
     enabled: Boolean = true,
     icon: ImageVector? = null,
     color: Color = SereniaPalette.Teal700,
-    containerColor: Color = SereniaPalette.Neutro50
+    containerColor: Color = SereniaPalette.Neutro50,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
 ) {
     OutlinedButton(
         onClick = onClick,
@@ -107,7 +108,7 @@ fun SecondaryButton(
             containerColor = containerColor,
             contentColor = color
         ),
-        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
+        contentPadding = contentPadding,
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = SereniaTouch.seniorPrimary)
