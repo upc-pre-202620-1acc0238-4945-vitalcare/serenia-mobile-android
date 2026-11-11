@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -111,6 +112,8 @@ fun CircleContent(
                 icon = share,
                 enabled = state.invitationCode != null,
                 onClick = { state.invitationCode?.let(onShare) },
+                // Narrow padding so the label is not split in the middle of a word
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
                 modifier = Modifier.weight(1f)
             )
             SecondaryButton(
@@ -118,6 +121,7 @@ fun CircleContent(
                 icon = refresh,
                 enabled = !state.isGeneratingCode,
                 onClick = onNewCode,
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
                 modifier = Modifier.weight(1f)
             )
         }
