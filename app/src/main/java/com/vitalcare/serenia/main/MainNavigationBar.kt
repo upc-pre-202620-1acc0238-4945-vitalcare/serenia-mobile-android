@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -103,13 +104,14 @@ private fun NavigationBarItem(
             tint = contentColor,
             modifier = Modifier.size(32.dp)
         )
+        // One line that shrinks when the font is large, so a tab name is never split in two
         Text(
             text = stringResource(item.title),
             fontFamily = Nunito,
-            fontSize = 16.sp,
-            lineHeight = 20.sp,
             fontWeight = if (isSelected) FontWeight.ExtraBold else FontWeight.SemiBold,
-            color = contentColor
+            color = contentColor,
+            maxLines = 1,
+            autoSize = TextAutoSize.StepBased(minFontSize = 11.sp, maxFontSize = 16.sp)
         )
     }
 }

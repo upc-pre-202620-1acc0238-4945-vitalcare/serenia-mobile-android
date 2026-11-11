@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -138,7 +139,10 @@ fun SereniaTextField(
                                 text = placeholder,
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.SemiBold,
-                                color = SereniaPalette.Neutro600
+                                color = SereniaPalette.Neutro600,
+                                // One line so a long hint is never cut by the height of the field
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                         innerTextField()
