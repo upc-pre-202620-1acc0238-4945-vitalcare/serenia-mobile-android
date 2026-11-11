@@ -56,7 +56,6 @@ fun PhotoTile(
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
-            .clip(RoundedCornerShape(SereniaRadius.md))
             .clickable(onClick = onClick)
             .clearAndSetSemantics {
                 contentDescription = "Foto de ${item.senderName}, ${item.photo.dayText()}" +

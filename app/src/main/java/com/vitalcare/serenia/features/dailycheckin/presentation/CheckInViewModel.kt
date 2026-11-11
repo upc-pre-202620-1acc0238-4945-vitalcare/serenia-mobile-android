@@ -110,5 +110,18 @@ class CheckInViewModel @Inject constructor(
 
     init {
         loadCheckIn()
+
+        // Keeps the "next question" time in step with the one chosen in the account tab
+        viewModelScope.launch {
+            observeCheckInPreferences().collect { preferences ->
+                _state.update { current ->
+                    if (current.content is CheckInContent.Unavailable && preferences != null) {
+                        current.copy(content = CheckInContent.Unavailable(preferences.reminderTime))
+                    } else {
+                        current
+                    }
+                }
+            }
+        }
     }
 }
