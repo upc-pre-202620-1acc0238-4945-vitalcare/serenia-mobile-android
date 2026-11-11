@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.vitalcare.serenia.core.designsystems.components.AdaptivePair
 import com.vitalcare.serenia.core.designsystems.components.AlertBanner
 import com.vitalcare.serenia.core.designsystems.components.BackLink
 import com.vitalcare.serenia.core.designsystems.components.SecondaryButton
@@ -106,25 +106,29 @@ fun CircleContent(
             AlertBanner(message = message)
         }
 
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            SecondaryButton(
-                text = "Compartir",
-                icon = share,
-                enabled = state.invitationCode != null,
-                onClick = { state.invitationCode?.let(onShare) },
-                // Narrow padding so the label is not split in the middle of a word
-                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
-                modifier = Modifier.weight(1f)
-            )
-            SecondaryButton(
-                text = "Código nuevo",
-                icon = refresh,
-                enabled = !state.isGeneratingCode,
-                onClick = onNewCode,
-                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
-                modifier = Modifier.weight(1f)
-            )
-        }
+        AdaptivePair(
+            first = { buttonModifier ->
+                SecondaryButton(
+                    text = "Compartir",
+                    icon = share,
+                    enabled = state.invitationCode != null,
+                    onClick = { state.invitationCode?.let(onShare) },
+                    // Narrow padding so the label is not split in the middle of a word
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
+                    modifier = buttonModifier
+                )
+            },
+            second = { buttonModifier ->
+                SecondaryButton(
+                    text = "Código nuevo",
+                    icon = refresh,
+                    enabled = !state.isGeneratingCode,
+                    onClick = onNewCode,
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
+                    modifier = buttonModifier
+                )
+            }
+        )
 
         Text(
             text = "Quién me acompaña",
