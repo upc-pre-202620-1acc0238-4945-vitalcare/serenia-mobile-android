@@ -3,7 +3,8 @@ package com.vitalcare.serenia.features.iam.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -65,6 +66,7 @@ fun SignInScreen(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SignInContent(
     state: SignInUiState,
@@ -136,8 +138,10 @@ fun SignInContent(
                 onClick = submit,
                 isLoading = state.isLoading
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            // The link moves to its own line when the text and the link do not fit together
+            FlowRow(
+                verticalArrangement = Arrangement.Center,
+                itemVerticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
