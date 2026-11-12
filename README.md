@@ -52,16 +52,18 @@ Each bounded context follows the same layered layout: `domain` (entities and rep
 
 The app reads its configuration from `app/build.gradle.kts` and the Android resources:
 
-- `API_BASE_URL` (`BuildConfig`): Base URL of the Serenia Platform API. Defaults to `http://10.0.2.2:8080/api/v1/`, which is the host machine as seen from the Android emulator.
+- `API_BASE_URL` (`BuildConfig`): Base URL of the Serenia Platform API. Defaults to the deployed backend, `https://serenia-platform.azurewebsites.net/api/v1/`. To use a local backend, build with `-PapiBaseUrl=http://10.0.2.2:8080/api/v1/` (`10.0.2.2` is the host machine as seen from the Android emulator).
 - `src/main/res/xml/network_security_config.xml`: Blocks cleartext (HTTP) traffic in release builds.
 - `src/debug/res/xml/network_security_config.xml`: Allows cleartext traffic only to `10.0.2.2` and `localhost`, so debug builds can reach the local backend.
 - `AndroidManifest.xml`: Declares the `INTERNET`, `VIBRATE`, and `RECORD_AUDIO` permissions. The microphone is requested at runtime the first time the user records a message; profile photos use the system Photo Picker, which needs no permission.
 
 ## Getting Started
 
-### 1) Run the Backend
+### 1) Choose the Backend
 
-Start [Serenia Platform](https://github.com/upc-pre-202620-1acc0238-4945-vitalcare/serenia-platform) with its default `dev` profile so it listens on `http://localhost:8080`. The emulator reaches it through `10.0.2.2`.
+By default the app talks to the deployed backend (`https://serenia-platform.azurewebsites.net`), so there is nothing to start.
+
+To use a local backend instead, start [Serenia Platform](https://github.com/upc-pre-202620-1acc0238-4945-vitalcare/serenia-platform) with its default `dev` profile so it listens on `http://localhost:8080`, and build the app with `-PapiBaseUrl=http://10.0.2.2:8080/api/v1/`, for example `./gradlew installDebug -PapiBaseUrl=http://10.0.2.2:8080/api/v1/`.
 
 ### 2) Run the Application
 
@@ -82,7 +84,7 @@ Start [Serenia Platform](https://github.com/upc-pre-202620-1acc0238-4945-vitalca
 
 ### 3) Using a Physical Device
 
-`10.0.2.2` only exists inside the emulator. To test on a physical device, either forward the port with `adb reverse tcp:8080 tcp:8080` and use `http://localhost:8080/api/v1/`, or point `API_BASE_URL` to the backend's LAN address and add that address to the debug network security config.
+With the deployed backend a physical device only needs internet access. `10.0.2.2` only exists inside the emulator, so to use a local backend on a physical device, either forward the port with `adb reverse tcp:8080 tcp:8080` and build with `-PapiBaseUrl=http://localhost:8080/api/v1/`, or point `apiBaseUrl` to the backend's LAN address and add that address to the debug network security config.
 
 ### 4) Emulator Tips
 
