@@ -21,7 +21,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8080/api/v1/\"")
+        // Deployed backend by default; use -PapiBaseUrl=http://10.0.2.2:8080/api/v1/ for a local one
+        val apiBaseUrl = providers.gradleProperty("apiBaseUrl")
+            .getOrElse("https://serenia-platform.azurewebsites.net/api/v1/")
+        buildConfigField("String", "API_BASE_URL", "\"$apiBaseUrl\"")
     }
 
     buildTypes {
