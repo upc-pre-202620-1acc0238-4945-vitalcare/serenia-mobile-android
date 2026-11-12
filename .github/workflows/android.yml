@@ -1,0 +1,60 @@
+name: Android
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build debug APK
+    runs-on: ubuntu-latest
+    env:
+      # Optional: while these secrets are not set, the Firebase step is skipped
+      FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up the JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Set up the Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build the debug APK
+        # The version code grows with every run so each upload is newer than the last
+        run: ./gradlew assembleDebug -PversionCode=$((100 + ${{ github.run_number }}))
+
+      - name: Save the APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: serenia-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
+      - name: Send the APK to Firebase App Distribution
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && env.FIREBASE_APP_ID != '' && env.FIREBASE_SERVICE_ACCOUNT != ''
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          groups: testers
+          file: app/build/outputs/apk/debug/app-debug.apk
+          releaseNotes: "Build ${{ github.run_number }} from main (${{ github.sha }})"
