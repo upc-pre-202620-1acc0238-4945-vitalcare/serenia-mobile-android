@@ -16,7 +16,8 @@ android {
         applicationId = "com.vitalcare.serenia"
         minSdk = 24
         targetSdk = 37
-        versionCode = 1
+        // CI passes -PversionCode=<n> so every Firebase upload is newer than the previous one
+        versionCode = providers.gradleProperty("versionCode").map { it.toInt() }.getOrElse(1)
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

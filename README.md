@@ -98,6 +98,22 @@ With the deployed backend a physical device only needs internet access. `10.0.2.
 - `./gradlew :app:compileDebugKotlin`: Compile the Kotlin sources only.
 - `./gradlew test`: Run the unit tests.
 - `./gradlew connectedAndroidTest`: Run the instrumented tests on a connected device.
+- `./gradlew assembleDebug -PversionCode=<n>`: Build the debug APK with a specific version code (it defaults to `1`).
+
+## Continuous Delivery
+
+The workflow in `.github/workflows/android.yml` builds the app with GitHub Actions:
+
+- **Pull requests to `develop` or `main`:** build the debug APK to check that the project still compiles. Nothing is published.
+- **Push to `main`:** build the debug APK and send it to Firebase App Distribution, so the testers get the new version. `develop` is only for integration and does not publish.
+- **Every run:** keeps the APK as a downloadable artifact of the run, and uses `100 + run number` as the version code so each upload is newer than the last.
+
+The Firebase step runs only when these repository secrets exist (Settings, Secrets and variables, Actions); without them it is skipped and the build still passes:
+
+- `FIREBASE_APP_ID`: App ID of the Android app registered in the Firebase project (Project settings, General).
+- `FIREBASE_SERVICE_ACCOUNT`: Full JSON key of a service account with the Firebase App Distribution Admin role.
+
+Testers receive the builds through the App Distribution group named `testers`. Never commit `google-services.json`, keystores or the service account key.
 
 ## Features
 
