@@ -112,6 +112,7 @@ The Firebase step runs only when these repository secrets exist (Settings, Secre
 
 - `FIREBASE_APP_ID`: App ID of the Android app registered in the Firebase project (Project settings, General).
 - `FIREBASE_SERVICE_ACCOUNT`: Full JSON key of a service account with the Firebase App Distribution Admin role.
+- `DEBUG_KEYSTORE_BASE64` (recommended): The debug keystore of the person who uploaded the first version, encoded in Base64. With it every build is signed with the same key, so testers can install a new version over the previous one. Without it each run signs with a new random key and testers must uninstall the app before installing a new version. Create it in PowerShell with `[Convert]::ToBase64String([IO.File]::ReadAllBytes("$env:USERPROFILE\.android\debug.keystore")) | Set-Clipboard`.
 
 Testers receive the builds through the App Distribution group named `testers`. Never commit `google-services.json`, keystores or the service account key.
 
