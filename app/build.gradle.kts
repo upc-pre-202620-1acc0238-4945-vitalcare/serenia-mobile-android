@@ -28,6 +28,19 @@ android {
         buildConfigField("String", "API_BASE_URL", "\"$apiBaseUrl\"")
     }
 
+    // CI passes -PdebugKeystore=<file> so every build is signed with the same debug key and
+    // the testers can install a new version over the previous one. Local builds keep their own key.
+    signingConfigs {
+        getByName("debug") {
+            providers.gradleProperty("debugKeystore").orNull?.let { path ->
+                storeFile = file(path)
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+            }
+        }
+    }
+
     buildTypes {
         release {
             optimization {
