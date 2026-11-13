@@ -1,0 +1,83 @@
+name: Android
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build debug APK
+    runs-on: ubuntu-latest
+    env:
+      # Optional: while these secrets are not set, the Firebase step is skipped
+      FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+      # Optional: the shared debug key, so every build is signed the same way
+      DEBUG_KEYSTORE_BASE64: ${{ secrets.DEBUG_KEYSTORE_BASE64 }}
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up the JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Set up the Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          # The default packages include "tools", which no longer exists in the SDK repository
+          packages: platform-tools
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Restore the shared debug key
+        if: env.DEBUG_KEYSTORE_BASE64 != ''
+        run: |
+          # Drop spaces and line breaks (Windows adds \r when the value is copied) before decoding
+          CLEAN=$(printf '%s' "$DEBUG_KEYSTORE_BASE64" | tr -d ' \r\n')
+          # Shape of the value only, never its content: length, invalid characters and the 6-character header
+          echo "secret length: ${#CLEAN}, invalid characters: $(printf '%s' "$CLEAN" | tr -d 'A-Za-z0-9+/=' | wc -c), starts with: ${CLEAN:0:6}"
+          printf '%s' "$CLEAN" | base64 -d > "$RUNNER_TEMP/debug.keystore"
+          keytool -list -v -keystore "$RUNNER_TEMP/debug.keystore" -storepass android | grep -E "SHA256" || true
+
+      - name: Build the debug APK
+        # The version code grows with every run so each upload is newer than the last
+        run: |
+          KEY_ARG=""
+          if [ -f "$RUNNER_TEMP/debug.keystore" ]; then KEY_ARG="-PdebugKeystore=$RUNNER_TEMP/debug.keystore"; fi
+          ./gradlew assembleDebug -PversionCode=$((100 + ${{ github.run_number }})) $KEY_ARG
+
+      - name: Show the APK signature
+        run: |
+          BUILD_TOOLS=$(ls "$ANDROID_HOME/build-tools" | sort -V | tail -1)
+          "$ANDROID_HOME/build-tools/$BUILD_TOOLS/apksigner" verify --print-certs app/build/outputs/apk/debug/app-debug.apk | grep "SHA-256" || true
+
+      - name: Save the APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: serenia-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
+      - name: Send the APK to Firebase App Distribution
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && env.FIREBASE_APP_ID != '' && env.FIREBASE_SERVICE_ACCOUNT != ''
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          groups: testers
+          file: app/build/outputs/apk/debug/app-debug.apk
+          releaseNotes: "Build ${{ github.run_number }} from main (${{ github.sha }})"

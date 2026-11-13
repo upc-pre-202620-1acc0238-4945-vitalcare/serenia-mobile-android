@@ -1,0 +1,164 @@
+package com.vitalcare.serenia.main
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.vitalcare.serenia.features.account.presentation.AccountRoute
+import com.vitalcare.serenia.features.account.presentation.ChangePasswordRoute
+import com.vitalcare.serenia.features.account.presentation.ProfileDataRoute
+import com.vitalcare.serenia.features.account.presentation.accountNavGraph
+import com.vitalcare.serenia.features.alertsandsafety.presentation.HelpSentRoute
+import com.vitalcare.serenia.features.alertsandsafety.presentation.alertsAndSafetyNavGraph
+import com.vitalcare.serenia.features.carecircle.presentation.CircleRoute
+import com.vitalcare.serenia.features.carecircle.presentation.careCircleNavGraph
+import com.vitalcare.serenia.features.dailycheckin.presentation.checkInNavGraph
+import com.vitalcare.serenia.features.home.presentation.HomeNavGraphRoute
+import com.vitalcare.serenia.features.home.presentation.HomeRoute
+import com.vitalcare.serenia.features.home.presentation.homeNavGraph
+import com.vitalcare.serenia.features.iam.presentation.IamNavGraphRoute
+import com.vitalcare.serenia.features.iam.presentation.SignInRoute
+import com.vitalcare.serenia.features.iam.presentation.WelcomeRoute
+import com.vitalcare.serenia.features.iam.presentation.iamNavGraph
+import com.vitalcare.serenia.features.socialcompanionship.presentation.AudioMessageRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.FamilyNavGraphRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.FamilyRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.NewReminderRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.PhotoViewerRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.PhotosRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.RemindersRoute
+import com.vitalcare.serenia.features.socialcompanionship.presentation.familyNavGraph
+import com.vitalcare.serenia.features.socialcompanionship.presentation.socialCompanionshipNavGraph
+
+@Composable
+fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
+
+    val isSignedIn by viewModel.isSignedIn.collectAsStateWithLifecycle()
+    val simplifiedMode by viewModel.simplifiedMode.collectAsStateWithLifecycle()
+    val signedIn = isSignedIn
+
+    if (signedIn == null) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+        )
+        return
+    }
+
+    val startDestination: Any = remember { if (signedIn) HomeNavGraphRoute else IamNavGraphRoute }
+    val navController = rememberNavController()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    var wasSignedIn by remember { mutableStateOf(signedIn) }
+
+    LaunchedEffect(signedIn) {
+        if (wasSignedIn && !signedIn) {
+            navController.goToSignIn()
+        }
+        wasSignedIn = signedIn
+    }
+    val destination = backStackEntry?.destination
+
+    // The bar is only shown on the main screen of each tab
+    val selectedItem = when {
+        destination?.hasRoute<HomeRoute>() == true || destination?.hasRoute<HelpSentRoute>() == true -> NavigationItem.HOME
+        destination?.hasRoute<RemindersRoute>() == true || destination?.hasRoute<NewReminderRoute>() == true -> NavigationItem.REMINDERS
+        destination?.hasRoute<FamilyRoute>() == true || destination.isFamilySubscreen() -> NavigationItem.FAMILY
+        destination?.hasRoute<AccountRoute>() == true || destination.isAccountSubscreen() -> NavigationItem.PROFILE
+        else -> null
+    }
+    val isFullScreen = destination?.hasRoute<WelcomeRoute>() == true
+
+    Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
+        bottomBar = {
+            if (selectedItem != null) {
+                MainNavigationBar(
+                    selectedItem = selectedItem,
+                    simplified = simplifiedMode,
+                    onItemClick = { item ->
+                        // Tapping the active tab from a deeper screen goes back to its main screen
+                        if (item == NavigationItem.FAMILY && destination.isFamilySubscreen()) {
+                            navController.popBackStack<FamilyRoute>(inclusive = false)
+                            return@MainNavigationBar
+                        }
+                        if (item == NavigationItem.REMINDERS && destination?.hasRoute<NewReminderRoute>() == true) {
+                            navController.popBackStack<RemindersRoute>(inclusive = false)
+                            return@MainNavigationBar
+                        }
+                        if (item == NavigationItem.HOME && destination?.hasRoute<HelpSentRoute>() == true) {
+                            navController.popBackStack<HomeRoute>(inclusive = false)
+                            return@MainNavigationBar
+                        }
+                        if (item == NavigationItem.PROFILE && destination.isAccountSubscreen()) {
+                            navController.popBackStack<AccountRoute>(inclusive = false)
+                            return@MainNavigationBar
+                        }
+
+                        navController.navigate(item.route) {
+                            // Keeps a single copy of each tab and its state when switching
+                            // The access flow (Iam) is gone after sign in, so Home graph is the root
+                            popUpTo<HomeNavGraphRoute> {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                )
+            }
+        }
+    ) { paddingValues ->
+        NavHost(
+            navController = navController,
+            startDestination = startDestination,
+            modifier = Modifier.padding(if (isFullScreen) PaddingValues() else paddingValues)
+        ) {
+            iamNavGraph(navController)
+            homeNavGraph(navController)
+            checkInNavGraph(navController)
+            alertsAndSafetyNavGraph(navController)
+            socialCompanionshipNavGraph(navController)
+            familyNavGraph(navController)
+            careCircleNavGraph(navController)
+            accountNavGraph(navController)
+        }
+    }
+}
+
+private fun NavDestination?.isFamilySubscreen(): Boolean {
+    return this?.hasRoute<CircleRoute>() == true ||
+        this?.hasRoute<AudioMessageRoute>() == true ||
+        this?.hasRoute<PhotosRoute>() == true ||
+        this?.hasRoute<PhotoViewerRoute>() == true
+}
+
+private fun NavDestination?.isAccountSubscreen(): Boolean {
+    return this?.hasRoute<ProfileDataRoute>() == true || this?.hasRoute<ChangePasswordRoute>() == true
+}
+
+private fun NavController.goToSignIn() {
+    navigate(IamNavGraphRoute) {
+        popUpTo(graph.id) { inclusive = true }
+    }
+    navigate(SignInRoute)
+    NavigationItem.entries.forEach { item -> clearBackStack(item.route) }
+}

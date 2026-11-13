@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">serenia-mobile-android</string>
+    <string name="app_name">Serenia</string>
+    <string name="tab_home">Inicio</string>
+    <string name="tab_reminders">Recordar</string>
+    <string name="tab_family">Familia</string>
+    <string name="tab_profile">Cuenta</string>
 </resources>

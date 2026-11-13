@@ -16,17 +16,35 @@ android {
         applicationId = "com.vitalcare.serenia"
         minSdk = 24
         targetSdk = 37
-        versionCode = 1
+        // CI passes -PversionCode=<n> so every Firebase upload is newer than the previous one
+        versionCode = providers.gradleProperty("versionCode").map { it.toInt() }.getOrElse(1)
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Deployed backend by default; use -PapiBaseUrl=http://10.0.2.2:8080/api/v1/ for a local one
+        val apiBaseUrl = providers.gradleProperty("apiBaseUrl")
+            .getOrElse("https://serenia-platform.azurewebsites.net/api/v1/")
+        buildConfigField("String", "API_BASE_URL", "\"$apiBaseUrl\"")
+    }
+
+    // CI passes -PdebugKeystore=<file> so every build is signed with the same debug key and
+    // the testers can install a new version over the previous one. Local builds keep their own key.
+    signingConfigs {
+        getByName("debug") {
+            providers.gradleProperty("debugKeystore").orNull?.let { path ->
+                storeFile = file(path)
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+            }
+        }
     }
 
     buildTypes {
         release {
             optimization {
-                enable = true
-                packageScope = setOf("androidx.**", "kotlin.**", "kotlinx.**")
+                enable = false
             }
         }
     }
@@ -36,6 +54,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -56,11 +75,26 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
+    // Coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+
     // ViewModel Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+
+    // Room
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+
+    // Data Store
+    implementation(libs.androidx.datastore.preferences)
 }
