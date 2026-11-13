@@ -46,7 +46,8 @@ jobs:
       - name: Restore the shared debug key
         if: env.DEBUG_KEYSTORE_BASE64 != ''
         run: |
-          echo "$DEBUG_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/debug.keystore"
+          # Drop spaces and line breaks (Windows adds \r when the value is copied) before decoding
+          printf '%s' "$DEBUG_KEYSTORE_BASE64" | tr -d ' \r\n' | base64 -d > "$RUNNER_TEMP/debug.keystore"
           keytool -list -v -keystore "$RUNNER_TEMP/debug.keystore" -storepass android | grep -E "SHA256" || true
 
       - name: Build the debug APK
